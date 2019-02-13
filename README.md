@@ -20,6 +20,3 @@
 
 ### Ссылки
 
-  - [Общая папка с учебными материалами](https://www.dropbox.com/sh/43f2rhbw4pc9t9c/AABJtW9zrF757iF3nsuFTdn7a?dl=0)
-  - [Кабинет студента](https://students.bmstu.ru)
-  - [Электронный университет](https://eu.bmstu.ru)
