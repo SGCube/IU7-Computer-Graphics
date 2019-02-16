@@ -7,8 +7,8 @@
 
 ## Состав разработчиков
 
-*  @SorGamer
-*  @Ksupall
+*  SorGamer
+*  Ksupall
 
 ## Ссылки
 
