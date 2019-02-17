@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "triangle.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -92,6 +93,30 @@ void MainWindow::on_drawButton_released()
             msg.append("Y!");
         ui->msgFrame->setText(QString(msg));
     }
+	else
+	{
+		Triangle tr = solve(plist, ui->pointTable->rowCount());
+		if (tr == NULL)
+		{
+			QString msg("Невозможно построить треугольник!");
+			ui->msgFrame->setText(QString(msg));
+		}
+		else
+		{
+			QString msg("Треугольник:\nВершины: ");
+			for (int i = 0; i < 3; i++)
+			{
+				msg.append("(");
+				msg.append(QString::number(tr.points[i].x()));
+				msg.append(", ");
+				msg.append(QString::number(tr.points[i].y()));
+				msg.append(") ");
+			}
+			ui->msgFrame->setText(QString(msg));
+		}
+	}
+	
+	
     for(int i = 0; i < rows && correct; i++)
         delete [] plist[i];
     delete [] plist;
