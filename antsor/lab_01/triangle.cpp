@@ -1,6 +1,13 @@
 #include "triangle.h"
 #include "cmath"
 
+Triangle::Triangle()
+{
+    points[0] = QPointF(0, 0);
+    points[1] = QPointF(0, 0);
+    points[2] = QPointF(0, 0);
+}
+
 Triangle::Triangle(float x1, float y1, float x2, float y2, float x3, float y3)
 {
     points[0] = QPointF(x1, y1);
@@ -78,33 +85,34 @@ bool isTriangle(float x1, float y1, float x2, float y2, float x3, float y3)
 }
 
 
-Triangle solve(float **plist, int n)
+Triangle solve(float **plist, int n, float *hmin)
 {
 	if (!plist || n < 3)
-		return NULL;
+		return Triangle();
 	
-	float hmin = -1, h = -1;
-	int i1 = 0, i2 = 1, i3 = 2;
-	
+	float h = -1;
+	*hmin = -1;
+	int i1 = 0, i2 = 1, i3 = 2, hvertex = 0;
 	for (int i = 0; i < n - 2; i++)
-		for (int j = i + 1; j < n - 2; j++)
-			for (int k = j + 1; k < n - 2; k++)
+		for (int j = i + 1; j < n - 1; j++)
+			for (int k = j + 1; k < n; k++)
+			{
 				if (isTriangle(plist[i1][0], plist[i1][1],
 							   plist[i2][0], plist[i2][1],
 							   plist[i3][0], plist[i3][1]))
 				{
-					h = getMinHeight(plist[i], plist[j], plist[k]);
-					if (hmin == -1 || h < hmin)
+					h = getMinHeight(plist[i], plist[j],
+									 plist[k], &hvertex).length();
+					if (*hmin == -1 || h < *hmin)
 					{
 						i1 = i;
 						i2 = j;
 						i3 = k;
-						hmin = h;
+						*hmin = h;
 					}
 				}
+			}
 	
-	if (hmin == -1)
-		return NULL;
 	return Triangle(plist[i1][0], plist[i1][1],
 			plist[i2][0], plist[i2][1],
 			plist[i3][0], plist[i3][1]);

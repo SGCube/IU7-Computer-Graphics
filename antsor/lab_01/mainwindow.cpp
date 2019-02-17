@@ -95,8 +95,9 @@ void MainWindow::on_drawButton_released()
     }
 	else
 	{
-		Triangle tr = solve(plist, ui->pointTable->rowCount());
-		if (tr == NULL)
+		float hmin = -1;
+		Triangle tr = solve(plist, ui->pointTable->rowCount(), &hmin);
+		if (hmin == -1)
 		{
 			QString msg("Невозможно построить треугольник!");
 			ui->msgFrame->setText(QString(msg));
@@ -112,6 +113,8 @@ void MainWindow::on_drawButton_released()
 				msg.append(QString::number(tr.points[i].y()));
 				msg.append(") ");
 			}
+			msg.append("\nНаименьшая высота: ");
+			msg.append(QString::number(hmin));
 			ui->msgFrame->setText(QString(msg));
 		}
 	}
