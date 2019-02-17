@@ -58,19 +58,19 @@
      <number>2</number>
     </property>
     <attribute name="horizontalHeaderVisible">
-     <bool>false</bool>
+     <bool>true</bool>
     </attribute>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>80</number>
+     <number>72</number>
     </attribute>
     <attribute name="horizontalHeaderHighlightSections">
      <bool>true</bool>
     </attribute>
     <attribute name="horizontalHeaderMinimumSectionSize">
-     <number>80</number>
+     <number>72</number>
     </attribute>
     <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
+     <bool>true</bool>
     </attribute>
     <attribute name="verticalHeaderDefaultSectionSize">
      <number>24</number>
@@ -177,7 +177,7 @@
      <string>Решить задачу</string>
     </property>
    </widget>
-   <widget class="QLabel" name="txtWindow">
+   <widget class="QLabel" name="msgFrame">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -188,6 +188,9 @@
     </property>
     <property name="autoFillBackground">
      <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::Box</enum>
