@@ -47,3 +47,17 @@ bool isTriangle(float x1, float y1, float x2, float y2, float x3, float y3)
             a.length() + c.length() > b.length() &&
             b.length() + c.length() > a.length());
 }
+
+
+Triangle solve(float **plist, int n)
+{
+	if (!plist || n < 3)
+		return NULL;
+	
+	for (int i = 0; i < n - 2; i++)
+		for (int j = i + 1; j < n - 2; j++)
+			for (int k = j + 1; k < n - 2; k++)
+			{
+				
+			}
+}
