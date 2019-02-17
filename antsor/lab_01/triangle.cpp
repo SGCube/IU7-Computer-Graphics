@@ -36,3 +36,14 @@ QVector2D Triangle::getMinHeight(int *hvertex)
     }
     return QVector2D(QPointF(xm - xp, ym - yp));
 }
+
+
+bool isTriangle(float x1, float y1, float x2, float y2, float x3, float y3)
+{
+	QVector2D a = QVector2D(QPointF(x2 - x1, y2 - y1));
+	QVector2D b = QVector2D(QPointF(x3 - x1, y3 - y1));
+	QVector2D c = QVector2D(QPointF(x3 - x2, y3 - y2));
+	return (a.length() + b.length() > c.length() &&
+            a.length() + c.length() > b.length() &&
+            b.length() + c.length() > a.length());
+}
