@@ -30,7 +30,8 @@ QVector2D Triangle::getMinHeight(int *hvertex)
     {
         x = points[i].x() + points[(i + 2) % 3].y() - points[(i + 1) % 3].y();
         y = points[i].y() - points[(i + 2) % 3].x() + points[(i + 1) % 3].x();
-        h = sqrt(x * x + y * y);
+        h = sqrt((x - points[i].x()) * (x - points[i].x()) + 
+				 (y - points[i].y()) * (y - points[i].y()));
         if (hm == -1 || h < hm)
         {
             hm = h;
@@ -60,7 +61,9 @@ QVector2D getMinHeight(float *p1, float *p2, float *p3, int *hvertex)
     {
         x = points[i].x() + points[(i + 2) % 3].y() - points[(i + 1) % 3].y();
         y = points[i].y() - points[(i + 2) % 3].x() + points[(i + 1) % 3].x();
-        h = sqrt(x * x + y * y);
+		h = sqrt((x - points[i].x()) * (x - points[i].x()) + 
+				 (y - points[i].y()) * (y - points[i].y()));
+		printf("%f\n", h);
         if (hm == -1 || h < hm)
         {
             hm = h;
