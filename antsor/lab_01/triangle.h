@@ -15,10 +15,8 @@ public:
 	QVector2D getMinHeight(QPointF *hvertex);
 };
 
-bool isTriangle(float x1, float y1, float x2, float y2, float x3, float y3);
+bool isTriangle(QPointF p1, QPointF p2, QPointF p3);
 
-QVector2D getMinHeight(float *p1, float *p2, float *p3, int *hvertex);
-
-Triangle solve(float **plist, int n, float *hmin);
+bool solve(float **plist, int n, Triangle *tr, QVector2D *h, QPointF *hvertex);
 
 #endif // TRIANGLE_H

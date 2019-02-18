@@ -25,13 +25,14 @@ Triangle::Triangle(QPointF p1, QPointF p2, QPointF p3)
 
 QVector2D Triangle::getMinHeight(QPointF *hvertex)
 {
-	// h - длина текущей высота, hmin - длина минимальной
+	// h - длина текущей высоты, hmin - длина минимальной высоты
 	float h = -1, hmin = -1;
 	// hline - высота, edge - сторона
 	Line hline, edge;	
 	// hp - точка отрезка текущей высоты на стороне
 	// hpmin - точка отрезка минимальной высоты на стороне
 	QPointF hp, hpmin;
+	
     for (int i = 0; i < 3; i++)
     {
 		edge = Line(QPointF(points[(i + 1) % 3]),
@@ -39,8 +40,10 @@ QVector2D Triangle::getMinHeight(QPointF *hvertex)
 		hline = Line(edge.b(), -edge.a(),
 					 -(edge.a() * points[i].x() + edge.b() * points[i].y()));
         intersect(hline, edge, &hp);
+		
         h = sqrt((hp.x() - points[i].x()) * (hp.x() - points[i].x()) + 
 				 (hp.y() - points[i].y()) * (hp.y() - points[i].y()));
+		
         if (hmin == -1 || h < hmin)
         {
             hpmin = hp;
@@ -48,81 +51,53 @@ QVector2D Triangle::getMinHeight(QPointF *hvertex)
             *hvertex = points[i];
         }
 	}
+	
     return QVector2D(hpmin.x() - hvertex->x(),
 					 hpmin.y() - hvertex->y());
 }
 
-QVector2D getMinHeight(float *p1, float *p2, float *p3, int *hvertex)
+bool isTriangle(QPointF p1, QPointF p2, QPointF p3)
 {
-	QPointF points[3];
-	points[0].setX(p1[0]);
-	points[0].setY(p1[1]);
-	points[1].setX(p2[0]);
-	points[1].setY(p2[1]);
-	points[2].setX(p3[0]);
-	points[2].setY(p3[1]);
-	
-	float x, y, xm, ym, xp, yp;
-    float h = -1, hm = -1;
-    for (int i = 0; i < 3; i++)
-    {
-        x = points[i].x() + points[(i + 2) % 3].y() - points[(i + 1) % 3].y();
-        y = points[i].y() - points[(i + 2) % 3].x() + points[(i + 1) % 3].x();
-		h = sqrt((x - points[i].x()) * (x - points[i].x()) + 
-				 (y - points[i].y()) * (y - points[i].y()));
-        if (hm == -1 || h < hm)
-        {
-            hm = h;
-            xm = x;
-            ym = y;
-            *hvertex = i;
-            xp = points[i].x();
-            yp = points[i].y();
-        }
-    }
-    return QVector2D(QPointF(xm - xp, ym - yp));
-}
-
-bool isTriangle(float x1, float y1, float x2, float y2, float x3, float y3)
-{
-	QVector2D a = QVector2D(QPointF(x2 - x1, y2 - y1));
-	QVector2D b = QVector2D(QPointF(x3 - x1, y3 - y1));
-	QVector2D c = QVector2D(QPointF(x3 - x2, y3 - y2));
+	QVector2D a = QVector2D(p2.x() - p1.x(), p2.y() - p1.y());
+	QVector2D b = QVector2D(p3.x() - p1.x(), p3.y() - p1.y());
+	QVector2D c = QVector2D(p3.x() - p2.x(), p3.y() - p2.y());
 	return (a.length() + b.length() > c.length() &&
             a.length() + c.length() > b.length() &&
             b.length() + c.length() > a.length());
 }
 
 
-Triangle solve(float **plist, int n, float *hmin)
+bool solve(QPointF *plist, int n, Triangle *tr, QVector2D *h, QPointF *hvertex)
 {
 	if (!plist || n < 3)
-		return Triangle();
+		return false;
 	
-	float h = -1;
-	*hmin = -1;
-	int i1 = 0, i2 = 1, i3 = 2, hvertex = 0;
+	// h - высота минимальной длины текущего треугольника
+	QVector2D hcur;
+	// hcurv - вершина высоты текущего треугольника
+	QPointF hcurv;
+	// trcur - текущий рассматриваемый треугольник
+	Triangle trcur;
+	// found - найдено ли хотя бы одно решение
+	bool found = false;
+	
 	for (int i = 0; i < n - 2; i++)
 		for (int j = i + 1; j < n - 1; j++)
 			for (int k = j + 1; k < n; k++)
 			{
-				if (isTriangle(plist[i1][0], plist[i1][1],
-							   plist[i2][0], plist[i2][1],
-							   plist[i3][0], plist[i3][1]))
+				if (isTriangle(plist[i], plist[j], plist[k]))
 				{
-					h = getMinHeight(plist[i], plist[j],
-									 plist[k], &hvertex).length();
-					if (*hmin == -1 || h < *hmin)
+					trcur = Triangle(plist[i], plist[j], plist[k]);
+					hcur = trcur.getMinHeight(&hcurv);
+					if (!found || hcur.length() < h->length())
 					{
-						i1 = i;
-						i2 = j;
-						i3 = k;
-						*hmin = h;
+						tr = trcur;
+						*h = hcur;
+						*hvertex = hcurv;
+						found = true;
 					}
 				}
 			}
 	
-	return Triangle(plist[i1][0], plist[i1][1],
-			plist[i2][0], plist[i2][1],
-			plist[i3][0], plist[i3][1]);
+	return found;
 }
