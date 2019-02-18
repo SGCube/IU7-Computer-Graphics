@@ -32,10 +32,10 @@ void MainWindow::on_delButton_released()
 
 void MainWindow::on_drawButton_released()
 {
-    /// подготовка данных
-    ///
-    int rows = ui->pointTable->rowCount();
+    int rows = ui->pointTable->rowCount();	// количество точек (строк таблицы)
+	
     /// проверка на достаточность
+    
     if (rows < 3)
     {
         ui->msgFrame->setText(QString(
@@ -44,44 +44,45 @@ void MainWindow::on_drawButton_released()
     }
 
     /// выделение памяти под точки
-    float **plist = new float * [rows];
+	
+    QPointF *plist = new QPointF[rows];
     if (!plist)
     {
         ui->msgFrame->setText(QString(
                                   "Ошибка выделения памяти!"));
         return;
     }
-    for(int i = 0; i < rows; i++)
-    {
-        plist[i] = new float [2];
-        if (!plist[i])
-        {
-            ui->msgFrame->setText(QString(
-                                      "Ошибка выделения памяти!"));
-            for(int j = 0; j < i; j++)
-                delete [] plist[j];
-            delete [] plist;
-            return;
-        }
-    }
-
-    /// проверка на корректность
+	
+    /// проверка на корректность содержимого таблицы
+    
     bool correct = true;
+	// строки для записи содержимого ячеек таблицы
     QString xstr, ystr;
+	// номер точки
     int i = 0;
+	// какая координата рассматривается (0 - X, 1 - Y)
     bool coord = 0;
+	// координаты текущей точки
+	float x, y;
+	
     for(i = 0; i < rows && correct; i++)
     {
         xstr = ui->pointTable->item(i, 0)->text();
         ystr = ui->pointTable->item(i, 1)->text();
         coord = 0;
-        plist[i][0] = xstr.toFloat(&correct);
+        x = xstr.toFloat(&correct);
         if (correct)
         {
-            plist[i][1] = ystr.toFloat(&correct);
+            y = ystr.toFloat(&correct);
             coord = 1;
+			if (correct)
+			{
+				plist[i].setX(x);
+				plist[i].setY(y);
+			}
         }
     }
+	
     if (!correct)
     {
         QString msg("Некорректные данные: точка №");
@@ -92,35 +93,41 @@ void MainWindow::on_drawButton_released()
         else
             msg.append("Y!");
         ui->msgFrame->setText(QString(msg));
+		delete [] plist;
+		return;
     }
+	
+	/// решение задачи
+	Triangle tr;	// треугольник решения
+	QVector2D h;	// наименьшая высота
+	QPointF hvertex;	// вершина наименьшей высоты
+	
+	/// вывод решения в статусное окно
+	if (solve(plist, ui->pointTable->rowCount(), &tr, &h, &hvertex))
+	{
+		QString msg("Невозможно построить треугольник!");
+		ui->msgFrame->setText(QString(msg));
+	}
 	else
 	{
-		float hmin = -1;
-		Triangle tr = solve(plist, ui->pointTable->rowCount(), &hmin);
-		if (hmin == -1)
+		QString msg("Треугольник:\nВершины: ");
+		for (int i = 0; i < 3; i++)
 		{
-			QString msg("Невозможно построить треугольник!");
-			ui->msgFrame->setText(QString(msg));
+			msg.append("(");
+			msg.append(QString::number(tr.points[i].x()));
+			msg.append(", ");
+			msg.append(QString::number(tr.points[i].y()));
+			msg.append(") ");
 		}
-		else
-		{
-			QString msg("Треугольник:\nВершины: ");
-			for (int i = 0; i < 3; i++)
-			{
-				msg.append("(");
-				msg.append(QString::number(tr.points[i].x()));
-				msg.append(", ");
-				msg.append(QString::number(tr.points[i].y()));
-				msg.append(") ");
-			}
-			msg.append("\nНаименьшая высота: ");
-			msg.append(QString::number(hmin));
-			ui->msgFrame->setText(QString(msg));
-		}
+		msg.append("\nНаименьшая высота: ");
+		msg.append(QString::number(h.length()));
+		msg.append(", вершина: (");
+		msg.append(QString::number(hvertex.x()));
+		msg.append(", ");
+		msg.append(QString::number(hvertex.y()));
+		msg.append(") ");
+		ui->msgFrame->setText(QString(msg));
 	}
 	
-	
-    for(int i = 0; i < rows && correct; i++)
-        delete [] plist[i];
     delete [] plist;
 }
