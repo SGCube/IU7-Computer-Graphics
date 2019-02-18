@@ -103,7 +103,7 @@ void MainWindow::on_drawButton_released()
 	QPointF hvertex;	// вершина наименьшей высоты
 	
 	/// вывод решения в статусное окно
-	if (solve(plist, ui->pointTable->rowCount(), &tr, &h, &hvertex))
+	if (!solve(plist, ui->pointTable->rowCount(), &tr, &h, &hvertex))
 	{
 		QString msg("Невозможно построить треугольник!");
 		ui->msgFrame->setText(QString(msg));
