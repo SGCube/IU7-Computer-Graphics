@@ -49,7 +49,7 @@ bool intersect(Line l1, Line l2, QPointF *p)
 	float zn = l1.a * l2.b - l2.a * l1.b;
 	if (zn == 0)
 		return false;
-	p->setX((l1.c * l2.b - l2.c * l1.b) / zn);
-	p->setY((l2.c * l1.a - l1.c * l2.a) / zn);
+	p->setX(-(l1.c * l2.b - l2.c * l1.b) / zn);
+	p->setY(-(l2.c * l1.a - l1.c * l2.a) / zn);
 	return true;
 }
