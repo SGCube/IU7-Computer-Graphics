@@ -14,7 +14,7 @@ Line::Line(float ka, float kb, float kc)
 	c = kc;
 }
 
-Line(QPointF p1, QPointF p2)
+Line::Line(QPointF p1, QPointF p2)
 {
 	a = p1.y() - p2.y();
 	b = p2.x() - p1.x();
@@ -44,12 +44,12 @@ float Line::x(float y, bool *nz)
 }
 
 
-bool intersect(Line l1, Line l2. QPointF *p)
+bool intersect(Line l1, Line l2, QPointF *p)
 {
 	float zn = l1.a * l2.b - l2.a * l1.b;
 	if (zn == 0)
 		return false;
-	float x = (l1.c * l2.b - l2.c * l1.b) / zn;
-	float y = (l2.c * l1.a - l1.c * l2.a) / zn;
+	p->setX((l1.c * l2.b - l2.c * l1.b) / zn);
+	p->setY((l2.c * l1.a - l1.c * l2.a) / zn);
 	return true;
 }

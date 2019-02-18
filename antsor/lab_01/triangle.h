@@ -17,6 +17,6 @@ public:
 
 bool isTriangle(QPointF p1, QPointF p2, QPointF p3);
 
-bool solve(float **plist, int n, Triangle *tr, QVector2D *h, QPointF *hvertex);
+bool solve(QPointF *plist, int n, Triangle *tr, QVector2D *h, QPointF *hvertex);
 
 #endif // TRIANGLE_H

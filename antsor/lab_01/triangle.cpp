@@ -37,8 +37,8 @@ QVector2D Triangle::getMinHeight(QPointF *hvertex)
     {
 		edge = Line(QPointF(points[(i + 1) % 3]),
 				QPointF(points[(i + 2) % 3]));
-		hline = Line(edge.b(), -edge.a(),
-					 -(edge.a() * points[i].x() + edge.b() * points[i].y()));
+		hline = Line(edge.b, -edge.a,
+					 -(edge.a * points[i].x() + edge.b * points[i].y()));
         intersect(hline, edge, &hp);
 		
         h = sqrt((hp.x() - points[i].x()) * (hp.x() - points[i].x()) + 
@@ -91,7 +91,7 @@ bool solve(QPointF *plist, int n, Triangle *tr, QVector2D *h, QPointF *hvertex)
 					hcur = trcur.getMinHeight(&hcurv);
 					if (!found || hcur.length() < h->length())
 					{
-						tr = trcur;
+						*tr = trcur;
 						*h = hcur;
 						*hvertex = hcurv;
 						found = true;

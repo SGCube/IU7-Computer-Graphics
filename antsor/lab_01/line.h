@@ -16,6 +16,6 @@ public:
 	float x(float y, bool *nz);
 };
 
-bool intersect(Line l1, Line l2, QPointF p);
+bool intersect(Line l1, Line l2, QPointF *p);
 
 #endif // LINE_H
