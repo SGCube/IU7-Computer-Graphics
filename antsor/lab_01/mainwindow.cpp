@@ -3,7 +3,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "plist.h"
+#include "solve.h"
 #include "triangle.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -42,8 +42,7 @@ void MainWindow::on_drawButton_released()
     /// проверка на достаточность
     if (rows < 3)
     {
-        ui->msgFrame->setText(QString(
-                                  "Недостаточно данных для решения задачи!"));
+        error_msg(ui->msgFrame, ERR_PLIST_N);
         return;
     }
 	
@@ -51,59 +50,32 @@ void MainWindow::on_drawButton_released()
 	int no = -1;		// номер некорректной точки
 	bool coord = 0;		// некорректная координата (0 - X, 1 - Y)
 	int rc = get_plist(ui->pointTable, &plist, rows, &no, &coord);
-	
-	if (rc == ERR_PLIST_MEM)
+	if (rc == ERR_PLIST_VAL)
 	{
-        ui->msgFrame->setText(QString("Ошибка выделения памяти!"));
+        error_valmsg(ui->msgFrame, no, coord);
 		return;
 	}
-	if (rc == ERR_PLIST_VAL)
-    {
-        QString msg("Некорректные данные: точка №");
-        msg.append(QString::number(no));
-        msg.append(", координата ");
-        if (coord == 0)
-            msg.append("X!");
-        else
-            msg.append("Y!");
-        ui->msgFrame->setText(QString(msg));
+	else if (rc != OK)
+	{
+		error_msg(ui->msgFrame, rc);
 		return;
-    }
+	}
 	
 	/// решение задачи
-	Triangle tr;	// треугольник решения
-	QVector2D h;	// наименьшая высота
+	Triangle tr;		// треугольник решения
+	QVector2D h;		// наименьшая высота
 	QPointF hvertex;	// вершина наименьшей высоты
 	
 	if (!solve(plist, rows, &tr, &h, &hvertex))
+		error_msg(ui->msgFrame, ERR_SOLV_NONE);
+	else
 	{
-		QString msg("Невозможно построить треугольник!");
-		ui->msgFrame->setText(QString(msg));
-		delete [] plist;
-		return;
+		/// вывод решения в статусное окно
+		solution_msg(ui->msgFrame, &tr, &h, &hvertex);
+		
+		/// рисование решения
+		/// 
 	}
-
-	/// вывод решения в статусное окно
-	QString msg("Треугольник:\nВершины: ");
-	for (int i = 0; i < 3; i++)
-	{
-		msg.append("(");
-		msg.append(QString::number(tr.points[i].x()));
-		msg.append(", ");
-		msg.append(QString::number(tr.points[i].y()));
-		msg.append(") ");
-	}
-	msg.append("\nНаименьшая высота: ");
-	msg.append(QString::number(h.length()));
-	msg.append(", вершина: (");
-	msg.append(QString::number(hvertex.x()));
-	msg.append(", ");
-	msg.append(QString::number(hvertex.y()));
-	msg.append(") ");
-	ui->msgFrame->setText(QString(msg));
-	
-	/// рисование
-	/// 
 	
 	delete [] plist;
 }

@@ -28,13 +28,13 @@ SOURCES += \
         mainwindow.cpp \
     triangle.cpp \
     line.cpp \
-    plist.cpp
+    solve.cpp
 
 HEADERS += \
         mainwindow.h \
     triangle.h \
     line.h \
-    plist.h
+    solve.h
 
 FORMS += \
         mainwindow.ui
