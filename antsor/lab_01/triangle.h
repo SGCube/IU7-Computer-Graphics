@@ -7,12 +7,12 @@
 class Triangle
 {
 public:
+	QPointF points[3];
+	
 	Triangle();
     Triangle(float x1, float y1, float x2, float y2, float x3, float y3);
     Triangle(QPointF p1, QPointF p2, QPointF p3);
-	QPointF points[3];
-private:
-	QVector2D getMinHeight(int *hvertex);
+	QVector2D getMinHeight(QPointF *hvertex);
 };
 
 bool isTriangle(float x1, float y1, float x2, float y2, float x3, float y3);

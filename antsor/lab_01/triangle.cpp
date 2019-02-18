@@ -1,4 +1,5 @@
 #include "triangle.h"
+#include "line.h"
 #include "cmath"
 
 Triangle::Triangle()
@@ -22,27 +23,33 @@ Triangle::Triangle(QPointF p1, QPointF p2, QPointF p3)
     points[2] = p3;
 }
 
-QVector2D Triangle::getMinHeight(int *hvertex)
+QVector2D Triangle::getMinHeight(QPointF *hvertex)
 {
-    float x, y, xm, ym, xp, yp;
-    float h = -1, hm = -1;
+	// h - длина текущей высота, hmin - длина минимальной
+	float h = -1, hmin = -1;
+	// hline - высота, edge - сторона
+	Line hline, edge;	
+	// hp - точка отрезка текущей высоты на стороне
+	// hpmin - точка отрезка минимальной высоты на стороне
+	QPointF hp, hpmin;
     for (int i = 0; i < 3; i++)
     {
-        x = points[i].x() + points[(i + 2) % 3].y() - points[(i + 1) % 3].y();
-        y = points[i].y() - points[(i + 2) % 3].x() + points[(i + 1) % 3].x();
-        h = sqrt((x - points[i].x()) * (x - points[i].x()) + 
-				 (y - points[i].y()) * (y - points[i].y()));
-        if (hm == -1 || h < hm)
+		edge = Line(QPointF(points[(i + 1) % 3]),
+				QPointF(points[(i + 2) % 3]));
+		hline = Line(edge.b(), -edge.a(),
+					 -(edge.a() * points[i].x() + edge.b() * points[i].y()));
+        intersect(hline, edge, &hp);
+        h = sqrt((hp.x() - points[i].x()) * (hp.x() - points[i].x()) + 
+				 (hp.y() - points[i].y()) * (hp.y() - points[i].y()));
+        if (hmin == -1 || h < hmin)
         {
-            hm = h;
-            xm = x;
-            ym = y;
-            *hvertex = i;
-            xp = points[i].x();
-            yp = points[i].y();
+            hpmin = hp;
+			hmin = h;
+            *hvertex = points[i];
         }
-    }
-    return QVector2D(QPointF(xm - xp, ym - yp));
+	}
+    return QVector2D(hpmin.x() - hvertex->x(),
+					 hpmin.y() - hvertex->y());
 }
 
 QVector2D getMinHeight(float *p1, float *p2, float *p3, int *hvertex)
@@ -63,7 +70,6 @@ QVector2D getMinHeight(float *p1, float *p2, float *p3, int *hvertex)
         y = points[i].y() - points[(i + 2) % 3].x() + points[(i + 1) % 3].x();
 		h = sqrt((x - points[i].x()) * (x - points[i].x()) + 
 				 (y - points[i].y()) * (y - points[i].y()));
-		printf("%f\n", h);
         if (hm == -1 || h < hm)
         {
             hm = h;
