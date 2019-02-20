@@ -14,7 +14,6 @@ public:
     Triangle(float x1, float y1, float x2, float y2, float x3, float y3);
     Triangle(QPointF p1, QPointF p2, QPointF p3);
 	QVector2D getMinHeight(QPointF *hvertex);
-	void draw(QGraphicsView *view);
 };
 
 bool isTriangle(QPointF p1, QPointF p2, QPointF p3);

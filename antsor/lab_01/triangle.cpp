@@ -56,11 +56,6 @@ QVector2D Triangle::getMinHeight(QPointF *hvertex)
 					 hpmin.y() - hvertex->y());
 }
 
-void Triangle::draw(QGraphicsView *view)
-{
-	
-}
-
 bool isTriangle(QPointF p1, QPointF p2, QPointF p3)
 {
 	QVector2D a = QVector2D(p2.x() - p1.x(), p2.y() - p1.y());

@@ -2,7 +2,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "painterwidget.h"
+#include "draw.h"
 
 #include "solve.h"
 #include "triangle.h"
@@ -12,6 +12,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+	
+	QGraphicsScene *scene = new QGraphicsScene(this);
+	ui->graphicsView->setScene(scene);
 }
 
 MainWindow::~MainWindow()
@@ -75,9 +78,7 @@ void MainWindow::on_drawButton_released()
 		solution_msg(ui->msgFrame, &tr, &h, &hvertex);
 		
 		/// рисование решения
-		/// 
-		ui->painterW->drawTriangle(&tr);
-		ui->painterW->drawPoints(plist, rows);
+		draw(ui->graphicsView->scene(), &tr, plist, rows);
 	}
 	
 	delete [] plist;
