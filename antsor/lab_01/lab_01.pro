@@ -28,13 +28,15 @@ SOURCES += \
         mainwindow.cpp \
     triangle.cpp \
     line.cpp \
-    solve.cpp
+    solve.cpp \
+    painterwidget.cpp
 
 HEADERS += \
         mainwindow.h \
     triangle.h \
     line.h \
-    solve.h
+    solve.h \
+    painterwidget.h
 
 FORMS += \
         mainwindow.ui
