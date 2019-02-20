@@ -50,6 +50,9 @@
     <attribute name="horizontalHeaderVisible">
      <bool>true</bool>
     </attribute>
+    <attribute name="horizontalHeaderCascadingSectionResizes">
+     <bool>false</bool>
+    </attribute>
     <attribute name="horizontalHeaderDefaultSectionSize">
      <number>72</number>
     </attribute>
@@ -72,16 +75,10 @@
      <property name="text">
       <string>X</string>
      </property>
-     <property name="textAlignment">
-      <set>AlignCenter</set>
-     </property>
     </column>
     <column>
      <property name="text">
       <string>Y</string>
-     </property>
-     <property name="textAlignment">
-      <set>AlignCenter</set>
      </property>
     </column>
    </widget>
@@ -208,9 +205,30 @@
      <string>Очистить холст</string>
     </property>
    </widget>
+   <widget class="PainterWidget" name="painterW" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>610</width>
+      <height>510</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>PainterWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">painterwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -2,6 +2,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "painterwidget.h"
 
 #include "solve.h"
 #include "triangle.h"
@@ -11,18 +12,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-	
-	painterW = new PainterWidget(this);
-	painterW->move(10, 10);
-	painterW->resize(610, 510);
-	painterW->setStyleSheet("painterW {background-color: white; color: black}");
-	painterW->show();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-	delete painterW;
 }
 
 void MainWindow::on_addButton_released()
@@ -82,8 +76,8 @@ void MainWindow::on_drawButton_released()
 		
 		/// рисование решения
 		/// 
-		painterW->drawTriangle(&tr);
-		painterW->drawPoints(plist, rows);
+		ui->painterW->drawTriangle(&tr);
+		ui->painterW->drawPoints(plist, rows);
 	}
 	
 	delete [] plist;
