@@ -56,6 +56,28 @@ QVector2D Triangle::getMinHeight(QPointF *hvertex)
 					 hpmin.y() - hvertex->y());
 }
 
+QPoint Triangle::lt_corner()
+{
+	float min_x = fmin(fmin(points[0].x(), points[1].x()), points[2].x());
+	float min_y = fmin(fmin(points[0].y(), points[1].y()), points[2].y());
+	
+	int cx = (int) ceil(min_x);
+	int cy = (int) ceil(min_y);
+	
+	return QPoint(cx, cy);
+}
+
+QPoint Triangle::rb_corner()
+{
+	float max_x = fmax(fmin(points[0].x(), points[1].x()), points[2].x());
+	float max_y = fmax(fmin(points[0].y(), points[1].y()), points[2].y());
+	
+	int cx = (int) floor(max_x);
+	int cy = (int) floor(max_y);
+	
+	return QPoint(cx, cy);
+}
+
 bool isTriangle(QPointF p1, QPointF p2, QPointF p3)
 {
 	QVector2D a = QVector2D(p2.x() - p1.x(), p2.y() - p1.y());
