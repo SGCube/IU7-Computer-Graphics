@@ -38,11 +38,11 @@ QVector2D Triangle::getMinHeight(QPointF *hvertex)
 		edge = Line(QPointF(points[(i + 1) % 3]),
 				QPointF(points[(i + 2) % 3]));
 		hline = Line(edge.b, -edge.a,
-					 -(edge.a * points[i].x() + edge.b * points[i].y()));
+					 edge.a * points[i].y() - edge.b * points[i].x());
         intersect(hline, edge, &hp);
 		
-        h = sqrt((hp.x() - points[i].x()) * (hp.x() - points[i].x()) + 
-				 (hp.y() - points[i].y()) * (hp.y() - points[i].y()));
+        h = sqrt(pow(hp.x() - points[i].x(), 2) + 
+				 pow(hp.y() - points[i].y(), 2));
 		
         if (hmin == -1 || h < hmin)
         {
