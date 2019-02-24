@@ -104,3 +104,38 @@ void solution_msg(QLabel *msgbox, Triangle *tr, QVector2D *h, QPointF *hvertex)
 	msg.append(") ");
 	msgbox->setText(QString(msg));
 }
+
+bool solve(QPointF *plist, int n, Triangle *tr, QVector2D *h, QPointF *hvertex)
+{
+	if (!plist || n < 3)
+		return false;
+	
+	// h - высота минимальной длины текущего треугольника
+	QVector2D hcur;
+	// hcurv - вершина высоты текущего треугольника
+	QPointF hcurv;
+	// trcur - текущий рассматриваемый треугольник
+	Triangle trcur;
+	// found - найдено ли хотя бы одно решение
+	bool found = false;
+	
+	for (int i = 0; i < n - 2; i++)
+		for (int j = i + 1; j < n - 1; j++)
+			for (int k = j + 1; k < n; k++)
+			{
+				if (isTriangle(plist[i], plist[j], plist[k]))
+				{
+					trcur = Triangle(plist[i], plist[j], plist[k]);
+					hcur = trcur.getMinHeight(&hcurv);
+					if (!found || hcur.length() < h->length())
+					{
+						*tr = trcur;
+						*h = hcur;
+						*hvertex = hcurv;
+						found = true;
+					}
+				}
+			}
+	
+	return found;
+}

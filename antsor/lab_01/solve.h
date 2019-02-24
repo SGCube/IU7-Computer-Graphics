@@ -22,4 +22,6 @@ void error_valmsg(QLabel *msgbox, int no, bool coord);
 
 void solution_msg(QLabel *msgbox, Triangle *tr, QVector2D *h, QPointF *hvertex);
 
+bool solve(QPointF *plist, int n, Triangle *tr, QVector2D *h, QPointF *hvertex);
+
 #endif // SOLVE_H
