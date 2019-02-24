@@ -43,31 +43,46 @@ void drawTriangle(QGraphicsScene *scene, Triangle *tr, float k,
 void drawPoints(QGraphicsScene *scene, QPointF *plist, int n, float k,
 				QPoint center)
 {
+	// параметры рисования
 	QPen pen = QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap);
 	QBrush brush = QBrush(QBrush(Qt::black, Qt::SolidPattern));
 	QFont font = QFont("sans", 12);
 	
+	// центр масштабирования
+	QPoint pm = QPoint(VIEW_W / 2, - VIEW_H / 2);
+	// определение смещения центра
+	int dx = pm.x() - center.x();
+	int dy = pm.y() - center.y();
+	
+	// переменные для меток
 	QString str;
 	QGraphicsTextItem *label;
 	
-	float x, y;
-	
+	// координаты точек
+	int x, y;
+	// рисование точек
 	for (int i = 0; i < n; i++)
 	{
-		//рисование точки
-		scene->addEllipse(plist[i].x() - 2, plist[i].y() - 2, 4, 4, pen, brush);
+		x = round(k * (plist[i].x() + dx) + (1 - k) * pm.x());
+		y = -round(k * (plist[i].y() + dy) + (1 - k) * pm.y());
 		
-		// подпись точки
-		str = "№" + QString::number(i + 1);
-		label = scene->addText(str, font);
-		label->setX(plist[i].x() - label->boundingRect().width() / 2);
-		label->setY(plist[i].y() - 2 - label->boundingRect().height());
-		str = " (" + QString::number(plist[i].x()) + ", " +
-				QString::number(plist[i].y()) + ")";
-		label = scene->addText(str, font);
-		label->setX(plist[i].x() - label->boundingRect().width() / 2);
-		label->setY(plist[i].y() + 2);
-		label->adjustSize();
+		// если точка в пределах холста
+		if (0 < x && x < VIEW_W && 0 < y && y < VIEW_H) 
+		{
+			//рисование точки
+			scene->addEllipse(x - 2, y - 2, 4, 4, pen, brush);
+			// номе точки (подпись)
+			str = "№" + QString::number(i + 1);
+			label = scene->addText(str, font);
+			label->setX(x - label->boundingRect().width() / 2);
+			label->setY(y - 2 - label->boundingRect().height());
+			// координаты точки (подпись)
+			str = " (" + QString::number(plist[i].x()) +
+					", " + QString::number(plist[i].y()) + ")";
+			label = scene->addText(str, font);
+			label->setX(x - label->boundingRect().width() / 2);
+			label->setY(y + 2);
+		}
 	}
 }
 
@@ -91,5 +106,5 @@ void draw(QGraphicsScene *scene, Triangle *tr, QPointF *plist, int n)
 						   round(ltcorn.y() + wh / 2));
 	
 	drawTriangle(scene, tr, kdraw, center);
-	//drawPoints(scene, plist, n, kdraw, center);
+	drawPoints(scene, plist, n, kdraw, center);
 }
