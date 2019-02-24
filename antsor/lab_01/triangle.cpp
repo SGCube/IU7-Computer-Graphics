@@ -61,19 +61,19 @@ QPoint Triangle::lt_corner()
 	float min_x = fmin(fmin(points[0].x(), points[1].x()), points[2].x());
 	float min_y = fmin(fmin(points[0].y(), points[1].y()), points[2].y());
 	
-	int cx = (int) ceil(min_x);
-	int cy = (int) ceil(min_y);
+	int cx = (int) floor(min_x);
+	int cy = (int) floor(min_y);
 	
 	return QPoint(cx, cy);
 }
 
 QPoint Triangle::rb_corner()
 {
-	float max_x = fmax(fmin(points[0].x(), points[1].x()), points[2].x());
-	float max_y = fmax(fmin(points[0].y(), points[1].y()), points[2].y());
+	float max_x = fmax(fmax(points[0].x(), points[1].x()), points[2].x());
+	float max_y = fmax(fmax(points[0].y(), points[1].y()), points[2].y());
 	
-	int cx = (int) floor(max_x);
-	int cy = (int) floor(max_y);
+	int cx = (int) ceil(max_x);
+	int cy = (int) ceil(max_y);
 	
 	return QPoint(cx, cy);
 }
