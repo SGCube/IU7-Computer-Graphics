@@ -24,7 +24,38 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_addButton_released()
 {
+	// флаг корректности данных
+	bool correct = true;
+	// строки для хранения содержимого полей ввода
+    QString xstr = ui->xEdit->text();
+	QString ystr = ui->yEdit->text();
+	// координаты точки
+	float x, y;
+	x = xstr.toFloat(&correct);
+	if (!correct)
+	{
+		error_valmsg(ui->msgFrame, 0);
+		return;
+	}
+	y = ystr.toFloat(&correct);
+	if (!correct)
+	{
+		error_valmsg(ui->msgFrame, 1);
+		return;
+	}
+	
+	xstr = QString::number(x);
+	ystr = QString::number(y);
+	
+	ui->xEdit->clear();
+	ui->yEdit->clear();
+	
     ui->pointTable->insertRow(ui->pointTable->rowCount());
+	int row = ui->pointTable->rowCount() - 1;
+	QTableWidgetItem *xitem = new QTableWidgetItem(xstr);
+	QTableWidgetItem *yitem = new QTableWidgetItem(ystr);
+	ui->pointTable->setItem(row, 0, xitem);
+	ui->pointTable->setItem(row, 1, yitem);
 }
 
 void MainWindow::on_delAllButton_released()
@@ -51,16 +82,9 @@ void MainWindow::on_drawButton_released()
         return;
     }
 	
-	/// получение списка точек
-	int no = -1;		// номер некорректной точки
-	bool coord = 0;		// некорректная координата (0 - X, 1 - Y)
-	int rc = get_plist(ui->pointTable, &plist, rows, &no, &coord);
-	if (rc == ERR_PLIST_VAL)
-	{
-        error_valmsg(ui->msgFrame, no, coord);
-		return;
-	}
-	else if (rc != OK)
+	/// получение набора точек
+	int rc = get_plist(ui->pointTable, &plist, rows);
+	if (rc != OK)
 	{
 		error_msg(ui->msgFrame, rc);
 		return;

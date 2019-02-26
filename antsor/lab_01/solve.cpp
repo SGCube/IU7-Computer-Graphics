@@ -1,7 +1,6 @@
 #include "solve.h"
 
-int get_plist(QTableWidget *pointTable, QPointF **plist, int rows,
-			  int *no, bool *coord)
+int get_plist(QTableWidget *pointTable, QPointF **plist, int rows)
 {
 	/// выделение памяти под точки
 	
@@ -12,37 +11,18 @@ int get_plist(QTableWidget *pointTable, QPointF **plist, int rows,
         return ERR_PLIST_MEM;
     }
 	
-    /// проверка на корректность содержимого таблицы
+    /// создание набора точек
     
-    bool correct = true;
-	// строки для записи содержимого ячеек таблицы
-    QString xstr, ystr;
 	// координаты текущей точки
 	float x, y;
 	
-    for (*no = 0; *no < rows; *no += 1)
+    for (int i = 0; i < rows; i += 1)
     {
-        xstr = pointTable->item(*no, 0)->text();
-        ystr = pointTable->item(*no, 1)->text();
-       
-		*coord = 0;
-        x = xstr.toFloat(&correct);
-		if (!correct)
-		{
-			delete [] *plist;
-			return ERR_PLIST_VAL;
-		}
-        
-		*coord = 1;
-		y = ystr.toFloat(&correct);
-		if (!correct)
-		{
-			delete [] *plist;
-			return ERR_PLIST_VAL;
-		}
+        x = pointTable->item(i, 0)->text().toFloat();
+		y = pointTable->item(i, 1)->text().toFloat();
 		
-		(*plist)[*no].setX(x);
-		(*plist)[*no].setY(y);
+		(*plist)[i].setX(x);
+		(*plist)[i].setY(y);
     }
 	return OK;
 }
@@ -71,11 +51,9 @@ void error_msg(QLabel *msgbox, int rc)
 	}
 }
 
-void error_valmsg(QLabel *msgbox, int no, bool coord)
+void error_valmsg(QLabel *msgbox, bool coord)
 {
-	QString msg("Некорректные данные: точка №");
-	msg.append(QString::number(no));
-	msg.append(", координата ");
+	QString msg("Некорректные данные: координата ");
 	if (coord == 0)
 		msg.append("X!");
 	else

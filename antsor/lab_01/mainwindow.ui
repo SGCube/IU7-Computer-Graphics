@@ -20,7 +20,7 @@
       <x>630</x>
       <y>10</y>
       <width>160</width>
-      <height>320</height>
+      <height>304</height>
      </rect>
     </property>
     <property name="verticalScrollBarPolicy">
@@ -28,6 +28,9 @@
     </property>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::NoSelection</enum>
     </property>
     <property name="selectionBehavior">
      <enum>QAbstractItemView::SelectRows</enum>
@@ -86,7 +89,7 @@
     <property name="geometry">
      <rect>
       <x>630</x>
-      <y>340</y>
+      <y>375</y>
       <width>160</width>
       <height>24</height>
      </rect>
@@ -99,7 +102,7 @@
     <property name="geometry">
      <rect>
       <x>630</x>
-      <y>370</y>
+      <y>405</y>
       <width>160</width>
       <height>24</height>
      </rect>
@@ -142,7 +145,7 @@
     <property name="geometry">
      <rect>
       <x>630</x>
-      <y>400</y>
+      <y>435</y>
       <width>160</width>
       <height>24</height>
      </rect>
@@ -155,7 +158,7 @@
     <property name="geometry">
      <rect>
       <x>630</x>
-      <y>430</y>
+      <y>465</y>
       <width>160</width>
       <height>24</height>
      </rect>
@@ -196,7 +199,7 @@
     <property name="geometry">
      <rect>
       <x>630</x>
-      <y>460</y>
+      <y>495</y>
       <width>160</width>
       <height>24</height>
      </rect>
@@ -242,6 +245,58 @@
     </property>
     <property name="viewportUpdateMode">
      <enum>QGraphicsView::MinimalViewportUpdate</enum>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="xEdit">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>345</y>
+      <width>72</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="yEdit">
+    <property name="geometry">
+     <rect>
+      <x>718</x>
+      <y>345</y>
+      <width>72</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_X">
+    <property name="geometry">
+     <rect>
+      <x>658</x>
+      <y>320</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>X</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_Y">
+    <property name="geometry">
+     <rect>
+      <x>746</x>
+      <y>320</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Y</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>

@@ -13,12 +13,11 @@
 #define ERR_PLIST_VAL -3
 #define ERR_SOLV_NONE -4
 
-int get_plist(QTableWidget *pointTable, QPointF **plist, int rows,
-			  int *no, bool *coord);
+int get_plist(QTableWidget *pointTable, QPointF **plist, int rows);
 
 void error_msg(QLabel *msgbox, int rc);
 
-void error_valmsg(QLabel *msgbox, int no, bool coord);
+void error_valmsg(QLabel *msgbox, bool coord);
 
 void solution_msg(QLabel *msgbox, Triangle *tr, QVector2D *h, QPointF *hvertex);
 
