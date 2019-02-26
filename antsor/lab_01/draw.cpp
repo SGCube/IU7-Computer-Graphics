@@ -88,8 +88,6 @@ void drawPoints(QGraphicsScene *scene, QPointF *plist, int n, float k,
 
 void draw(QGraphicsScene *scene, Triangle *tr, QPointF *plist, int n)
 {
-	scene->clear();
-	
 	// определение крайних координат "картины"
 	QPoint ltcorn = tr->lt_corner();
 	QPoint rbcorn = tr->rb_corner();

@@ -24,6 +24,8 @@ private slots:
 
     void on_drawButton_released();
 
+	void on_clearButton_released();
+	
 private:
     Ui::MainWindow *ui;
 };

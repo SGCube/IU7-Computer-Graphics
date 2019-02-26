@@ -40,6 +40,7 @@ void MainWindow::on_delButton_released()
 
 void MainWindow::on_drawButton_released()
 {
+	ui->graphicsView->scene()->clear();
     int rows = ui->pointTable->rowCount();	// количество точек (строк таблицы)
 	QPointF *plist = NULL;					// список точек
 	
@@ -82,4 +83,9 @@ void MainWindow::on_drawButton_released()
 	}
 	
 	delete [] plist;
+}
+
+void MainWindow::on_clearButton_released()
+{
+    ui->graphicsView->scene()->clear();
 }
