@@ -1,7 +1,7 @@
 #include <QTableWidget>
 #include <QLabel>
-#include "triangle.h"
 
+#include "triangle.h"
 #include "mainwindow.h"
 
 #ifndef SOLVE_H

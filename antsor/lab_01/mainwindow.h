@@ -14,9 +14,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-	
-protected slots:
-	virtual void mousePressEvent(QMouseEvent *event);	
 
 private slots:
     void on_addButton_released();

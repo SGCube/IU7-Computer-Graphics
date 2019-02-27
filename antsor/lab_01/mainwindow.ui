@@ -75,7 +75,7 @@
      <number>72</number>
     </attribute>
     <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
+     <bool>true</bool>
     </attribute>
     <attribute name="verticalHeaderDefaultSectionSize">
      <number>24</number>

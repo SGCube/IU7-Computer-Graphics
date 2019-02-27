@@ -91,7 +91,7 @@ void MainWindow::on_editButton_pressed()
 	xstr = QString::number(x);
 	ystr = QString::number(y);
 	
-	int row = ui->pointTable->rowCount() - 1;
+	int row = ui->pointTable->currentRow();
 	
 	QTableWidgetItem *xitem = new QTableWidgetItem(xstr);
 	QTableWidgetItem *yitem = new QTableWidgetItem(ystr);
@@ -181,18 +181,4 @@ void MainWindow::on_pointTable_cellPressed(int row)
 	
 	ui->editButton->setDisabled(false);
 	ui->delButton->setDisabled(false);
-}
-
-void MainWindow::mousePressEvent(QMouseEvent *event)
-{
-	if (ui->pointTable->itemAt(event->pos()) == NULL)
-	{
-		ui->xEdit->clear();
-		ui->yEdit->clear();
-		
-		ui->pointTable->clearFocus();
-		ui->addButton->setDisabled(false);
-		ui->editButton->setDisabled(true);
-		ui->delButton->setDisabled(true);
-	}
 }

@@ -1,3 +1,6 @@
+#include <list>
+#include <iterator>
+
 #include "solve.h"
 
 int get_plist(QTableWidget *pointTable, QPointF **plist, int rows)
