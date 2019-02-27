@@ -1,4 +1,5 @@
 #include <QTableWidget>
+#include <QMouseEvent>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -15,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 	QGraphicsScene *scene = new QGraphicsScene(this);
 	ui->graphicsView->setScene(scene);
+	
+	ui->editButton->setDisabled(true);
+	ui->delButton->setDisabled(true);
+	ui->delAllButton->setDisabled(true);
 }
 
 MainWindow::~MainWindow()
@@ -50,8 +55,44 @@ void MainWindow::on_addButton_released()
 	ui->xEdit->clear();
 	ui->yEdit->clear();
 	
-    ui->pointTable->insertRow(ui->pointTable->rowCount());
+	ui->pointTable->insertRow(ui->pointTable->rowCount());
 	int row = ui->pointTable->rowCount() - 1;
+	
+	QTableWidgetItem *xitem = new QTableWidgetItem(xstr);
+	QTableWidgetItem *yitem = new QTableWidgetItem(ystr);
+	ui->pointTable->setItem(row, 0, xitem);
+	ui->pointTable->setItem(row, 1, yitem);
+	
+	ui->delAllButton->setDisabled(false);
+}
+
+void MainWindow::on_editButton_pressed()
+{
+	// флаг корректности данных
+	bool correct = true;
+	// строки для хранения содержимого полей ввода
+    QString xstr = ui->xEdit->text();
+	QString ystr = ui->yEdit->text();
+	// координаты точки
+	float x, y;
+	x = xstr.toFloat(&correct);
+	if (!correct)
+	{
+		error_valmsg(ui->msgFrame, 0);
+		return;
+	}
+	y = ystr.toFloat(&correct);
+	if (!correct)
+	{
+		error_valmsg(ui->msgFrame, 1);
+		return;
+	}
+	
+	xstr = QString::number(x);
+	ystr = QString::number(y);
+	
+	int row = ui->pointTable->rowCount() - 1;
+	
 	QTableWidgetItem *xitem = new QTableWidgetItem(xstr);
 	QTableWidgetItem *yitem = new QTableWidgetItem(ystr);
 	ui->pointTable->setItem(row, 0, xitem);
@@ -60,13 +101,29 @@ void MainWindow::on_addButton_released()
 
 void MainWindow::on_delAllButton_released()
 {
-    for (int k = ui->pointTable->rowCount(); k > 0; k--)
-        ui->pointTable->removeRow(ui->pointTable->rowCount() - 1);
+	while (ui->pointTable->rowCount() > 0)
+		ui->pointTable->removeRow(ui->pointTable->rowCount() - 1);
+	
+	ui->xEdit->clear();
+	ui->yEdit->clear();
+	
+	ui->editButton->setDisabled(true);
+	ui->delButton->setDisabled(true);
+	ui->delAllButton->setDisabled(true);
 }
 
 void MainWindow::on_delButton_released()
 {
     ui->pointTable->removeRow(ui->pointTable->currentRow());
+	ui->pointTable->clearFocus();
+	
+	ui->xEdit->clear();
+	ui->yEdit->clear();
+	
+	ui->editButton->setDisabled(true);
+	ui->delButton->setDisabled(true);
+	if (ui->pointTable->rowCount() == 0)
+		ui->delAllButton->setDisabled(true);
 }
 
 void MainWindow::on_drawButton_released()
@@ -112,4 +169,30 @@ void MainWindow::on_drawButton_released()
 void MainWindow::on_clearButton_released()
 {
     ui->graphicsView->scene()->clear();
+}
+
+void MainWindow::on_pointTable_cellPressed(int row)
+{
+	ui->xEdit->clear();
+	ui->yEdit->clear();
+	
+	ui->xEdit->setText(ui->pointTable->item(row, 0)->text());
+	ui->yEdit->setText(ui->pointTable->item(row, 1)->text());
+	
+	ui->editButton->setDisabled(false);
+	ui->delButton->setDisabled(false);
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+	if (ui->pointTable->itemAt(event->pos()) == NULL)
+	{
+		ui->xEdit->clear();
+		ui->yEdit->clear();
+		
+		ui->pointTable->clearFocus();
+		ui->addButton->setDisabled(false);
+		ui->editButton->setDisabled(true);
+		ui->delButton->setDisabled(true);
+	}
 }

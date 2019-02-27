@@ -14,6 +14,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+	
+protected slots:
+	virtual void mousePressEvent(QMouseEvent *event);	
 
 private slots:
     void on_addButton_released();
@@ -25,6 +28,10 @@ private slots:
     void on_drawButton_released();
 
 	void on_clearButton_released();
+	
+	void on_pointTable_cellPressed(int row);
+	
+	void on_editButton_pressed();
 	
 private:
     Ui::MainWindow *ui;

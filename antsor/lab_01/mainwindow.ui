@@ -20,8 +20,11 @@
       <x>630</x>
       <y>10</y>
       <width>160</width>
-      <height>304</height>
+      <height>344</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::StrongFocus</enum>
     </property>
     <property name="verticalScrollBarPolicy">
      <enum>Qt::ScrollBarAsNeeded</enum>
@@ -29,11 +32,17 @@
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="selectionMode">
-     <enum>QAbstractItemView::NoSelection</enum>
+     <enum>QAbstractItemView::SingleSelection</enum>
     </property>
     <property name="selectionBehavior">
      <enum>QAbstractItemView::SelectRows</enum>
+    </property>
+    <property name="textElideMode">
+     <enum>Qt::ElideNone</enum>
     </property>
     <property name="showGrid">
      <bool>true</bool>
@@ -66,7 +75,7 @@
      <number>72</number>
     </attribute>
     <attribute name="verticalHeaderVisible">
-     <bool>true</bool>
+     <bool>false</bool>
     </attribute>
     <attribute name="verticalHeaderDefaultSectionSize">
      <number>24</number>
@@ -89,7 +98,7 @@
     <property name="geometry">
      <rect>
       <x>630</x>
-      <y>375</y>
+      <y>410</y>
       <width>160</width>
       <height>24</height>
      </rect>
@@ -102,7 +111,7 @@
     <property name="geometry">
      <rect>
       <x>630</x>
-      <y>405</y>
+      <y>470</y>
       <width>160</width>
       <height>24</height>
      </rect>
@@ -145,7 +154,7 @@
     <property name="geometry">
      <rect>
       <x>630</x>
-      <y>435</y>
+      <y>500</y>
       <width>160</width>
       <height>24</height>
      </rect>
@@ -158,7 +167,7 @@
     <property name="geometry">
      <rect>
       <x>630</x>
-      <y>465</y>
+      <y>530</y>
       <width>160</width>
       <height>24</height>
      </rect>
@@ -172,7 +181,7 @@
      <rect>
       <x>10</x>
       <y>530</y>
-      <width>780</width>
+      <width>611</width>
       <height>64</height>
      </rect>
     </property>
@@ -199,7 +208,7 @@
     <property name="geometry">
      <rect>
       <x>630</x>
-      <y>495</y>
+      <y>560</y>
       <width>160</width>
       <height>24</height>
      </rect>
@@ -251,7 +260,7 @@
     <property name="geometry">
      <rect>
       <x>630</x>
-      <y>345</y>
+      <y>380</y>
       <width>72</width>
       <height>24</height>
      </rect>
@@ -261,7 +270,7 @@
     <property name="geometry">
      <rect>
       <x>718</x>
-      <y>345</y>
+      <y>380</y>
       <width>72</width>
       <height>24</height>
      </rect>
@@ -271,7 +280,7 @@
     <property name="geometry">
      <rect>
       <x>658</x>
-      <y>320</y>
+      <y>360</y>
       <width>16</width>
       <height>16</height>
      </rect>
@@ -287,7 +296,7 @@
     <property name="geometry">
      <rect>
       <x>746</x>
-      <y>320</y>
+      <y>360</y>
       <width>16</width>
       <height>16</height>
      </rect>
@@ -297,6 +306,19 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="editButton">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>440</y>
+      <width>160</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Изменить точку</string>
     </property>
    </widget>
   </widget>

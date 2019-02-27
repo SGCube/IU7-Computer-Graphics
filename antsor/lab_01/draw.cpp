@@ -3,15 +3,15 @@
 #include <cmath>
 
 void drawTriangle(QGraphicsScene *scene, Triangle *tr, float k,
-				  QPoint center)
+				  QPointF center)
 {
 	// координаты концов отрезков
 	int x1, y1, x2, y2;
 	// центр масштабирования
-	QPoint pm = QPoint(VIEW_W / 2, - VIEW_H / 2);
+	QPointF pm = QPointF(VIEW_W / 2, - VIEW_H / 2);
 	// определение смещения центра
-	int dx = pm.x() - center.x();
-	int dy = pm.y() - center.y();
+	float dx = pm.x() - center.x();
+	float dy = pm.y() - center.y();
 	
 	// рисование треугольника
 	QPen pen = QPen(Qt::red, 1, Qt::SolidLine, Qt::FlatCap);
@@ -41,7 +41,7 @@ void drawTriangle(QGraphicsScene *scene, Triangle *tr, float k,
 }
 
 void drawPoints(QGraphicsScene *scene, QPointF *plist, int n, float k,
-				QPoint center)
+				QPointF center)
 {
 	// параметры рисования
 	QPen pen = QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap);
@@ -49,10 +49,10 @@ void drawPoints(QGraphicsScene *scene, QPointF *plist, int n, float k,
 	QFont font = QFont("sans", 12);
 	
 	// центр масштабирования
-	QPoint pm = QPoint(VIEW_W / 2, - VIEW_H / 2);
+	QPointF pm = QPointF(VIEW_W / 2, - VIEW_H / 2);
 	// определение смещения центра
-	int dx = pm.x() - center.x();
-	int dy = pm.y() - center.y();
+	float dx = pm.x() - center.x();
+	float dy = pm.y() - center.y();
 	
 	// переменные для меток
 	QString str;
@@ -100,8 +100,7 @@ void draw(QGraphicsScene *scene, Triangle *tr, QPointF *plist, int n)
 	float kdraw = (kw < kh) ? kw : kh;
 	
 	// центр "картины"
-	QPoint center = QPoint(round(ltcorn.x() + ww / 2),
-						   round(ltcorn.y() + wh / 2));
+	QPointF center = QPointF(ltcorn.x() + ww / 2, ltcorn.y() + wh / 2);
 	
 	drawTriangle(scene, tr, kdraw, center);
 	drawPoints(scene, plist, n, kdraw, center);

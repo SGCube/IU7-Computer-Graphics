@@ -13,10 +13,10 @@
 #define VIEW_H 500
 	
 void drawTriangle(QGraphicsScene *scene, Triangle *tr, float kdraw,
-				  QPoint center);
+				  QPointF center);
 
 void drawPoints(QGraphicsScene *scene, QPointF *plist, int n, float kdraw,
-				QPoint center);
+				QPointF center);
 
 void draw(QGraphicsScene *scene, Triangle *tr, QPointF *plist, int n);
 
