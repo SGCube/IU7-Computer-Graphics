@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "check.h"
+#include "list.h"
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QDebug>
@@ -7,8 +9,13 @@
 #include <QGraphicsEllipseItem>
 #include <QGraphicsRectItem>
 #include <QBrush>
-#include <QtCore/qmath.h>
+#include <QtCore>
+#include <qmath.h>
+#include <QGraphicsTextItem>
 
+point *head = NULL;
+tri *head_res = NULL;
+int amount = 0;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -167,19 +174,17 @@ void MainWindow::on_change_clicked()
         return;
     }
     head = change_element(head, a_int, new_x, new_y);
+    change_table(a_int, new_x, new_y);
     ui->lineEditX->clear();
     ui->lineEditY->clear();
     ui->lineEdit_change->clear();
 }
 
-point *MainWindow::change_element(point *head, int a_int, QString new_x, QString new_y)
+
+void MainWindow::change_table(int a_int, QString new_x, QString new_y)
 {
-    float xx = new_x.toFloat();
-    float yy = new_y.toFloat();
     if (a_int == 1)
     {
-        head->x = xx;
-        head->y = yy;
         ui->table->removeRow(0);
         ui->table->insertRow(0);
         QTableWidgetItem *item = new QTableWidgetItem();
@@ -188,13 +193,8 @@ point *MainWindow::change_element(point *head, int a_int, QString new_x, QString
         QTableWidgetItem *item2 = new QTableWidgetItem();
         item2->setText(new_y);
         ui->table->setItem(0,1,item2);
-        return head;
+        return;
     }
-    point *t = head;
-    for (int i = 0; i < a_int - 1; i++)
-        t = t->next;
-    t->x = xx;
-    t->y = yy;
     ui->table->removeRow(a_int - 1);
     ui->table->insertRow(a_int - 1);
     QTableWidgetItem *item = new QTableWidgetItem();
@@ -203,7 +203,7 @@ point *MainWindow::change_element(point *head, int a_int, QString new_x, QString
     QTableWidgetItem *item2 = new QTableWidgetItem();
     item2->setText(new_y);
     ui->table->setItem(a_int - 1,1,item2);
-    return head;
+    return;
 }
 
 void MainWindow::on_delet_clicked()
@@ -369,16 +369,41 @@ void MainWindow::draw_result(tri *head_res)
     blueBrush.setWidth(3);
 
     tri *res = head_res;
-    int i = 1;
+
+    float xmin;
+    float xmax;
+    float ymin;
+    float ymax;
+    if (res != NULL)
+    {
+        xmin = qMin(res->x1, qMin(res->x2, res->x3));
+        xmax = qMax(res->x1, qMax(res->x2, res->x3));
+        ymin = qMin(res->x1, qMin(res->x2, res->x3));
+        ymax = qMax(res->x1, qMax(res->x2, res->x3));
+
+    }
+    while(res != NULL)
+    {
+        qDebug() << res->x1 << res->y1 << res->x2 << res->y2 << res->x3 << res->y3;
+        float xmin_cur = qMin(res->x1, qMin(res->x2, res->x3));
+        if (xmin_cur < xmin)
+            xmin = xmin_cur;
+        float xmax_cur = qMax(res->x1, qMax(res->x2, res->x3));
+        if (xmax_cur > xmax)
+            xmax = xmax_cur;
+        float ymin_cur = qMin(res->x1, qMin(res->x2, res->x3));
+        if (ymin_cur < ymin)
+            ymin = ymin_cur;
+        float ymax_cur = qMax(res->x1, qMax(res->x2, res->x3));
+        if (ymax_cur > ymax)
+            ymax = ymax_cur;
+        res = res->next;
+    }
+    res = head_res;
     while (res != NULL)
     {
-        float w = qMax(res->x1, qMax(res->x2, res->x3)) -
-                qMin(res->x1, qMin(res->x2, res->x3));
-        float xmin = qMin(res->x1, qMin(res->x2,head_res->x3));
-
-        float h = qMax(res->y1, qMax(res->y2, res->y3)) -
-                qMin(res->y1, qMin(res->y2, res->y3));
-        float ymin = qMin(res->x1, qMin(res->x2, res->x3));
+        float w = xmax - xmin;
+        float h = ymax - ymin;
 
         float k = qMin(800 / w, 500 / h);
 
@@ -394,6 +419,8 @@ void MainWindow::draw_result(tri *head_res)
         scene->addLine(x1 - k*x, -y1 - k*y, x3 - k*x, -y3 - k*y, blackpen);
         scene->addLine(x3 - k*x, -y3 - k*y, x2 - k*x, -y2 - k*y, blackpen);
 
+
+        /*
         float a = sqrt(qPow(res->x2 - res->x1, 2) + qPow(res->y2 - res->y1, 2));
         float b = sqrt(qPow(res->x3 - res->x1, 2) + qPow(res->y3 - res->y1, 2));
         float c = sqrt(qPow(res->x3 - res->x2, 2) + qPow(res->y3 - res->y2, 2));
@@ -421,8 +448,8 @@ void MainWindow::draw_result(tri *head_res)
 
         float xx3 = qFabs(res->x2 - res->x3);
         float yy3 = qFabs(res->y2 - res->y3);
-        float eb = c * a / (b + a);
-        float kk3 = sqrt(qPow(eb, 2)/(qPow(xx3, 2) + qPow(yy3, 2)));
+        float ae = c * b / (b + a);
+        float kk3 = sqrt(qPow(ae, 2)/(qPow(xx3, 2) + qPow(yy3, 2)));
         float x03 = kk3 * xx3;
         float y03 = kk3 * yy3;
         float x_b_3 = k * x03 + res->x2 + (1 - k) * 400;
@@ -430,10 +457,10 @@ void MainWindow::draw_result(tri *head_res)
         scene->addLine(x_b_3 - k*x, -y_b_3 + res->y2 - k*y, x1 - k*x, -y1 - k*y, blueBrush);
 
 
-        /*
         scene->addLine(res->x1, -res->y1, res->x2, -res->y2, blackpen);
         scene->addLine(res->x1, -res->y1, res->x3, -res->y3, blackpen);
         scene->addLine(res->x3, -res->y3, res->x2, -res->y2, blackpen);
+
 
         float xx3 = qFabs(res->x2 - res->x3);
         float yy3 = qFabs(res->y2 - res->y3);

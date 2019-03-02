@@ -1,6 +1,6 @@
-#include "mainwindow.h"
+#include "check.h"
 
-int MainWindow::check_point(QString a)
+int check_point(QString a)
 {
     if (a[0] != '-' && (a[0] > '9' || a[0] < '0'))
         return -1;
@@ -20,7 +20,7 @@ int MainWindow::check_point(QString a)
     return 0;
 }
 
-int MainWindow::check_tr(float x1, float y1, float x2, float y2, float x3, float y3)
+int check_tr(float x1, float y1, float x2, float y2, float x3, float y3)
 {
     if (x1 == x2 && x1 == x3 && x2 == x3 &&
             y1 == y2 && y1 == y3 && y2 == y3)

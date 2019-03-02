@@ -31,7 +31,9 @@ SOURCES += \
     check.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    check.h \
+    list.h
 
 FORMS += \
         mainwindow.ui

@@ -41,24 +41,16 @@ public:
 
 private slots:
     void on_enter_clicked();
-    int check_point(QString );
     void insert_into_table(QString x, QString y);
-    point *add_to_list(point *head, float a, float b);
     void on_change_clicked();
-    void clear_list();
-    void clear_list_res();
-    point *change_element(point *head, int a_int, QString new_x, QString new_y);
-    point *delete_from_list(point *head, int d);
+    void change_table(int a_int, QString new_x, QString new_y);
     void on_delet_clicked();
 
     void on_delete_all_clicked();
 
     void on_show_clicked();
     void find_result();
-    int check_tr(float x1, float y1, float x2, float y2, float x3, float y3);
     float diff(float x1, float y1, float x2, float y2, float x3, float y3);
-    tri *insert_in_res(tri *head_res, float x1, float y1,
-                                     float x2, float y2, float x3, float y3);
     void draw_result(tri *head_res);
 
 private:
@@ -66,9 +58,7 @@ private:
     QGraphicsScene *scene;
     QGraphicsEllipseItem *ellipse;
     QGraphicsRectItem *rectangle;
-    point *head = NULL;
-    tri *head_res = NULL;
-    int amount = 0;
+    QGraphicsTextItem *l1;
 };
 
 #endif // MAINWINDOW_H

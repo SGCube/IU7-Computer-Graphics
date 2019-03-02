@@ -1,6 +1,6 @@
-#include "mainwindow.h"
+#include "list.h"
 
-point *MainWindow::add_to_list(point *head, float a, float b)
+point *add_to_list(point *head, float a, float b)
 {
     point *node = new point;
     if (node == NULL)
@@ -17,7 +17,7 @@ point *MainWindow::add_to_list(point *head, float a, float b)
     return head;
 }
 
-void MainWindow::clear_list()
+void clear_list()
 {
     point *t = head;
     int len = 0;
@@ -55,23 +55,9 @@ void MainWindow::clear_list()
     }
     free(head_res);
     head_res = NULL;
-    /*
-    while(head)
-    {
-        point *n = head->next;
-        delete head;
-        head = n;
-    }
-    while(head_res)
-    {
-        tri *a = head_res->next;
-        delete head_res;
-        head_res = a;
-    }
-    */
 }
 
-point *MainWindow::delete_from_list(point *head, int d)
+point *delete_from_list(point *head, int d)
 {
     if (d == 1)
     {
@@ -102,7 +88,7 @@ point *MainWindow::delete_from_list(point *head, int d)
     return head;
 }
 
-tri *MainWindow::insert_in_res(tri *head_res, float x1, float y1,
+tri *insert_in_res(tri *head_res, float x1, float y1,
                                  float x2, float y2, float x3, float y3)
 {
     tri *node = new tri;
@@ -124,7 +110,7 @@ tri *MainWindow::insert_in_res(tri *head_res, float x1, float y1,
     return head_res;
 }
 
-void MainWindow::clear_list_res()
+void clear_list_res()
 {
     tri *n = head_res;
     int len_2 = 0;
@@ -144,4 +130,22 @@ void MainWindow::clear_list_res()
     }
     free(head_res);
     head_res = NULL;
+}
+
+point *change_element(point *head, int a_int, QString new_x, QString new_y)
+{
+    float xx = new_x.toFloat();
+    float yy = new_y.toFloat();
+    if (a_int == 1)
+    {
+        head->x = xx;
+        head->y = yy;
+        return head;
+    }
+    point *t = head;
+    for (int i = 0; i < a_int - 1; i++)
+        t = t->next;
+    t->x = xx;
+    t->y = yy;
+    return head;
 }
