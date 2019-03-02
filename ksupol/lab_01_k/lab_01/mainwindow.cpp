@@ -420,7 +420,6 @@ void MainWindow::draw_result(tri *head_res)
         scene->addLine(x3 - k*x, -y3 - k*y, x2 - k*x, -y2 - k*y, blackpen);
 
 
-        /*
         float a = sqrt(qPow(res->x2 - res->x1, 2) + qPow(res->y2 - res->y1, 2));
         float b = sqrt(qPow(res->x3 - res->x1, 2) + qPow(res->y3 - res->y1, 2));
         float c = sqrt(qPow(res->x3 - res->x2, 2) + qPow(res->y3 - res->y2, 2));
@@ -446,6 +445,7 @@ void MainWindow::draw_result(tri *head_res)
         float y_b_2 = k * y02 + res->y1 + (1 - k) * 250;
         scene->addLine(x_b_2 - k*x, -y_b_2 + res->y1 - k*y, x2 - k*x, -y2 - k*y, blueBrush);
 
+        /*
         float xx3 = qFabs(res->x2 - res->x3);
         float yy3 = qFabs(res->y2 - res->y3);
         float ae = c * b / (b + a);
