@@ -12,7 +12,7 @@ class Line
 public:
 	Line();
 	Line(float a, float b, float c);
-	Line(Point p1, Point p2);
+	Line(Point *p1, Point *p2);
 	Line(LineSeg seg);
 	
 	float y(float x, bool *nz);

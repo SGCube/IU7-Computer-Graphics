@@ -14,11 +14,11 @@ Line::Line(float a, float b, float c)
 	kc = c;
 }
 
-Line::Line(Point p1, Point p2)
+Line::Line(Point *p1, Point *p2)
 {
-	ka = p1.y() - p2.y();
-	kb = p2.x() - p1.x();
-	kc = -(ka * p1.x() + kb * p1.y());
+	ka = p1->y() - p2->y();
+	kb = p2->x() - p1->x();
+	kc = -(ka * p1->x() + kb * p1->y());
 }
 
 Line::Line(LineSeg seg)
@@ -28,24 +28,24 @@ Line::Line(LineSeg seg)
 
 float Line::y(float x, bool *nz)
 {
-	if (b != 0)
+	if (kb != 0)
 	{
 		*nz = true;
 		return 0;
 	}
 	*nz = false;
-	return -(c + a * x) / b;
+	return -(kc + ka * x) / kb;
 }
 
 float Line::x(float y, bool *nz)
 {
-	if (a != 0)
+	if (ka != 0)
 	{
 		*nz = true;
 		return 0;
 	}
 	*nz = false;
-	return -(c + b * y) / a;
+	return -(kc + kb * y) / ka;
 }
 
 float Line::a()

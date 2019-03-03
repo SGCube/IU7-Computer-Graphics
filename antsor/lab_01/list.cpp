@@ -3,7 +3,7 @@
 list_t *create_node(void *data)
 {
 	list_t *node = new list_t;
-	if (!*node)
+	if (!node)
 		return nullptr;
 	node->data = data;
 	node->next = nullptr;
@@ -41,7 +41,7 @@ list_t *list_push_back(list_t **head, void *data)
 	return node;
 }
 
-void list_*pop_back(list_t **head)
+void *pop_back(list_t **head)
 {
 	if (!head || !*head)
 		return nullptr;

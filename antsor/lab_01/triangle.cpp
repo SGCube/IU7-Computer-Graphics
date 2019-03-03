@@ -38,7 +38,7 @@ Point *Triangle::point(int i)
 {
 	if (i < 0 || i > 2)
 		return nullptr;
-	return points[i];
+	return &(points[i]);
 }
 
 void Triangle::setMinH()
@@ -48,7 +48,7 @@ void Triangle::setMinH()
 	Line hline = Line(), edgeline = Line();
 	// отрезки
 	// h - текущая высота, hmin - минимальная высота
-	LineSeg *h = LineSeg(), *hmin = nullptr;
+	LineSeg *h = nullptr, *hmin = nullptr;
 	// hp - точка отрезка текущей высоты на стороне
 	Point hp;
 	
@@ -60,10 +60,12 @@ void Triangle::setMinH()
 					 edgeline.b() * point(i)->x());
         intersect(hline, edgeline, &hp);
 		
-		h->LineSeg(point(i), hp);
+		h = new LineSeg(point(i), &hp);
 		
         if (!hmin || h->length() < hmin->length())
 			hmin = h;
+		else
+			delete h;
 	}
 	
     min_height = *hmin;
@@ -74,7 +76,7 @@ LineSeg *Triangle::getMinHeight()
     return &min_height;
 }
 
-bool isTriangle(Point p1, Point p2, Point p3)
+bool isTriangle(Point *p1, Point *p2, Point *p3)
 {
 	LineSeg a = LineSeg(p1, p2);
 	LineSeg b = LineSeg(p1, p3);

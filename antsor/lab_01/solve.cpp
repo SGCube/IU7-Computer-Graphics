@@ -86,7 +86,7 @@ void error_valmsg(QLabel *msgbox, bool coord)
 list_t *solve(Point *plist, int n)
 {
 	if (!plist || n < 3)
-		return false;
+		return nullptr;
 	
 	// список решений
 	list_t *trlist = nullptr;

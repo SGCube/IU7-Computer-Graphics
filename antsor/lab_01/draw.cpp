@@ -14,7 +14,7 @@ QPoint lt_corner(list_t *res)
 	
 	while (cur)
 	{
-		tr = cur->data;
+		tr = (Triangle *) cur->data;
 		xm_cur = fmin(fmin(tr->point(0)->x(), tr->point(0)->x()),
 					  tr->point(2)->x());
 		ym_cur = fmin(fmin(tr->point(0)->y(), tr->point(1)->y()),
@@ -55,7 +55,7 @@ QPoint rb_corner(list_t *res)
 	
 	while (cur)
 	{
-		tr = cur->data;
+		tr = (Triangle *) cur->data;
 		xm_cur = fmax(fmax(tr->point(0)->x(), tr->point(0)->x()),
 					  tr->point(2)->x());
 		ym_cur = fmax(fmax(tr->point(0)->y(), tr->point(1)->y()),
@@ -180,7 +180,7 @@ void draw(QGraphicsScene *scene, list_t *res, Point *plist, int n)
 	list_t *cur = res;
 	while (cur)
 	{
-		drawTriangle(scene, cur->data, kdraw, center);
+		drawTriangle(scene, (Triangle *)(cur->data), kdraw, center);
 		cur = cur->next;
 	}
 	drawPoints(scene, plist, n, kdraw, center);
