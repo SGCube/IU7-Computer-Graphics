@@ -4,39 +4,39 @@
 
 Point::Point()
 {
-	x = 0;
-	y = 0;
+	xcoord = 0;
+	ycoord = 0;
 }
 
-Point::Point(float px, float py)
+Point::Point(float x, float y)
 {
-	x = px;
-	y = py;
+	xcoord = x;
+	ycoord = y;
 }
 
-float Point::getX()
+float Point::x()
 {
-	return x;
+	return xcoord;
 }
 
-float Point::getY()
+float Point::y()
 {
-	return y;
+	return ycoord;
 }
 
-void Point::setX(float px)
+void Point::setX(float x)
 {
-	x = px;
+	xcoord = x;
 }
 
 void Point::setY(float py)
 {
-	y = py;
+	ycoord = y;
 }
 
 float dist(Point p1, Point p2)
 {
-	float dx = p2.getX() - p1.getX();
-	float dy = p2.getY() - p1.getY();
+	float dx = p2.x() - p1.x();
+	float dy = p2.y() - p1.y();
 	return sqrt(dx * dx + dy * dy);
 }

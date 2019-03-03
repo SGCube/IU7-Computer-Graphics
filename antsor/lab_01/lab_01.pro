@@ -31,7 +31,8 @@ SOURCES += \
     solve.cpp \
     draw.cpp \
     list.cpp \
-    point.cpp
+    point.cpp \
+    lineseg.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -41,7 +42,8 @@ HEADERS += \
     draw.h \
     error.h \
     list.h \
-    point.h
+    point.h \
+    lineseg.h
 
 FORMS += \
         mainwindow.ui

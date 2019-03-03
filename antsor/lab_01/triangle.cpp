@@ -4,68 +4,74 @@
 
 Triangle::Triangle()
 {
-    points[0] = QPointF(0, 0);
-    points[1] = QPointF(0, 0);
-    points[2] = QPointF(0, 0);
+    points[0] = Point(0, 0);
+    points[1] = Point(0, 0);
+    points[2] = Point(0, 0);
 }
 
 Triangle::Triangle(float x1, float y1, float x2, float y2, float x3, float y3)
 {
-    points[0] = QPointF(x1, y1);
-    points[1] = QPointF(x2, y2);
-    points[2] = QPointF(x3, y3);
+    points[0] = Point(x1, y1);
+    points[1] = Point(x2, y2);
+    points[2] = Point(x3, y3);
 }
 
-Triangle::Triangle(QPointF p1, QPointF p2, QPointF p3)
+Triangle::Triangle(Point p1, Point p2, Point p3)
 {
     points[0] = p1;
     points[1] = p2;
     points[2] = p3;
 }
 
-QVector2D Triangle::getMinHeight(QPointF *hvertex)
+Point *Triangle::point(int i)
 {
-	// h - длина текущей высоты, hmin - длина минимальной высоты
-	float h = -1, hmin = -1;
-	// hline - высота, edge - сторона
-	Line hline, edge;	
+	if (i < 0 || i > 2)
+		return nullptr;
+	return points[i];
+}
+
+void Triangle::setMinH()
+{
+	// прямые
+	// hline - высоты, edgeline - стороны
+	Line hline = Line(), edgeline = Line();
+	// отрезки
+	// h - текущая высота, hmin - минимальная высота
+	LineSeg *h = LineSeg(), *hmin = nullptr;
 	// hp - точка отрезка текущей высоты на стороне
-	// hpmin - точка отрезка минимальной высоты на стороне
-	QPointF hp, hpmin;
+	Point hp;
 	
     for (int i = 0; i < 3; i++)
     {
-		edge = Line(QPointF(points[(i + 1) % 3]),
-				QPointF(points[(i + 2) % 3]));
-		hline = Line(edge.b, -edge.a,
-					 edge.a * points[i].y() - edge.b * points[i].x());
-        intersect(hline, edge, &hp);
+		edgeline = Line(point((i + 1) % 3), point((i + 2) % 3));
+		hline = Line(edgeline.b(), -edgeline.a(),
+					 edgeline.a() * point(i)->y() -
+					 edgeline.b() * point(i)->x());
+        intersect(hline, edgeline, &hp);
 		
-        h = sqrt(pow(hp.x() - points[i].x(), 2) + 
-				 pow(hp.y() - points[i].y(), 2));
+		h->LineSeg(point(i), hp);
 		
-        if (hmin == -1 || h < hmin)
-        {
-            hpmin = hp;
+        if (!hmin || h->length() < hmin->length())
 			hmin = h;
-            *hvertex = points[i];
-        }
 	}
 	
-    return QVector2D(hpmin.x() - hvertex->x(),
-					 hpmin.y() - hvertex->y());
+    min_height = *hmin;
+}
+
+LineSeg *Triangle::getMinHeight()
+{
+    return &min_height;
 }
 
 QPoint Triangle::lt_corner()
 {
-	float min_x = fmin(fmin(points[0].x(), points[1].x()), points[2].x());
-	float min_y = fmin(fmin(points[0].y(), points[1].y()), points[2].y());
+	float min_x = fmin(fmin(point(0)->x(), point(0)->x()), point(2)->x());
+	float min_y = fmin(fmin(point(0)->y(), point(1)->y()), point(2)->y());
 	
-	QPointF hv;
-	QVector2D h = getMinHeight(&hv);
+	LineSeg *h = getMinHeight(&hv);
 	
-	min_x = fmin(hv.x() + h.x(), min_x);
-	min_y = fmin(hv.y() + h.y(), min_y);
+	min_x = fmin(h->p2()->x(), min_x);
+	min_y = fmin(h->p2()->y(), min_y);
 	
 	int cx = (int) floor(min_x);
 	int cy = (int) floor(min_y);
@@ -75,14 +81,13 @@ QPoint Triangle::lt_corner()
 
 QPoint Triangle::rb_corner()
 {
-	float max_x = fmax(fmax(points[0].x(), points[1].x()), points[2].x());
-	float max_y = fmax(fmax(points[0].y(), points[1].y()), points[2].y());
+	float max_x = fmax(fmax(point(0)->x(), point(0)->x()), point(2)->x());
+	float max_y = fmax(fmax(point(0)->y(), point(1)->y()), point(2)->y());
 	
-	QPointF hv;
-	QVector2D h = getMinHeight(&hv);
+	LineSeg *h = getMinHeight(&hv);
 	
-	max_x = fmax(hv.x() + h.x(), max_x);
-	max_y = fmax(hv.y() + h.y(), max_y);
+	max_x = fmax(h->p2()->x(), max_x);
+	max_y = fmax(h->p2()->y(), max_y);
 	
 	int cx = (int) ceil(max_x);
 	int cy = (int) ceil(max_y);
@@ -90,12 +95,14 @@ QPoint Triangle::rb_corner()
 	return QPoint(cx, cy);
 }
 
-bool isTriangle(QPointF p1, QPointF p2, QPointF p3)
+bool isTriangle(Point p1, Point p2, Point p3)
 {
-	QVector2D a = QVector2D(p2.x() - p1.x(), p2.y() - p1.y());
-	QVector2D b = QVector2D(p3.x() - p1.x(), p3.y() - p1.y());
-	QVector2D c = QVector2D(p3.x() - p2.x(), p3.y() - p2.y());
+	LineSeg a = LineSeg(p2.x() - p1.x(), p2.y() - p1.y());
+	LineSeg b = LineSeg(p3.x() - p1.x(), p3.y() - p1.y());
+	LineSeg c = LineSeg(p3.x() - p2.x(), p3.y() - p2.y());
 	return (a.length() + b.length() > c.length() &&
             a.length() + c.length() > b.length() &&
             b.length() + c.length() > a.length());
 }
+
+

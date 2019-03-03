@@ -6,16 +6,16 @@ class Point
 {
 public:
 	Point();
-	Point(float px, float py);
+	Point(float x, float y);
 	
-	float getX();
-	float getY();
-	void setX(float px);
-	void setY(float py);
+	float x();
+	float y();
+	void setX(float x);
+	void setY(float y);
 	
 private:
-	float x;
-	float y;
+	float xcoord;
+	float ycoord;
 };
 
 float dist(Point p1, Point p2);
