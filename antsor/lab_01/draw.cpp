@@ -171,8 +171,8 @@ void drawPoints(QGraphicsScene *scene, QPointF *plist, int n, float k,
 void draw(QGraphicsScene *scene, list_t *res, Point *plist, int n)
 {
 	// определение крайних координат "картины"
-	QPoint ltcorn = tr->lt_corner();
-	QPoint rbcorn = tr->rb_corner();
+	QPoint ltcorn = lt_corner(res);
+	QPoint rbcorn = rb_corner(res);
 	
 	// определение коэффициента масштабирования
 	float ww = rbcorn.x() - ltcorn.x();
@@ -184,6 +184,11 @@ void draw(QGraphicsScene *scene, list_t *res, Point *plist, int n)
 	// центр "картины"
 	QPointF center = QPointF(ltcorn.x() + ww / 2, ltcorn.y() + wh / 2);
 	
-	drawTriangle(scene, tr, kdraw, center);
+	list_t *cur = res;
+	while (cur)
+	{
+		drawTriangle(scene, cur->data, kdraw, center);
+		cur = cur->next;
+	}
 	drawPoints(scene, plist, n, kdraw, center);
 }
