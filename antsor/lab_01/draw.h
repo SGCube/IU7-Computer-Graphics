@@ -13,8 +13,8 @@
 #define VIEW_W 600
 #define VIEW_H 500
 
-QPoint lt_corner(Triangle *tr);
-QPoint rb_corner(Triangle *tr);
+QPoint lt_corner(list_t *res);
+QPoint rb_corner(list_t *res);
 	
 void drawTriangle(QGraphicsScene *scene, Triangle *tr, float kdraw,
 				  QPointF center);

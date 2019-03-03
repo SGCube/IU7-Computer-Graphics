@@ -2,44 +2,84 @@
 #include <QGraphicsItem>
 #include <cmath>
 
-QPoint lt_corner(Triangle *tr)
+QPoint lt_corner(list_t *res)
 {
-	if (!tr)
+	if (!res)
 		return QPoint();
-			
-	float min_x = fmin(fmin(tr->point(0)->x(), tr->point(0)->x()),
-					   tr->point(2)->x());
-	float min_y = fmin(fmin(tr->point(0)->y(), tr->point(1)->y()),
-					   tr->point(2)->y());
 	
-	LineSeg *h = tr->getMinHeight();
+	list_t *cur = res;
+	float xm, ym, xm_cur, ym_cur;
+	Triangle *tr = nullptr;
+	bool xset = false, yset = false;
 	
-	min_x = fmin(h->p2()->x(), min_x);
-	min_y = fmin(h->p2()->y(), min_y);
+	while (cur)
+	{
+		tr = cur->data;
+		xm_cur = fmin(fmin(tr->point(0)->x(), tr->point(0)->x()),
+					  tr->point(2)->x());
+		ym_cur = fmin(fmin(tr->point(0)->y(), tr->point(1)->y()),
+					  tr->point(2)->y());
+		
+		xm_cur = fmin(tr->getMinHeight()->p2()->x(), xm_cur);
+		ym_cur = fmin(tr->getMinHeight()->p2()->y(), ym_cur);
+		
+		if (!xset || xm_cur < xm)
+		{
+			xset = true;
+			xm = xm_cur;
+		}
+		if (!yset || ym_cur < ym)
+		{
+			yset = true;
+			ym = ym_cur;
+		}
+		
+		cur = cur->next;
+	}
 	
-	int cx = (int) floor(min_x);
-	int cy = (int) floor(min_y);
+	int cx = (int) floor(xm);
+	int cy = (int) floor(ym);
 	
 	return QPoint(cx, cy);
 }
 
-QPoint rb_corner(Triangle *tr)
+QPoint rb_corner(list_t *res)
 {
-	if (!tr)
+	if (!res)
 		return QPoint();
 	
-	float max_x = fmax(fmax(tr->point(0)->x(), tr->point(0)->x()),
-					   tr->point(2)->x());
-	float max_y = fmax(fmax(tr->point(0)->y(), tr->point(1)->y()),
-					   tr->point(2)->y());
+	list_t *cur = res;
+	float xm, ym, xm_cur, ym_cur;
+	Triangle *tr = nullptr;
+	bool xset = false, yset = false;
 	
-	LineSeg *h = tr->getMinHeight();
+	while (cur)
+	{
+		tr = cur->data;
+		xm_cur = fmax(fmax(tr->point(0)->x(), tr->point(0)->x()),
+					  tr->point(2)->x());
+		ym_cur = fmax(fmax(tr->point(0)->y(), tr->point(1)->y()),
+					  tr->point(2)->y());
+		
+		xm_cur = fmax(tr->getMinHeight()->p2()->x(), xm_cur);
+		ym_cur = fmax(tr->getMinHeight()->p2()->y(), ym_cur);
+		
+		if (!xset || xm_cur < xm)
+		{
+			xset = true;
+			xm = xm_cur;
+		}
+		if (!yset || ym_cur < ym)
+		{
+			yset = true;
+			ym = ym_cur;
+		}
+		
+		cur = cur->next;
+	}
 	
-	max_x = fmax(h->p2()->x(), max_x);
-	max_y = fmax(h->p2()->y(), max_y);
-	
-	int cx = (int) ceil(max_x);
-	int cy = (int) ceil(max_y);
+	int cx = (int) ceil(xm);
+	int cy = (int) ceil(ym);
 	
 	return QPoint(cx, cy);
 }
@@ -128,7 +168,7 @@ void drawPoints(QGraphicsScene *scene, QPointF *plist, int n, float k,
 	}
 }
 
-void draw(QGraphicsScene *scene, Triangle *tr, QPointF *plist, int n)
+void draw(QGraphicsScene *scene, list_t *res, Point *plist, int n)
 {
 	// определение крайних координат "картины"
 	QPoint ltcorn = tr->lt_corner();
