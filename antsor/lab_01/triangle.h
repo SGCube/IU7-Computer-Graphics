@@ -15,7 +15,7 @@ public:
     Triangle(QPointF p1, QPointF p2, QPointF p3);
 	QVector2D getMinHeight(QPointF *hvertex);
 	QPoint lt_corner();
-	QPoint rb_corner();
+	QPoint rb_corner();s
 };
 
 bool isTriangle(QPointF p1, QPointF p2, QPointF p3);

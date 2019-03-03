@@ -30,7 +30,8 @@ SOURCES += \
     line.cpp \
     solve.cpp \
     draw.cpp \
-    list.cpp
+    list.cpp \
+    point.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,7 +40,8 @@ HEADERS += \
     solve.h \
     draw.h \
     error.h \
-    list.h
+    list.h \
+    point.h
 
 FORMS += \
         mainwindow.ui

@@ -82,8 +82,7 @@ void solution_msg(QLabel *msgbox, Triangle *tr, QVector2D *h, QPointF *hvertex)
 	msg.append(") ");
 	msgbox->setText(QString(msg));
 }
-
-bool solve(QPointF *plist, int n, Triangle *tr, QVector2D *h, QPointF *hvertex)
+list_t *solve(QPointF *plist, int n, QVector2D *h, QPointF *hvertex)
 {
 	if (!plist || n < 3)
 		return false;
@@ -92,12 +91,10 @@ bool solve(QPointF *plist, int n, Triangle *tr, QVector2D *h, QPointF *hvertex)
 	QVector2D hcur;
 	// hcurv - вершина высоты текущего треугольника
 	QPointF hcurv;
-	// очередь решений
+	// список решений
 	list_t *trlist = nullptr;
 	// trcur - текущий рассматриваемый треугольник
-	Triangle trcur;
-	// found - найдено ли хотя бы одно решение
-	bool found = false;
+	Triangle *trcur;
 	
 	for (int i = 0; i < n - 2; i++)
 		for (int j = i + 1; j < n - 1; j++)
@@ -105,17 +102,17 @@ bool solve(QPointF *plist, int n, Triangle *tr, QVector2D *h, QPointF *hvertex)
 			{
 				if (isTriangle(plist[i], plist[j], plist[k]))
 				{
-					trcur = Triangle(plist[i], plist[j], plist[k]);
-					hcur = trcur.getMinHeight(&hcurv);
-					if (!found || hcur.length() < h->length())
+					trcur = new Triangle(plist[i], plist[j], plist[k]);
+					hcur = trcur->getMinHeight(&hcurv);
+					if (!trlist || hcur.length() < h->length())
 					{
-						*tr = trcur;
+						if (!push_back(&trlist, trcur))
+							return nullptr;
 						*h = hcur;
 						*hvertex = hcurv;
-						found = true;
 					}
 				}
 			}
 	
-	return found;
+	return trlist;
 }
