@@ -72,7 +72,7 @@ void drawTriangle(QGraphicsScene *scene, Triangle *tr, float k,
 	// рисование высоты
 	pen.setColor(Qt::blue);
 	QPointF hv;
-	QVector2D h = tr->getMinHeight(&hv);
+	QVector2D h = tr->getMinHeight();
 	
 	x1 = round(k * (hv.x() + dx) + (1 - k) * pm.x());
 	y1 = -round(k * (hv.y() + dy) + (1 - k) * pm.y());

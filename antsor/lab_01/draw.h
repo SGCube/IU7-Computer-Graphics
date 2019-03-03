@@ -1,10 +1,11 @@
 #ifndef DRAW_H
 #define DRAW_H
 
-#include <QWidget>
-#include <QPainter>
+#include <QGraphicsScene>
 
+#include "point.h"
 #include "triangle.h"
+#include "list.h"
 
 #define PAD_X 50
 #define PAD_Y 50
@@ -21,7 +22,7 @@ void drawTriangle(QGraphicsScene *scene, Triangle *tr, float kdraw,
 void drawPoints(QGraphicsScene *scene, QPointF *plist, int n, float kdraw,
 				QPointF center);
 
-void draw(QGraphicsScene *scene, Triangle *tr, QPointF *plist, int n);
+void draw(QGraphicsScene *scene, list_t *res, Point *plist, int n);
 
 
 #endif // DRAW_H
