@@ -1,7 +1,3 @@
-#include <QGraphicsView>
-#include <QPointF>
-#include <QVector2D>
-
 #include "point.h"
 #include "lineseg.h"
 
@@ -16,10 +12,7 @@ public:
     Triangle(Point p1, Point p2, Point p3);
 	
 	Point *point(int i);
-	LineSeg *getMinHeight(Point *hvertex);
-	
-	QPoint lt_corner();
-	QPoint rb_corner();
+	LineSeg *getMinHeight();
 	
 private:
 	Point points[3];
@@ -29,5 +22,7 @@ private:
 };
 
 bool isTriangle(Point p1, Point p2, Point p3);
+
+bool isTriangle(Triangle *tr);
 
 #endif // TRIANGLE_H

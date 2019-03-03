@@ -2,6 +2,48 @@
 #include <QGraphicsItem>
 #include <cmath>
 
+QPoint lt_corner(Triangle *tr)
+{
+	if (!tr)
+		return QPoint();
+			
+	float min_x = fmin(fmin(tr->point(0)->x(), tr->point(0)->x()),
+					   tr->point(2)->x());
+	float min_y = fmin(fmin(tr->point(0)->y(), tr->point(1)->y()),
+					   tr->point(2)->y());
+	
+	LineSeg *h = tr->getMinHeight();
+	
+	min_x = fmin(h->p2()->x(), min_x);
+	min_y = fmin(h->p2()->y(), min_y);
+	
+	int cx = (int) floor(min_x);
+	int cy = (int) floor(min_y);
+	
+	return QPoint(cx, cy);
+}
+
+QPoint rb_corner(Triangle *tr)
+{
+	if (!tr)
+		return QPoint();
+	
+	float max_x = fmax(fmax(tr->point(0)->x(), tr->point(0)->x()),
+					   tr->point(2)->x());
+	float max_y = fmax(fmax(tr->point(0)->y(), tr->point(1)->y()),
+					   tr->point(2)->y());
+	
+	LineSeg *h = tr->getMinHeight();
+	
+	max_x = fmax(h->p2()->x(), max_x);
+	max_y = fmax(h->p2()->y(), max_y);
+	
+	int cx = (int) ceil(max_x);
+	int cy = (int) ceil(max_y);
+	
+	return QPoint(cx, cy);
+}
+
 void drawTriangle(QGraphicsScene *scene, Triangle *tr, float k,
 				  QPointF center)
 {
