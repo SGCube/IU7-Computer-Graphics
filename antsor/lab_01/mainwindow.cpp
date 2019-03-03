@@ -130,7 +130,8 @@ void MainWindow::on_drawButton_released()
 {
 	ui->graphicsView->scene()->clear();
     int rows = ui->pointTable->rowCount();	// количество точек (строк таблицы)
-	QPointF *plist = NULL;					// список точек
+	Point *plist = nullptr;					// список точек
+	list_t *res = nullptr;					// список решений
 	
     /// проверка на достаточность
     if (rows < 3)
@@ -148,17 +149,16 @@ void MainWindow::on_drawButton_released()
 	}
 	
 	/// решение задачи
-	list_t *res = solve(plist, rows);	// список решений
-	
+	res = solve(plist, rows);
 	if (!res)
 		error_msg(ui->msgFrame, ERR_SOLV_NONE);
 	else
 	{
 		/// вывод решения в статусное окно
-		solution_msg(ui->msgFrame, &tr, &h, &hvertex);
+		//solution_msg(ui->msgFrame, &tr, &h, &hvertex);
 		
 		/// рисование решения
-		draw(ui->graphicsView->scene(), &tr, plist, rows);
+		draw(ui->graphicsView->scene(), res, plist, rows);
 	}
 	
 	delete [] plist;
