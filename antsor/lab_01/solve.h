@@ -4,7 +4,7 @@
 #include "error.h"
 
 #include "triangle.h"
-#include "queue.h"
+#include "list.h"
 
 #include "mainwindow.h"
 

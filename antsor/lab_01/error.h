@@ -7,4 +7,6 @@
 #define ERR_PLIST_VAL -3
 #define ERR_SOLV_NONE -4
 
+#define ERR_LIST_MEM -5
+
 #endif // ERROR_H

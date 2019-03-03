@@ -30,7 +30,7 @@ SOURCES += \
     line.cpp \
     solve.cpp \
     draw.cpp \
-    queue.cpp
+    list.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,7 +39,7 @@ HEADERS += \
     solve.h \
     draw.h \
     error.h \
-    queue.h
+    list.h
 
 FORMS += \
         mainwindow.ui
