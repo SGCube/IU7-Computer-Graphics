@@ -34,8 +34,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->table->setHorizontalHeaderLabels(a);
     ui->table->horizontalHeader()->resizeSection(0, 157);
     ui->table->horizontalHeader()->resizeSection(1, 157);
-    //ui->table->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->table->setEditTriggers(QAbstractItemView :: NoEditTriggers);
+    ui->graphics->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphics->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 MainWindow::~MainWindow()
@@ -45,6 +46,7 @@ MainWindow::~MainWindow()
 }
 void MainWindow::on_enter_clicked()
 {
+    scene->clear();
     int check = 0;
     if (ui->lineEditX->text() == NULL && ui->lineEditY->text() == NULL)
     {
@@ -109,13 +111,8 @@ void MainWindow::insert_into_table(QString x, QString y)
 
 void MainWindow::on_change_clicked()
 {
+    scene->clear();
     int check = 0;
-    point *temp = head;
-    while (temp != NULL)
-    {
-        qDebug() << temp->x << temp->y;
-        temp = temp->next;
-    }
     if (ui->lineEdit_change->text() == NULL)
     {
         QMessageBox::critical(this, "Ошибка","Введите номер точки!");
@@ -180,7 +177,6 @@ void MainWindow::on_change_clicked()
     ui->lineEdit_change->clear();
 }
 
-
 void MainWindow::change_table(int a_int, QString new_x, QString new_y)
 {
     if (a_int == 1)
@@ -208,6 +204,7 @@ void MainWindow::change_table(int a_int, QString new_x, QString new_y)
 
 void MainWindow::on_delet_clicked()
 {
+    scene->clear();
     if (ui->lineEdit_change->text() == NULL)
     {
         QMessageBox::critical(this, "Ошибка","Введите номер точки!");
@@ -233,10 +230,12 @@ void MainWindow::on_delet_clicked()
     ui->table->removeRow(d_int - 1);
     head = delete_from_list(head, d_int);
     ui->lineEdit_change->clear();
+    amount--;
 }
 
 void MainWindow::on_delete_all_clicked()
 {
+    scene->clear();
     while (amount >= 0)
     {
         ui->table->removeRow(amount);
@@ -341,17 +340,12 @@ float MainWindow::diff(float x1, float y1, float x2, float y2, float x3, float y
     if (a == b && a == c && b == c)
         return 0;
 
-    //float p = (a + b + c) / 2;
-    //float s = sqrt(p * (p - a) * (p - b) * (p - c));
-    //float r = s / p;
-
     float ad = c * b / (a + c);
-    float eb = c * a / (b + a);//
-    float fc = b * a / (b + c);//
-    float dc = a * b / (c + a);//
-    float ae = c * b / (b + a);//
-    float bf = a * c / (b + c);//
-    //qDebug() << ad << eb << fc << dc << ae << bf;
+    float eb = c * a / (b + a);
+    float fc = b * a / (b + c);
+    float dc = a * b / (c + a);
+    float ae = c * b / (b + a);
+    float bf = a * c / (b + c);
 
     float max = qMax(qMax(qMax(ad, eb), qMax(fc, dc)), qMax(bf, ae));
     float min = qMin(qMin(qMin(ad, eb), qMin(fc, dc)), qMin(bf, ae));
@@ -370,10 +364,10 @@ void MainWindow::draw_result(tri *head_res)
 
     tri *res = head_res;
 
-    float xmin;
-    float xmax;
-    float ymin;
-    float ymax;
+    float xmin = 0;
+    float xmax = 0;
+    float ymin = 0;
+    float ymax = 0;
     if (res != NULL)
     {
         xmin = qMin(res->x1, qMin(res->x2, res->x3));
@@ -413,79 +407,72 @@ void MainWindow::draw_result(tri *head_res)
         float y1 = k * res->y1 + (1 - k) * 250;
         float y2 = k * res->y2 + (1 - k) * 250;
         float y3 = k * res->y3 + (1 - k) * 250;
-        float x = 400 - w /2 - xmin;
+        float x = 400 - w / 2 - xmin;
         float y = 250 - h / 2 - ymin;
+        qDebug() << x1 - k*x << -y1 - k*x;
+        qDebug() << x2 - k*x << -y2 - k*x;
+        qDebug() << x3 - k*x << -y3 - k*x;
         scene->addLine(x1 - k*x, -y1 - k*y, x2 - k*x, -y2 - k*y, blackpen);
         scene->addLine(x1 - k*x, -y1 - k*y, x3 - k*x, -y3 - k*y, blackpen);
         scene->addLine(x3 - k*x, -y3 - k*y, x2 - k*x, -y2 - k*y, blackpen);
-
 
         float a = sqrt(qPow(res->x2 - res->x1, 2) + qPow(res->y2 - res->y1, 2));
         float b = sqrt(qPow(res->x3 - res->x1, 2) + qPow(res->y3 - res->y1, 2));
         float c = sqrt(qPow(res->x3 - res->x2, 2) + qPow(res->y3 - res->y2, 2));
 
-
-        float xx1 = qFabs(res->x2 - res->x1);
-        float yy1 = qFabs(res->y2 - res->y1);
+        float xx1 = res->x2 - res->x1;
+        float yy1 = res->y2 - res->y1;
         float fc = b * a / (b + c);
         float kk1 = sqrt(qPow(fc, 2)/(qPow(xx1, 2) + qPow(yy1, 2)));
-        float x01 = kk1 * xx1;
-        float y01 = kk1 * yy1;
-        float x_b_1 = k * x01 + res->x1 + (1 - k) * 400;
-        float y_b_1 = k * y01 + res->y1 + (1 - k) * 250;
-        scene->addLine(x_b_1 - k*x, -y_b_1 + res->y1 - k*y, x3 - k*x, -y3 - k*y, blueBrush);
+        float x01 = kk1 * xx1 + res->x1;
+        float y01 = kk1 * yy1 + res->y1;
+        float x_b_1 = k * x01 + (1 - k) * 400;
+        float y_b_1 = k * y01 + (1 - k) * 250;
+        scene->addLine(x_b_1 - k*x, -y_b_1 - k*y, x3 - k*x, -y3 - k*y, blueBrush);
 
-        float xx2 = qFabs(res->x1 - res->x3);
-        float yy2 = qFabs(res->y1 - res->y3);
+        float xx2 = res->x3 - res->x1;
+        float yy2 = res->y3 - res->y1;
         float dc = a * b / (c + a);
         float kk2 = sqrt(qPow(dc, 2)/(qPow(xx2, 2) + qPow(yy2, 2)));
-        float x02 = kk2 * xx2;
-        float y02 = kk2 * yy2;
-        float x_b_2 = k * x02 + res->x1 + (1 - k) * 400;
-        float y_b_2 = k * y02 + res->y1 + (1 - k) * 250;
-        scene->addLine(x_b_2 - k*x, -y_b_2 + res->y1 - k*y, x2 - k*x, -y2 - k*y, blueBrush);
+        float x02 = kk2 * xx2 + res->x1;
+        float y02 = kk2 * yy2 + res->y1;
+        float x_b_2 = k * x02 + (1 - k) * 400;
+        float y_b_2 = k * y02 + (1 - k) * 250;
+        scene->addLine(x_b_2 - k*x, -y_b_2 - k*y, x2 - k*x, -y2 - k*y, blueBrush);
 
-        /*
-        float xx3 = qFabs(res->x2 - res->x3);
-        float yy3 = qFabs(res->y2 - res->y3);
-        float ae = c * b / (b + a);
-        float kk3 = sqrt(qPow(ae, 2)/(qPow(xx3, 2) + qPow(yy3, 2)));
-        float x03 = kk3 * xx3;
-        float y03 = kk3 * yy3;
-        float x_b_3 = k * x03 + res->x2 + (1 - k) * 400;
-        float y_b_3 = k * y03 + res->y2 + (1 - k) * 250;
-        scene->addLine(x_b_3 - k*x, -y_b_3 + res->y2 - k*y, x1 - k*x, -y1 - k*y, blueBrush);
-
-
-        scene->addLine(res->x1, -res->y1, res->x2, -res->y2, blackpen);
-        scene->addLine(res->x1, -res->y1, res->x3, -res->y3, blackpen);
-        scene->addLine(res->x3, -res->y3, res->x2, -res->y2, blackpen);
-
-
-        float xx3 = qFabs(res->x2 - res->x3);
-        float yy3 = qFabs(res->y2 - res->y3);
+        float xx3 = res->x3 - res->x2;
+        float yy3 = res->y3 - res->y2;
         float eb = c * a / (b + a);
         float kk3 = sqrt(qPow(eb, 2)/(qPow(xx3, 2) + qPow(yy3, 2)));
-        float x03 = kk3 * xx3;
-        float y03 = kk3 * yy3;
-        //float x_b_3 = k * x03 + res->x2 + (1 - k) * 400;
-        //float y_b_3 = k * y03 + res->y2 + (1 - k) * 250;
-        scene->addLine(x03 + res->x2, -y03, res->x1, -res->y1, blueBrush);
-        */
+        float x03 = kk3 * xx3 + res->x2;
+        float y03 = kk3 * yy3 + res->y2;
+        float x_b_3 = k * x03 + (1 - k) * 400;
+        float y_b_3 = k * y03 + (1 - k) * 250;
+        scene->addLine(x_b_3 - k*x, -y_b_3 - k*y, x1 - k*x, -y1 - k*y, blueBrush);
 
-        /*
-        QString ko1 = "("+res->x1.toString()+","+res->y1.toString()+")";
-        QString ko2 = "("+res->x2.toString()+","+res->y2.toString()+")";
-        QString ko3 = "("+res->x3.toString()+","+res->y3.toString()+")";
-        QGraphicsTextItem *label1;
-        QGraphicsTextItem *label2;
-        QGraphicsTextItem *label3;
-        label1->scene->addText(ko1, font);
-        label2->scene->addText(ko2, font);
-        label3->scene->addText(ko3, font);
-        */
+        QString str;
+        QGraphicsTextItem *label;
+        int number = find_number(head, res->x1, res->y1);
+        str = "Точка №" + QString::number(number) + "(" + QString::number(res->x1) +
+                            ", " + QString::number(res->y1) + ")";
+        label = scene->addText(str, font);
+        label->setX(x1 - k*x);
+        label->setY(-y1 - k*y);
+
+        number = find_number(head, res->x2, res->y2);
+        str = "Точка №" + QString::number(number) + "(" + QString::number(res->x2) +
+                            ", " + QString::number(res->y2) + ")";
+        label = scene->addText(str, font);
+        label->setX(x2 - k*x);
+        label->setY(-y2 - k*y);
+
+        number = find_number(head, res->x3, res->y3);
+        str = "Точка №" + QString::number(number) + "(" + QString::number(res->x3) +
+                            ", " + QString::number(res->y3) + ")";
+        label = scene->addText(str, font);
+        label->setX(x3 - k*x);
+        label->setY(-y3 - k*y);
 
         res = res->next;
     }
-
 }

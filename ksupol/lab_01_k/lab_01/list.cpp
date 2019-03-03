@@ -64,7 +64,6 @@ point *delete_from_list(point *head, int d)
         point *a = head;
         delete a;
         head = head->next;
-        amount--;
         return head;
     }
     if (d == amount)
@@ -84,7 +83,6 @@ point *delete_from_list(point *head, int d)
         n = n->next;
     delete t->next;
     t->next = n;
-    amount--;
     return head;
 }
 

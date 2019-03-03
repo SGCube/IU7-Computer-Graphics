@@ -33,3 +33,20 @@ int check_tr(float x1, float y1, float x2, float y2, float x3, float y3)
         return -2;
     return 0;
 }
+
+int find_number(point *head, float a, float b)
+{
+    int i = 1;
+    point *t = head;
+    while (t != NULL)
+    {
+        if (t->x == a && t->y == b)
+            return i;
+        else
+        {
+            i++;
+            t = t->next;
+        }
+    }
+    return i;
+}

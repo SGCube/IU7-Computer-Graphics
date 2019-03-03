@@ -20,10 +20,13 @@ typedef struct triangle tri;
 struct triangle {
     float x1;
     float y1;
+    int num1;
     float x2;
     float y2;
+    int num2;
     float x3;
     float y3;
+    int num3;
     tri *next;
 };
 
