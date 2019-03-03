@@ -12,12 +12,11 @@ struct node
 list_t *create_node(void *data);
 
 int list_len(list_t *head);
-list_t *get_node(list_t *head, int i);
 
-list_t *push_back(list_t **head, void *data);
-void *pop_back(list_t **head);
+list_t *list_push_back(list_t **head, void *data);
+void *list_pop_back(list_t **head);
 
-void clear(list_t **head);
+void list_clear(list_t **head);
 
 
 #endif

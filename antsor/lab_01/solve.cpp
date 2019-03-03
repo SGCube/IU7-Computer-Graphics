@@ -1,13 +1,13 @@
 #include "solve.h"
 
-int get_plist(QTableWidget *pointTable, QPointF **plist, int rows)
+int get_plist(QTableWidget *pointTable, Point **plist, int rows)
 {
 	/// выделение памяти под точки
 	
-    *plist = new QPointF[rows];
+    *plist = new Point[rows];
     if (!*plist)
     {
-		*plist = NULL;
+		*plist = nullptr;
         return ERR_PLIST_MEM;
     }
 	
@@ -61,7 +61,7 @@ void error_valmsg(QLabel *msgbox, bool coord)
 	msgbox->setText(QString(msg));
 }
 
-void solution_msg(QLabel *msgbox, Triangle *tr, QVector2D *h, QPointF *hvertex)
+/*void solution_msg(QLabel *msgbox, Triangle *tr, QVector2D *h, QPointF *hvertex)
 {
 	/// вывод решения в статусное окно
 	QString msg("Треугольник:\nВершины: ");
@@ -81,20 +81,20 @@ void solution_msg(QLabel *msgbox, Triangle *tr, QVector2D *h, QPointF *hvertex)
 	msg.append(QString::number(hvertex->y()));
 	msg.append(") ");
 	msgbox->setText(QString(msg));
-}
-list_t *solve(QPointF *plist, int n, QVector2D *h, QPointF *hvertex)
+}*/
+
+list_t *solve(Point *plist, int n)
 {
 	if (!plist || n < 3)
 		return false;
 	
-	// h - высота минимальной длины текущего треугольника
-	QVector2D hcur;
-	// hcurv - вершина высоты текущего треугольника
-	QPointF hcurv;
 	// список решений
 	list_t *trlist = nullptr;
-	// trcur - текущий рассматриваемый треугольник
-	Triangle *trcur;
+	// h - величина минимальной высоты,
+	// hcur - величина высоты текущего треугольника
+	float h = 0, hcur = 0;
+	// текущий рассматриваемый треугольник
+	Triangle *trcur = nullptr;
 	
 	for (int i = 0; i < n - 2; i++)
 		for (int j = i + 1; j < n - 1; j++)
@@ -103,14 +103,18 @@ list_t *solve(QPointF *plist, int n, QVector2D *h, QPointF *hvertex)
 				if (isTriangle(plist[i], plist[j], plist[k]))
 				{
 					trcur = new Triangle(plist[i], plist[j], plist[k]);
-					hcur = trcur->getMinHeight(&hcurv);
-					if (!trlist || hcur.length() < h->length())
+					hcur = trcur->getMinHeight()->length();
+					
+					if (!trlist || hcur < h)
 					{
-						if (!push_back(&trlist, trcur))
-							return nullptr;
-						*h = hcur;
-						*hvertex = hcurv;
+						list_clear(&trlist);
+						list_push_back(&trlist, trcur);
+						h = hcur;
 					}
+					else if (hcur == h)
+						list_push_back(&trlist, trcur);
+					else
+						delete trcur;
 				}
 			}
 	

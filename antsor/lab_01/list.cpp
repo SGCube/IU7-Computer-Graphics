@@ -22,21 +22,7 @@ int list_len(list_t *head)
 	return len;
 }
 
-list_t *get_node(list_t *head, int i)
-{
-	if (!head)
-		return nullptr;
-	if (i < 1)
-		return nullptr;
-	list_t *cur = head;
-	int j = 1;
-	for (; cur && j < i; j++, cur = cur->next);
-	if (!cur)
-		return nullptr;
-	return cur;
-}
-
-list_t *push_back(list_t **head, void *data)
+list_t *list_push_back(list_t **head, void *data)
 {
 	list_t *node = create_node(data);
 	if (!node)
@@ -55,7 +41,7 @@ list_t *push_back(list_t **head, void *data)
 	return node;
 }
 
-void *pop_back(list_t **head)
+void list_*pop_back(list_t **head)
 {
 	if (!head || !*head)
 		return nullptr;
@@ -82,7 +68,7 @@ void *pop_back(list_t **head)
 	return data;
 }
 
-void clear(list_t **head)
+void list_clear(list_t **head)
 {
 	if (!head)
 		return;
