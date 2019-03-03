@@ -1,4 +1,5 @@
 #include "solve.h"
+#include <cmath>
 
 int get_plist(QTableWidget *pointTable, Point **plist, int rows)
 {
@@ -92,7 +93,7 @@ list_t *solve(Point *plist, int n)
 	list_t *trlist = nullptr;
 	// h - величина минимальной высоты,
 	// hcur - величина высоты текущего треугольника
-	float h = 0, hcur = 0;
+	double h = 0, hcur = 0;
 	// текущий рассматриваемый треугольник
 	Triangle *trcur = nullptr;
 	
@@ -105,14 +106,19 @@ list_t *solve(Point *plist, int n)
 					trcur = new Triangle(plist[i], plist[j], plist[k]);
 					hcur = trcur->getMinHeight()->length();
 					
-					if (!trlist || hcur < h)
+					if (!trlist)
+					{
+						list_push_back(&trlist, trcur);
+						h = hcur;
+					}
+					else if (fabs(hcur - h) < EPS)
+						list_push_back(&trlist, trcur);
+					else if (hcur < h)
 					{
 						list_clear(&trlist, tr_ptrdel);
 						list_push_back(&trlist, trcur);
 						h = hcur;
 					}
-					else if (hcur == h)
-						list_push_back(&trlist, trcur);
 					else
 						delete trcur;
 				}

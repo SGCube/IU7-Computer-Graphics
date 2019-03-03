@@ -13,7 +13,7 @@ public:
 	Point *p1();
 	Point *p2();
 	
-	float length();
+	double length();
 	
 private:
 	Point end1, end2;

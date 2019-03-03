@@ -33,10 +33,9 @@ list_t *list_push_back(list_t **head, void *data)
 	else
 	{
 		list_t *cur = *head;
-		while(cur->next)
+		while (cur->next)
 			cur = cur->next;
 		cur->next = node;
-		*head = cur;
 	}
 	return node;
 }

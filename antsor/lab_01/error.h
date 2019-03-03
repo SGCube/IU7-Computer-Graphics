@@ -9,4 +9,6 @@
 
 #define ERR_LIST_MEM -5
 
+#define EPS 1e-12
+
 #endif // ERROR_H

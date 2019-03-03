@@ -28,7 +28,7 @@ Point *LineSeg::p2()
 	return &end2;
 }
 
-float LineSeg::length()
+double LineSeg::length()
 {
 	return dist(end1, end2);
 }

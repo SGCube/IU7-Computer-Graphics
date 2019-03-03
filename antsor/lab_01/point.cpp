@@ -34,7 +34,7 @@ void Point::setY(float y)
 	ycoord = y;
 }
 
-float dist(Point p1, Point p2)
+double dist(Point p1, Point p2)
 {
 	float dx = p2.x() - p1.x();
 	float dy = p2.y() - p1.y();

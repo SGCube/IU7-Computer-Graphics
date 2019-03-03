@@ -18,6 +18,6 @@ private:
 	float ycoord;
 };
 
-float dist(Point p1, Point p2);
+double dist(Point p1, Point p2);
 
 #endif // POINT_H
