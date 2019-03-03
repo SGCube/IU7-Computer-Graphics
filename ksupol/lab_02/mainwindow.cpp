@@ -2,8 +2,9 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QGraphicsScene>
-#define a 2
-#define b 2
+#include <qmath.h>
+#define a 20
+#define b 20
 #define r 2
 #define c 2
 #define d 2
@@ -23,7 +24,14 @@ MainWindow::MainWindow(QWidget *parent) :
     blackpen.setWidth(3);
     blueBrush.setWidth(3);
 
-    scene->addEllipse(0, 0, 25, 25, blueBrush);
+    float y = 0;
+
+    for (float x = 0; x < 50; x += 0.1)
+    {
+        y = sqrt(2500 - qPow(x, 2));
+        scene->addEllipse(x, -y, 5, 5, blackpen);
+        scene->addEllipse(x, y, 5, 5, blackpen);
+    }
 
 }
 
