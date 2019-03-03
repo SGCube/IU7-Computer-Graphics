@@ -354,7 +354,6 @@ float MainWindow::diff(float x1, float y1, float x2, float y2, float x3, float y
 void MainWindow::draw_result(tri *head_res)
 {
     scene->clear();
-    QBrush redBrush(Qt::red);
     QPen blueBrush(Qt::blue);
     QPen blackpen(Qt::black);
     blackpen.setWidth(3);
