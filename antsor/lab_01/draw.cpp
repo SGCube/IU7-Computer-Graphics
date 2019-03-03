@@ -64,12 +64,12 @@ QPoint rb_corner(list_t *res)
 		xm_cur = fmax(tr->getMinHeight()->p2()->x(), xm_cur);
 		ym_cur = fmax(tr->getMinHeight()->p2()->y(), ym_cur);
 		
-		if (!xset || xm_cur < xm)
+		if (!xset || xm_cur > xm)
 		{
 			xset = true;
 			xm = xm_cur;
 		}
-		if (!yset || ym_cur < ym)
+		if (!yset || ym_cur > ym)
 		{
 			yset = true;
 			ym = ym_cur;
