@@ -4,7 +4,6 @@
 #include "list.h"
 #include <QLineEdit>
 #include <QMessageBox>
-#include <QDebug>
 #include <QGraphicsScene>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsRectItem>
@@ -354,7 +353,6 @@ float MainWindow::diff(float x1, float y1, float x2, float y2, float x3, float y
 
 void MainWindow::draw_result(tri *head_res)
 {
-    QFont font = QFont("sans", 12);
     scene->clear();
     QBrush redBrush(Qt::red);
     QPen blueBrush(Qt::blue);
@@ -372,23 +370,22 @@ void MainWindow::draw_result(tri *head_res)
     {
         xmin = qMin(res->x1, qMin(res->x2, res->x3));
         xmax = qMax(res->x1, qMax(res->x2, res->x3));
-        ymin = qMin(res->x1, qMin(res->x2, res->x3));
-        ymax = qMax(res->x1, qMax(res->x2, res->x3));
+        ymin = qMin(res->y1, qMin(res->y2, res->y3));
+        ymax = qMax(res->y1, qMax(res->y2, res->y3));
 
     }
     while(res != NULL)
     {
-        qDebug() << res->x1 << res->y1 << res->x2 << res->y2 << res->x3 << res->y3;
         float xmin_cur = qMin(res->x1, qMin(res->x2, res->x3));
         if (xmin_cur < xmin)
             xmin = xmin_cur;
         float xmax_cur = qMax(res->x1, qMax(res->x2, res->x3));
         if (xmax_cur > xmax)
             xmax = xmax_cur;
-        float ymin_cur = qMin(res->x1, qMin(res->x2, res->x3));
+        float ymin_cur = qMin(res->y1, qMin(res->y2, res->y3));
         if (ymin_cur < ymin)
             ymin = ymin_cur;
-        float ymax_cur = qMax(res->x1, qMax(res->x2, res->x3));
+        float ymax_cur = qMax(res->y1, qMax(res->y2, res->y3));
         if (ymax_cur > ymax)
             ymax = ymax_cur;
         res = res->next;
@@ -404,17 +401,14 @@ void MainWindow::draw_result(tri *head_res)
         float x1 = k * res->x1 + (1 - k) * 400;
         float x2 = k * res->x2 + (1 - k) * 400;
         float x3 = k * res->x3 + (1 - k) * 400;
-        float y1 = k * res->y1 + (1 - k) * 250;
-        float y2 = k * res->y2 + (1 - k) * 250;
-        float y3 = k * res->y3 + (1 - k) * 250;
+        float y1 = k * res->y1 + (1 - k) * (-250);
+        float y2 = k * res->y2 + (1 - k) * (-250);
+        float y3 = k * res->y3 + (1 - k) * (-250);
         float x = 400 - w / 2 - xmin;
-        float y = 250 - h / 2 - ymin;
-        qDebug() << x1 - k*x << -y1 - k*x;
-        qDebug() << x2 - k*x << -y2 - k*x;
-        qDebug() << x3 - k*x << -y3 - k*x;
-        scene->addLine(x1 - k*x, -y1 - k*y, x2 - k*x, -y2 - k*y, blackpen);
-        scene->addLine(x1 - k*x, -y1 - k*y, x3 - k*x, -y3 - k*y, blackpen);
-        scene->addLine(x3 - k*x, -y3 - k*y, x2 - k*x, -y2 - k*y, blackpen);
+        float y = -250 - h / 2 - ymin;
+        scene->addLine(x1 + k*x, -y1 - k*y, x2 + k*x, -y2 - k*y, blackpen);
+        scene->addLine(x1 + k*x, -y1 - k*y, x3 + k*x, -y3 - k*y, blackpen);
+        scene->addLine(x3 + k*x, -y3 - k*y, x2 + k*x, -y2 - k*y, blackpen);
 
         float a = sqrt(qPow(res->x2 - res->x1, 2) + qPow(res->y2 - res->y1, 2));
         float b = sqrt(qPow(res->x3 - res->x1, 2) + qPow(res->y3 - res->y1, 2));
@@ -427,8 +421,8 @@ void MainWindow::draw_result(tri *head_res)
         float x01 = kk1 * xx1 + res->x1;
         float y01 = kk1 * yy1 + res->y1;
         float x_b_1 = k * x01 + (1 - k) * 400;
-        float y_b_1 = k * y01 + (1 - k) * 250;
-        scene->addLine(x_b_1 - k*x, -y_b_1 - k*y, x3 - k*x, -y3 - k*y, blueBrush);
+        float y_b_1 = k * y01 + (1 - k) * (-250);
+        scene->addLine(x_b_1 + k*x, -y_b_1 - k*y, x3 + k*x, -y3 - k*y, blueBrush);
 
         float xx2 = res->x3 - res->x1;
         float yy2 = res->y3 - res->y1;
@@ -437,8 +431,8 @@ void MainWindow::draw_result(tri *head_res)
         float x02 = kk2 * xx2 + res->x1;
         float y02 = kk2 * yy2 + res->y1;
         float x_b_2 = k * x02 + (1 - k) * 400;
-        float y_b_2 = k * y02 + (1 - k) * 250;
-        scene->addLine(x_b_2 - k*x, -y_b_2 - k*y, x2 - k*x, -y2 - k*y, blueBrush);
+        float y_b_2 = k * y02 + (1 - k) * (-250);
+        scene->addLine(x_b_2 + k*x, -y_b_2 - k*y, x2 + k*x, -y2 - k*y, blueBrush);
 
         float xx3 = res->x3 - res->x2;
         float yy3 = res->y3 - res->y2;
@@ -447,32 +441,37 @@ void MainWindow::draw_result(tri *head_res)
         float x03 = kk3 * xx3 + res->x2;
         float y03 = kk3 * yy3 + res->y2;
         float x_b_3 = k * x03 + (1 - k) * 400;
-        float y_b_3 = k * y03 + (1 - k) * 250;
-        scene->addLine(x_b_3 - k*x, -y_b_3 - k*y, x1 - k*x, -y1 - k*y, blueBrush);
+        float y_b_3 = k * y03 + (1 - k) * (-250);
+        scene->addLine(x_b_3 + k*x, -y_b_3 - k*y, x1 + k*x, -y1 - k*y, blueBrush);
 
-        QString str;
-        QGraphicsTextItem *label;
-        int number = find_number(head, res->x1, res->y1);
-        str = "Точка №" + QString::number(number) + "(" + QString::number(res->x1) +
-                            ", " + QString::number(res->y1) + ")";
-        label = scene->addText(str, font);
-        label->setX(x1 - k*x);
-        label->setY(-y1 - k*y);
-
-        number = find_number(head, res->x2, res->y2);
-        str = "Точка №" + QString::number(number) + "(" + QString::number(res->x2) +
-                            ", " + QString::number(res->y2) + ")";
-        label = scene->addText(str, font);
-        label->setX(x2 - k*x);
-        label->setY(-y2 - k*y);
-
-        number = find_number(head, res->x3, res->y3);
-        str = "Точка №" + QString::number(number) + "(" + QString::number(res->x3) +
-                            ", " + QString::number(res->y3) + ")";
-        label = scene->addText(str, font);
-        label->setX(x3 - k*x);
-        label->setY(-y3 - k*y);
-
+        put_text(res, x1+k*x, -y1-k*y, x2+k*x, -y2-k*y, x3+k*x, -y3-k*y);
         res = res->next;
     }
+}
+
+void MainWindow::put_text(tri *res, float x1, float y1, float x2, float y2, float x3, float y3)
+{
+    QFont font = QFont("sans", 12);
+    QString str;
+    QGraphicsTextItem *label;
+    int number = find_number(head, res->x1, res->y1);
+    str = "Точка №" + QString::number(number) + "(" + QString::number(res->x1) +
+                        ", " + QString::number(res->y1) + ")";
+    label = scene->addText(str, font);
+    label->setX(x1);
+    label->setY(y1);
+
+    number = find_number(head, res->x2, res->y2);
+    str = "Точка №" + QString::number(number) + "(" + QString::number(res->x2) +
+                        ", " + QString::number(res->y2) + ")";
+    label = scene->addText(str, font);
+    label->setX(x2);
+    label->setY(y2);
+
+    number = find_number(head, res->x3, res->y3);
+    str = "Точка №" + QString::number(number) + "(" + QString::number(res->x3) +
+                        ", " + QString::number(res->y3) + ")";
+    label = scene->addText(str, font);
+    label->setX(x3);
+    label->setY(y3);
 }

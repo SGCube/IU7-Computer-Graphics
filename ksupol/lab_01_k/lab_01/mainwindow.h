@@ -55,6 +55,7 @@ private slots:
     void find_result();
     float diff(float x1, float y1, float x2, float y2, float x3, float y3);
     void draw_result(tri *head_res);
+    void put_text(tri *res, float x1, float y1, float x2, float y2, float x3, float y3);
 
 private:
     Ui::MainWindow *ui;
