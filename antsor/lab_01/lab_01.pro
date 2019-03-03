@@ -29,14 +29,17 @@ SOURCES += \
     triangle.cpp \
     line.cpp \
     solve.cpp \
-    draw.cpp
+    draw.cpp \
+    queue.cpp
 
 HEADERS += \
         mainwindow.h \
     triangle.h \
     line.h \
     solve.h \
-    draw.h
+    draw.h \
+    error.h \
+    queue.h
 
 FORMS += \
         mainwindow.ui

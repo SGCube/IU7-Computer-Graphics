@@ -1,17 +1,13 @@
 #include <QTableWidget>
 #include <QLabel>
 
+#include "error.h"
+
 #include "triangle.h"
 #include "mainwindow.h"
 
 #ifndef SOLVE_H
 #define SOLVE_H
-
-#define OK 0
-#define ERR_PLIST_N -1
-#define ERR_PLIST_MEM -2
-#define ERR_PLIST_VAL -3
-#define ERR_SOLV_NONE -4
 
 int get_plist(QTableWidget *pointTable, QPointF **plist, int rows);
 
