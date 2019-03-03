@@ -148,11 +148,9 @@ void MainWindow::on_drawButton_released()
 	}
 	
 	/// решение задачи
-	Triangle tr;		// треугольник решения
-	QVector2D h;		// наименьшая высота
-	QPointF hvertex;	// вершина наименьшей высоты
+	list_t *res = solve(plist, rows);	// список решений
 	
-	if (!solve(plist, rows, &tr, &h, &hvertex))
+	if (!res)
 		error_msg(ui->msgFrame, ERR_SOLV_NONE);
 	else
 	{

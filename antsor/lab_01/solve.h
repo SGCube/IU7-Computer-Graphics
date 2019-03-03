@@ -20,6 +20,6 @@ void error_valmsg(QLabel *msgbox, bool coord);
 
 //void solution_msg(QLabel *msgbox, Triangle *tr, QVector2D *h, QPointF *hvertex);
 
-bool solve(Point *plist, int n, Triangle *tr);
+bool solve(Point *plist, int n);
 
 #endif // SOLVE_H
