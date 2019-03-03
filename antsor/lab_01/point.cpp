@@ -29,7 +29,7 @@ void Point::setX(float x)
 	xcoord = x;
 }
 
-void Point::setY(float py)
+void Point::setY(float y)
 {
 	ycoord = y;
 }

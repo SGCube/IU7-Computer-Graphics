@@ -100,14 +100,14 @@ list_t *solve(Point *plist, int n)
 		for (int j = i + 1; j < n - 1; j++)
 			for (int k = j + 1; k < n; k++)
 			{
-				if (isTriangle(plist[i], plist[j], plist[k]))
+				if (isTriangle(plist + i, plist + j, plist + k))
 				{
 					trcur = new Triangle(plist[i], plist[j], plist[k]);
 					hcur = trcur->getMinHeight()->length();
 					
 					if (!trlist || hcur < h)
 					{
-						list_clear(&trlist);
+						list_clear(&trlist, tr_ptrdel);
 						list_push_back(&trlist, trcur);
 						h = hcur;
 					}

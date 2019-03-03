@@ -97,4 +97,10 @@ bool isTriangle(Triangle *tr)
             b.length() + c.length() > a.length());
 }
 
+void tr_ptrdel(void *data)
+{
+	Triangle *ptr = (Triangle *) data;
+	delete ptr;
+}
+
 

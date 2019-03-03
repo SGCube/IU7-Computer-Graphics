@@ -68,7 +68,7 @@ void *pop_back(list_t **head)
 	return data;
 }
 
-void list_clear(list_t **head)
+void list_clear(list_t **head, void data_del(void *))
 {
 	if (!head)
 		return;
@@ -78,7 +78,7 @@ void list_clear(list_t **head)
 	while (*head)
 	{
 		*head = cur->next;
-		delete cur->data;
+		data_del(cur->data);
 		delete cur;
 		cur = *head;
 	}

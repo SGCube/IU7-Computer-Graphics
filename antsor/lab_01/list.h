@@ -16,7 +16,7 @@ int list_len(list_t *head);
 list_t *list_push_back(list_t **head, void *data);
 void *list_pop_back(list_t **head);
 
-void list_clear(list_t **head);
+void list_clear(list_t **head, void data_del(void *));
 
 
 #endif
