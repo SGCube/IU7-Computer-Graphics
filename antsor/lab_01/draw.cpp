@@ -101,28 +101,21 @@ void drawTriangle(QGraphicsScene *scene, Triangle *tr, float k,
 	for (int i = 0; i < 3; i++)
 	{
 		// определение координат на рисунке
-		x1 = round(k * (tr->points[i % 3].x() + dx) + (1 - k) * pm.x());
-		y1 = -round(k * (tr->points[i % 3].y() + dy) + (1 - k) * pm.y());
-		x2 = round(k * (tr->points[(i + 1) % 3].x() + dx) + (1 - k) * pm.x());
-		y2 = -round(k * (tr->points[(i + 1) % 3].y() + dy) + (1 - k) * pm.y());
+		x1 = round(k * (tr->point(i % 3)->x() + dx) + (1 - k) * pm.x());
+		y1 = -round(k * (tr->point(i % 3)->y() + dy) + (1 - k) * pm.y());
+		x2 = round(k * (tr->point((i + 1) % 3)->x() + dx) + (1 - k) * pm.x());
+		y2 = -round(k * (tr->point((i + 1) % 3)->y() + dy) + (1 - k) * pm.y());
 		
 		scene->addLine(x1, y1, x2, y2, pen);
 	}
 	
 	// рисование высоты
 	pen.setColor(Qt::blue);
-	QPointF hv;
-	QVector2D h = tr->getMinHeight();
-	
-	x1 = round(k * (hv.x() + dx) + (1 - k) * pm.x());
-	y1 = -round(k * (hv.y() + dy) + (1 - k) * pm.y());
-	x2 = round(k * (hv.x() + h.x() + dx) + (1 - k) * pm.x());
-	y2 = -round(k * (hv.y() + h.y() + dy) + (1 - k) * pm.y());
-	
-	scene->addLine(x1, y1, x2, y2, pen);
+	LineSeg *h = tr->getMinHeight();
+	scene->addLine(h->p1()->x(), h->p1()->y(), h->p2()->x(), h->p2()->y(), pen);
 }
 
-void drawPoints(QGraphicsScene *scene, QPointF *plist, int n, float k,
+void drawPoints(QGraphicsScene *scene, Point *plist, int n, float k,
 				QPointF center)
 {
 	// параметры рисования
