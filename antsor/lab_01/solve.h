@@ -4,6 +4,8 @@
 #include "error.h"
 
 #include "triangle.h"
+#include "queue.h"
+
 #include "mainwindow.h"
 
 #ifndef SOLVE_H

@@ -92,6 +92,8 @@ bool solve(QPointF *plist, int n, Triangle *tr, QVector2D *h, QPointF *hvertex)
 	QVector2D hcur;
 	// hcurv - вершина высоты текущего треугольника
 	QPointF hcurv;
+	// trlist - очередь решений
+	queue_t *tr = nullptr;
 	// trcur - текущий рассматриваемый треугольник
 	Triangle trcur;
 	// found - найдено ли хотя бы одно решение

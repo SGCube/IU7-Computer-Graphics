@@ -1,16 +1,18 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-typedef struct list_t list_node;
+typedef struct queue_node queue_t;
 
-struct list_t
+struct queue_node
 {
 	void *data;
-	list_node *next;
+	queue_t *next;
 };
 
-int push_queue(void *data, list_node **pin, list_node **pout);
+int push_queue(void *data, queue_t **pin, queue_t **pout);
 
-void *pop_queue(list_node **pin, list_node **pout);
+void *pop_queue(queue_t **pin, queue_t **pout);
+
+void clear_queue(queue_t **pin, queue_t **pout);
 
 #endif
