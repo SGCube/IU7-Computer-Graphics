@@ -26,21 +26,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
 		point.cpp \
-		line.cpp \
 		lineseg.cpp \
 		triangle.cpp \
         window.cpp \
     ellipse.cpp \
-    rectangle.cpp
+    rectangle.cpp \
+    house.cpp
 
 HEADERS += \
 		point.h \
-		line.h \
 		lineseg.h \
 		triangle.h \
         window.h \
     ellipse.h \
-    rectangle.h
+    rectangle.h \
+    house.h
 
 FORMS += \
         window.ui

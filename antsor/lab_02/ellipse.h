@@ -7,24 +7,24 @@ class Ellipse
 {
 public:
 	Ellipse();
-	Ellipse(Point p, double a, double b);
+	Ellipse(Point p, int a, int b);
 	
-	Point center();
+	Point *center();
 	void setCenter(Point p);
-	void setCenter(double x, double y);
+	void setCenter(int x, int y);
 	
-	double a();
-	double b();
-	void setA(double a);
-	void setB(double b);
+	float a();
+	float b();
+	void setA(float a);
+	void setB(float b);
 	
-	double angle();
-	void setAngle(double ang);
+	int angle();
+	void setAngle(int ang);
 	
 private:
 	Point pc;
-	double ra, rb;
-	double angle;
+	float ra, rb;
+	int angle;
 };
 
 #endif // ELLIPSE_H

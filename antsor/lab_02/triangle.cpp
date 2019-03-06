@@ -1,6 +1,4 @@
 #include "triangle.h"
-#include "line.h"
-#include "cmath"
 
 Triangle::Triangle()
 {
@@ -9,7 +7,7 @@ Triangle::Triangle()
     points[2] = Point();
 }
 
-Triangle::Triangle(float x1, float y1, float x2, float y2, float x3, float y3)
+Triangle::Triangle(int x1, int y1, int x2, int y2, int x3, int y3)
 {
     points[0] = Point(x1, y1);
     points[1] = Point(x2, y2);
@@ -49,12 +47,6 @@ bool isTriangle(Triangle *tr)
 	return (a.length() + b.length() > c.length() &&
             a.length() + c.length() > b.length() &&
             b.length() + c.length() > a.length());
-}
-
-void tr_ptrdel(void *data)
-{
-	Triangle *ptr = (Triangle *) data;
-	delete ptr;
 }
 
 

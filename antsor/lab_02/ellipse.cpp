@@ -1,4 +1,4 @@
-#include "ellipse.h"
+﻿#include "ellipse.h"
 
 Ellipse::Ellipse()
 {
@@ -16,7 +16,7 @@ Ellipse::Ellipse(Point p, double a, double b)
 
 Point Ellipse::center()
 {
-	return pc;
+	return &pc;
 }
 
 void Ellipse::setCenter(Point p)
@@ -25,7 +25,7 @@ void Ellipse::setCenter(Point p)
 	pc.setY(p.y());
 }
 
-void Ellipse::setCenter(double x, double y)
+void Ellipse::setCenter(int x, int y)
 {
 	pc.setX(x);
 	pc.setY(y);
@@ -51,12 +51,12 @@ void Ellipse::setB(double b)
 	rb = b;
 }
 
-double Ellipse::angle()
+int Ellipse::angle()
 {
 	return angle;
 }
 
-void Ellipse::setAngle(double ang)
+void Ellipse::setAngle(int ang)
 {
 	angle = ang;
 }

@@ -30,7 +30,7 @@ Rectangle::Rectangle(double x1, double y1, double x2, double y2, double ang = 0)
 
 Point Rectangle::topleft()
 {
-	return tlp;
+	return &tlp;
 }
 
 void Rectangle::setTopLeft(Point p)
@@ -48,7 +48,7 @@ void Rectangle::setTopLeft(double x, double y)
 
 Point Rectangle::bottomright()
 {
-	return brp;
+	return &brp;
 }
 
 void Rectangle::setBottomRight(Point p)
