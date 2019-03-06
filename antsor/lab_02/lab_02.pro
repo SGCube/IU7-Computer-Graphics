@@ -29,14 +29,16 @@ SOURCES += \
 		line.cpp \
 		lineseg.cpp \
 		triangle.cpp \
-        window.cpp
+        window.cpp \
+    ellipse.cpp
 
 HEADERS += \
 		point.h \
 		line.h \
 		lineseg.h \
 		triangle.h \
-        window.h
+        window.h \
+    ellipse.h
 
 FORMS += \
         window.ui
