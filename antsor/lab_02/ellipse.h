@@ -15,13 +15,16 @@ public:
 	
 	double a();
 	double b();
-	
 	void setA(double a);
 	void setB(double b);
+	
+	double angle();
+	void setAngle(double ang);
 	
 private:
 	Point pc;
 	double ra, rb;
+	double angle;
 };
 
 #endif // ELLIPSE_H

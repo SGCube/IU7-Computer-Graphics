@@ -50,3 +50,13 @@ void Ellipse::setB(double b)
 {
 	rb = b;
 }
+
+double Ellipse::angle()
+{
+	return angle;
+}
+
+void Ellipse::setAngle(double ang)
+{
+	angle = ang;
+}
