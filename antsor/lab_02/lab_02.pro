@@ -25,9 +25,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
+		point.cpp \
+		line.cpp \
+		lineseg.cpp \
+		triangle.cpp \
         window.cpp
 
 HEADERS += \
+		point.h \
+		line.h \
+		lineseg.h \
+		triangle.h \
         window.h
 
 FORMS += \
