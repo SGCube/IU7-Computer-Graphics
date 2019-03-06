@@ -18,7 +18,7 @@ void error_msg(QLabel *msgbox, int rc);
 
 void error_valmsg(QLabel *msgbox, bool coord);
 
-//void solution_msg(QLabel *msgbox, Triangle *tr, QVector2D *h, QPointF *hvertex);
+void solution_msg(QLabel *msgbox, list_t *res);
 
 list_t *solve(Point *plist, int n);
 

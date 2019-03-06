@@ -44,7 +44,7 @@ void error_msg(QLabel *msgbox, int rc)
 		msgbox->setText(QString("Некорректные данные!"));
 		break;
 	case ERR_SOLV_NONE:
-		msgbox->setText(QString("Невозможно построить треугольник!"));
+		msgbox->setText(QString("Все точки лежат на одной прямой!"));
 		break;
 	default:
 		msgbox->setText(QString("Неизвестная ошибка!"));
@@ -62,27 +62,15 @@ void error_valmsg(QLabel *msgbox, bool coord)
 	msgbox->setText(QString(msg));
 }
 
-/*void solution_msg(QLabel *msgbox, Triangle *tr, QVector2D *h, QPointF *hvertex)
+void solution_msg(QLabel *msgbox, list_t *res)
 {
 	/// вывод решения в статусное окно
-	QString msg("Треугольник:\nВершины: ");
-	for (int i = 0; i < 3; i++)
-	{
-		msg.append("(");
-		msg.append(QString::number(tr->points[i].x()));
-		msg.append(", ");
-		msg.append(QString::number(tr->points[i].y()));
-		msg.append(") ");
-	}
-	msg.append("\nНаименьшая высота: ");
-	msg.append(QString::number(h->length()));
-	msg.append(", вершина: (");
-	msg.append(QString::number(hvertex->x()));
-	msg.append(", ");
-	msg.append(QString::number(hvertex->y()));
-	msg.append(") ");
+	Triangle *tr = (Triangle *) res->data;
+	QString msg;
+	msg.append("Наименьшая высота: ");
+	msg.append(QString::number(tr->getMinHeight()->length()));
 	msgbox->setText(QString(msg));
-}*/
+}
 
 list_t *solve(Point *plist, int n)
 {

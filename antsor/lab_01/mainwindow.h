@@ -30,6 +30,8 @@ private slots:
 	
 	void on_editButton_pressed();
 	
+	void on_editButton_released();
+	
 private:
     Ui::MainWindow *ui;
 };

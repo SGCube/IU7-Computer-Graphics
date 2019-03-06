@@ -27,6 +27,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
 void MainWindow::on_addButton_released()
 {
 	// флаг корректности данных
@@ -155,7 +156,7 @@ void MainWindow::on_drawButton_released()
 	else
 	{
 		/// вывод решения в статусное окно
-		//solution_msg(ui->msgFrame, &tr, &h, &hvertex);
+		solution_msg(ui->msgFrame, res);
 		
 		/// рисование решения
 		draw(ui->graphicsView->scene(), res, plist, rows);

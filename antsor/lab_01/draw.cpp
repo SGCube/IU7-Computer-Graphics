@@ -56,7 +56,7 @@ QPoint rb_corner(list_t *res)
 	while (cur)
 	{
 		tr = (Triangle *) cur->data;
-		xm_cur = fmax(fmax(tr->point(0)->x(), tr->point(0)->x()),
+		xm_cur = fmax(fmax(tr->point(0)->x(), tr->point(1)->x()),
 					  tr->point(2)->x());
 		ym_cur = fmax(fmax(tr->point(0)->y(), tr->point(1)->y()),
 					  tr->point(2)->y());
