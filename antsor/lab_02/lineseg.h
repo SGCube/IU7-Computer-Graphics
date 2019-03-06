@@ -7,7 +7,7 @@ class LineSeg
 {
 public:
 	LineSeg();
-	LineSeg(float x1, float y1, float x2, float y2);
+	LineSeg(int x1, int y1, int x2, int y2);
 	LineSeg(Point *p1, Point *p2);
 	
 	Point *p1();

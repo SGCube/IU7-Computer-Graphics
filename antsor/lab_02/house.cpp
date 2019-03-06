@@ -21,7 +21,6 @@
 #define WINDOW2_Y (WINDOW1_Y)
 
 
-
 House::House()
 {
 	pos.setX(0);

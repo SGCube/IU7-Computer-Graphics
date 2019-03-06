@@ -6,7 +6,7 @@ Ellipse::Ellipse()
 	pc.setY(0);
 }
 
-Ellipse::Ellipse(Point p, double a, double b)
+Ellipse::Ellipse(Point p, float a, float b)
 {
 	pc.setX(p.x());
 	pc.setY(p.y());
@@ -31,22 +31,22 @@ void Ellipse::setCenter(int x, int y)
 	pc.setY(y);
 }
 
-double Ellipse::a()
+float Ellipse::a()
 {
 	return ra;
 }
 
-double Ellipse::b()
+float Ellipse::b()
 {
 	return rb;
 }
 
-void Ellipse::setA(double a)
+void Ellipse::setA(float a)
 {
 	ra = a;
 }
 
-void Ellipse::setB(double b)
+void Ellipse::setB(float b)
 {
 	rb = b;
 }
