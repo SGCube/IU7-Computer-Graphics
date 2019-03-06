@@ -30,7 +30,8 @@ SOURCES += \
 		lineseg.cpp \
 		triangle.cpp \
         window.cpp \
-    ellipse.cpp
+    ellipse.cpp \
+    rectangle.cpp
 
 HEADERS += \
 		point.h \
@@ -38,7 +39,8 @@ HEADERS += \
 		lineseg.h \
 		triangle.h \
         window.h \
-    ellipse.h
+    ellipse.h \
+    rectangle.h
 
 FORMS += \
         window.ui
