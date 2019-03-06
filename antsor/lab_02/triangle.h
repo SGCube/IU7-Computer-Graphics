@@ -1,8 +1,8 @@
-#include "point.h"
-#include "lineseg.h"
-
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
+
+#include "point.h"
+#include "lineseg.h"
 
 class Triangle
 {

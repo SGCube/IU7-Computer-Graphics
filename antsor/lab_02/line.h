@@ -1,9 +1,8 @@
-#include "point.h"
-#include "lineseg.h"
-
 #ifndef LINE_H
 #define LINE_H
 
+#include "point.h"
+#include "lineseg.h"
 
 class Line
 {
