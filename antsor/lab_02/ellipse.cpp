@@ -25,12 +25,6 @@ void Ellipse::setCenter(Point p)
 	pc.setY(p.y());
 }
 
-void Ellipse::setCenter(int x, int y)
-{
-	pc.setX(x);
-	pc.setY(y);
-}
-
 float Ellipse::a()
 {
 	return ra;
@@ -49,14 +43,4 @@ void Ellipse::setA(float a)
 void Ellipse::setB(float b)
 {
 	rb = b;
-}
-
-int Ellipse::angle()
-{
-	return angle;
-}
-
-void Ellipse::setAngle(int ang)
-{
-	angle = ang;
 }

@@ -5,6 +5,9 @@
 #include "rectangle.h"
 #include "ellipse.h"
 #include "triangle.h"
+#include "arc.h"
+
+#define POINTS_N 1000
 
 #define BASE_W 100
 #define BASE_H 100
@@ -26,6 +29,9 @@
 #define WINDOW2_X (WINDOW1_X + WINDOW1_H + 10)
 #define WINDOW2_Y (WINDOW1_Y)
 
+#define START_X 300
+#define START_Y 300
+
 class House
 {
 public:
@@ -34,17 +40,16 @@ public:
 private:
 	Point pos;
 	
-	Rectangle base;
-	Triangle roof;
-	Ellipse roof_window;
+	Rectangle base;						// корпус дома
+	Point roof_peak_pos;				// позиция вершины крыши
+	Ellipse roof_window;				// окно крышы
 	
-	Ellipse bwindow1_arc;
-	Rectangle bwindow1_rect;
-	LineSeg bwindow1_line;
+	Arc base_window1_arc;				// дуга левого окна корпуса
+	LineSeg base_window1_line;			// "линия" левого окна корпуса
+	Rectangle base_window1_rect;		// основа левого окна корпуса
 	
-	Ellipse bwindow2;
-	LineSeg bwindow2_d1;
-	LineSeg bwindow2_d2;
+	Ellipse base_window2;				// правое окно корпуса
+	LineSeg base_window2_lines[2];		// "линии" правого окна корпуса
 };
 
 #endif // HOUSE_H

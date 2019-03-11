@@ -2,73 +2,41 @@
 
 Rectangle::Rectangle()
 {
-	tlp.setX(0);
-	tlp.setY(0);
-	brp.setX(10);
-	brp.setY(10);
-	angle = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		vert[i].setX(0);
+		vert[i].setY(0);
+	}
 }
 
-Rectangle::Rectangle(Point p1, Point p2, int ang = 0)
+Rectangle::Rectangle(Point p1, int w, int h)
 {
-	tlp.setX(p1.x());
-	tlp.setY(p1.y());
-	brp.setX(p2.x());
-	brp.setY(p2.y());
-	angle = ang;
-}
-
-Rectangle::Rectangle(int x1, int y1, int x2, int y2, int ang = 0)
-{
-	tlp.setX(x1);
-	tlp.setY(y1);
-	brp.setX(x2);
-	brp.setY(y2);
-	angle = ang;
+	vert[0].setX(p1.x());
+	vert[0].setY(p1.y());
+	
+	vert[1].setX(p1.x() + w);
+	vert[1].setY(p1.y());
+	
+	vert[2].setX(p1.x());
+	vert[2].setY(p1.y() + h);
+	
+	vert[3].setX(p1.x() + w);
+	vert[3].setY(p1.y() + h);
 }
 
 
-Point Rectangle::topleft()
+Point *Rectangle::vertex(int i)
 {
-	return &tlp;
+	if (i < 0 || i > 3)
+		return nullptr;
+	return &vert[i];
 }
 
-void Rectangle::setTopLeft(Point p)
+void Rectangle::setVertex(Point p, int i)
 {
-	tlp.setX(p.x());
-	tlp.setY(p.y());
-}
-
-void Rectangle::setTopLeft(int x, int y)
-{
-	tlp.setX(x);
-	tlp.setY(y);
-}
-
-
-Point Rectangle::bottomright()
-{
-	return &brp;
-}
-
-void Rectangle::setBottomRight(Point p)
-{
-	brp.setX(p.x());
-	brp.setY(p.y());
-}
-
-void Rectangle::setBottomRight(int x, int y)
-{
-	brp.setX(x);
-	brp.setY(y);
-}
-
-int Rectangle::angle()
-{
-	return angle;
-}
-
-void Rectangle::setAngle(int ang)
-{
-	angle = ang;
+	if (i >= 0 && i < 4)
+	{
+		vert[i].setX(p.x());
+		vert[i].setY(p.y());
+	}
 }

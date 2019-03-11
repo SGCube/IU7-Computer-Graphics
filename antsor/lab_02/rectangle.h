@@ -8,23 +8,13 @@ class Rectangle
 {
 public:
 	Rectangle();
-	Rectangle(Point p1, Point p2, int ang = 0);
-	Rectangle(int x1, int y1, int x2, int y2, int ang = 0);
+	Rectangle(Point p1, int w, int h);
 	
-	Point *topleft();
-	void setTopLeft(Point p);
-	void setTopLeft(int x, int y);
-	
-	Point *bottomright();
-	void setBottomRight(Point p);
-	void setBottomRight(int x, int y);
-	
-	int angle();
-	void setAngle(int ang);
+	Point *vertex(int i);
+	void setVertex(Point p, int i);
 	
 private:
-	Point tlp, brp;
-	int angle;
+	Point vert[4];
 };
 
 #endif // RECTANGLE_H
