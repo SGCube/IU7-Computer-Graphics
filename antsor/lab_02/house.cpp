@@ -45,6 +45,7 @@ void House::move(int dx, int dy)
 
 void House::draw(QGraphicsScene *scene)
 {
+	scene->clear();
 	base.draw(scene);
 	roof.draw(scene);
 	roof_window.draw(scene);
