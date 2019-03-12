@@ -33,7 +33,8 @@ SOURCES += \
     rectangle.cpp \
     house.cpp \
     arc.cpp \
-    outline.cpp
+    outline.cpp \
+    command.cpp
 
 HEADERS += \
 		point.h \

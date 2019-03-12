@@ -3,7 +3,7 @@
 
 #include "point.h"
 
-typedef enum { MOVE, SCALE, ROTATE } action_t;
+typedef enum { MOVE_COM, SCALE_COM, ROTATE_COM } action_t;
 
 struct command_t
 {
@@ -28,5 +28,9 @@ struct command_t
 		} rotarg;
 	} args;
 };
+
+command_t *movcom(float dx, float dy);
+command_t *sclcom(float kx, float ky, Point pm);
+command_t *rotcom(int deg, Point pc);
 
 #endif // COMMAND_H
