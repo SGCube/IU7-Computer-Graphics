@@ -5,16 +5,16 @@ class Point
 {
 public:
 	Point();
-	Point(int x, int y);
+	Point(float x, float y);
 	
-	int x();
-	int y();
-	void setX(int x);
-	void setY(int y);
+	float x();
+	float y();
+	void setX(float x);
+	void setY(float y);
 	
 private:
-	int xcoord;
-	int ycoord;
+	float xcoord;
+	float ycoord;
 };
 
 double dist(Point p1, Point p2);
