@@ -1,13 +1,10 @@
 #include "arc.h"
-#include <cmath>
-
-#define PI 3.14
+#include <QtMath>
 
 Arc::Arc(Point p, float a, float b, int angle)
 	: Outline::Outline(POINTS_N, line, false)
 {
-	float ang = 0;
-	float pi_angle = (float)angle * PI / 180;
+	float ang = 0, pi_angle = qDegreesToRadians(angle);
 	float dang = pi_angle / POINTS_N;
 	
 	for (int i = 0; i < POINTS_N && abs(ang) < abs(pi_angle); ang += dang, i++)
