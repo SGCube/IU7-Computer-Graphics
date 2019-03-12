@@ -43,6 +43,9 @@ void window::on_moveButton_released()
 		return;
 	}
 	
-	house_obj.move(dx, dy);
-	house_obj.draw(scene);
+	if (dx != 0 || dy != 0)
+	{
+		house_obj.move(dx, dy);
+		house_obj.draw(scene);
+	}
 }
