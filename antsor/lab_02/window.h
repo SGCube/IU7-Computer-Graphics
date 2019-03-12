@@ -26,6 +26,8 @@ private slots:
 	
 	void on_scaleButton_released();
 	
+	void on_rotateButton_released();
+	
 private:
 	Ui::window *ui;
 	QGraphicsScene *scene;

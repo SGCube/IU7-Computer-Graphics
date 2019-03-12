@@ -103,7 +103,7 @@ void window::on_rotateButton_released()
 	
 	bool correct = true;
 	int deg;
-	float xm, ym;
+	float xc, yc;
 	deg = degstr.toInt(&correct);
 	if (!correct)
 	{
@@ -111,14 +111,14 @@ void window::on_rotateButton_released()
 							  "Некорректное значение угла!");
 		return;
 	}
-	xc = xmstr.toFloat(&correct);
+	xc = xcstr.toFloat(&correct);
 	if (!correct)
 	{
 		QMessageBox::critical(this, "Ошибка",
 							  "Некорректное значение x центра!");
 		return;
 	}
-	yc = ymstr.toFloat(&correct);
+	yc = ycstr.toFloat(&correct);
 	if (!correct)
 	{
 		QMessageBox::critical(this, "Ошибка",
