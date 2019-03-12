@@ -3,12 +3,12 @@
 
 #include "ellipse.h"
 
-class Arc : public Ellipse
+class Arc : public Outline
 {
 public:
-	Arc(Point p = Point(0, 0), float a = 100, float b = 100, int ang = 180);
+	Arc(Point p = Point(0, 0), float a = 100, float b = 100, int angle = 180);
 private:
-	int angle;
+	Point line[POINTS_N];
 };
 
 #endif // ARC_H

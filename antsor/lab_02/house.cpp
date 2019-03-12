@@ -11,7 +11,7 @@ House::House(Point pos = Point(0, 0))
 				   WINDOW1_W, WINDOW1_H),
 	  base_window1_arc(Point(pos.x() + WINDOW1_X + WINDOW1_W / 2,
 							 pos.y() + WINDOW1_Y + WINDOW1_ARC_H),
-					   WINDOW1_W / 2, WINDOW1_ARC_H),
+					   WINDOW1_W / 2, WINDOW1_ARC_H, -180),
 	  base_window1_line(Point(pos.x() + WINDOW1_X + WINDOW1_W / 2,
 							  pos.y() + WINDOW1_Y),
 						Point(pos.x() + WINDOW1_X + WINDOW1_W / 2,

@@ -1,10 +1,18 @@
 #include "arc.h"
+#include <cmath>
 
-Arc::Arc(Point p, float a, float b, int ang) : Ellipse::Ellipse(p, a, b)
+#define PI 3.14
+
+Arc::Arc(Point p, float a, float b, int angle)
+	: Outline::Outline(POINTS_N, line, false)
 {
-	angle = ang;
-	if (ang == 0)
-		set_vamount(1);
-	else if (ang < 360)
-		set_vamount(vamount() / 360 * ang);
+	float ang = 0;
+	float pi_angle = (float)angle * PI / 180;
+	float dang = pi_angle / POINTS_N;
+	
+	for (int i = 0; i < POINTS_N && abs(ang) < abs(pi_angle); ang += dang, i++)
+	{
+		line[i].setX(a * cos(ang) + p.x());
+		line[i].setY(b * sin(ang) + p.y());
+	}
 }
