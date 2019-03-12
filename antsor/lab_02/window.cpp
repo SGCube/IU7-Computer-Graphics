@@ -94,3 +94,41 @@ void window::on_scaleButton_released()
 		house_obj.draw(scene);
 	}
 }
+
+void window::on_rotateButton_released()
+{
+	QString degstr = ui->angleEdit->text();
+	QString xcstr = ui->xmEdit->text();
+	QString ycstr = ui->ymEdit->text();
+	
+	bool correct = true;
+	int deg;
+	float xm, ym;
+	deg = degstr.toInt(&correct);
+	if (!correct)
+	{
+		QMessageBox::critical(this, "Ошибка",
+							  "Некорректное значение угла!");
+		return;
+	}
+	xc = xmstr.toFloat(&correct);
+	if (!correct)
+	{
+		QMessageBox::critical(this, "Ошибка",
+							  "Некорректное значение x центра!");
+		return;
+	}
+	yc = ymstr.toFloat(&correct);
+	if (!correct)
+	{
+		QMessageBox::critical(this, "Ошибка",
+							  "Некорректное значение y центра!");
+		return;
+	}
+	
+	if (deg != 0)
+	{
+		house_obj.rotate(deg, Point(xc, yc));
+		house_obj.draw(scene);
+	}
+}
