@@ -1,6 +1,11 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#define GVIEW_X 20
+#define GVIEW_Y 20
+#define GVIEW_W 600
+#define GVIEW_H 600
+
 #include <QMainWindow>
 #include "house.h"
 

@@ -9,6 +9,7 @@ window::window(QWidget *parent) :
 	ui->setupUi(this);
 	
 	scene = new QGraphicsScene();
+	scene->setSceneRect(0, 0, GVIEW_W, GVIEW_H);
 	ui->gView->setScene(scene);
 	
 	house_obj.draw(ui->gView->scene());

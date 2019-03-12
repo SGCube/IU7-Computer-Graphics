@@ -1,14 +1,17 @@
 ﻿#include "ellipse.h"
 #include <cmath>
 
+#define PI 3.14
+
 Ellipse::Ellipse(Point center = Point(0, 0), float a = 100, float b = 100)
 	: Outline::Outline(POINTS_N, line, true)
 {
-	float dx = 2 * a / POINTS_N;
-	float x = -a;
-	for (int i = 0; i < POINTS_N && x <= a; x += dx, i++)
+	float ang = 0, pi2 = 2 * 3.14;
+	float dang = pi2 / POINTS_N;
+	
+	for (int i = 0; i < POINTS_N && ang < pi2; ang += dang, i++)
 	{
-		line[i].setX(x + center.x());
-		line[i].setY(b * sqrt(1 - x * x / (a * a)) + center.y());
+		line[i].setX(a * cos(ang) + center.x());
+		line[i].setY(b * sin(ang) + center.y());
 	}
 }
