@@ -37,6 +37,7 @@ public:
 	House(Point pos);
 	
 	void move(int dx, int dy);
+	void scale(float kx, float ky, float xm, float ym);
 	
 	void draw(QGraphicsScene *scene);
 	

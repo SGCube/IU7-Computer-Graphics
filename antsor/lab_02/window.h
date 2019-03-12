@@ -24,6 +24,8 @@ public:
 private slots:
 	void on_moveButton_released();
 	
+	void on_scaleButton_released();
+	
 private:
 	Ui::window *ui;
 	QGraphicsScene *scene;
