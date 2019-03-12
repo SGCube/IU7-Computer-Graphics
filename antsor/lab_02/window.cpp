@@ -44,6 +44,10 @@ void window::on_moveButton_released()
 		return;
 	}
 	
+	command_t *com = movcom(dx, dy);
+	if (com)
+		comlist.prepend(com);
+	
 	if (dx != 0 || dy != 0)
 	{
 		house_obj.move(dx, dy);
@@ -89,6 +93,10 @@ void window::on_scaleButton_released()
 		return;
 	}
 	
+	command_t *com = sclcom(kx, ky, Point(xm, ym));
+	if (com)
+		comlist.prepend(com);
+	
 	if (kx != 1 || ky != 1)
 	{
 		house_obj.scale(kx, ky, Point(xm, ym));
@@ -126,6 +134,10 @@ void window::on_rotateButton_released()
 							  "Некорректное значение y центра!");
 		return;
 	}
+	
+	command_t *com = rotcom(deg, Point(xc, yc));
+	if (com)
+		comlist.prepend(com);
 	
 	if (deg != 0)
 	{
