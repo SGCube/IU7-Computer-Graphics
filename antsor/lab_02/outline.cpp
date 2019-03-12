@@ -57,6 +57,20 @@ void Outline::scale(float kx, float ky, Point pm)
 	}
 }
 
+void Outline::rotate(int deg, Point pc)
+{
+	float rad = qDegreesToRadians(deg);
+	float x, y;
+	float xc = pc.x(), yc = pc.y();
+	for (int i = 0; i < vertex_amount; i++)
+	{
+		x = vertex_ptr[i].x();
+		y = vertex_ptr[i].y();
+		vertex_ptr[i].setX(xc + (x - xc) * cos(rad) + (y - yc) * sin(rad));
+		vertex_ptr[i].setY(yc - (x - xc) * sin(rad) + (y - yc) * cos(rad));
+	}
+}
+
 void Outline::draw(QGraphicsScene *scene)
 {
 	if (vertex_ptr)

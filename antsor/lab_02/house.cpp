@@ -57,6 +57,19 @@ void House::scale(float kx, float ky, Point pm)
 	base_window2_lineh.scale(kx, ky, pm);
 }
 
+void House::rotate(int deg, Point pc)
+{
+	base.rotate(deg, pc);
+	roof.rotate(deg, pc);
+	roof_window.rotate(deg, pc);
+	base_window1.rotate(deg, pc);
+	base_window1_line.rotate(deg, pc);
+	base_window1_arc.rotate(deg, pc);
+	base_window2.rotate(deg, pc);
+	base_window2_linev.rotate(deg, pc);
+	base_window2_lineh.rotate(deg, pc);
+}
+
 void House::draw(QGraphicsScene *scene)
 {
 	scene->clear();
