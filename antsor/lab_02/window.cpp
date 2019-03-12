@@ -21,6 +21,7 @@ window::~window()
 {
 	delete ui;
 	delete scene;
+	comlist.clear();
 }
 
 void window::on_moveButton_released()

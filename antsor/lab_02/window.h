@@ -8,6 +8,7 @@
 
 #include <QMainWindow>
 #include "house.h"
+#include "command.h"
 
 namespace Ui {
 class window;
@@ -32,6 +33,7 @@ private:
 	Ui::window *ui;
 	QGraphicsScene *scene;
 	House house_obj;
+	QList<command_t> comlist;
 };
 
 #endif // WINDOW_H

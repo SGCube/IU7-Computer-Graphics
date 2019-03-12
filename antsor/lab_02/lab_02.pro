@@ -33,8 +33,7 @@ SOURCES += \
     rectangle.cpp \
     house.cpp \
     arc.cpp \
-    outline.cpp \
-    stack.cpp
+    outline.cpp
 
 HEADERS += \
 		point.h \
@@ -46,7 +45,6 @@ HEADERS += \
     house.h \
     arc.h \
     outline.h \
-    stack.h \
     command.h
 
 FORMS += \

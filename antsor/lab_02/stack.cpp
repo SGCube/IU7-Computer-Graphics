@@ -10,7 +10,7 @@ stack_t *create_node(void *data)
 	return node;
 }
 
-void push(stack_t **peak, void *data)
+void stack_push(stack_t **peak, void *data)
 {
 	if (!data || !peak)
 		return;
@@ -21,7 +21,7 @@ void push(stack_t **peak, void *data)
 	*peak = node;
 }
 
-void *pop(stack_t **peak)
+void *stack_pop(stack_t **peak)
 {
 	if (!peak || !*peak)
 		return nullptr;
@@ -32,7 +32,7 @@ void *pop(stack_t **peak)
 	return data;
 }
 
-void clear(stack_t **peak)
+void stack_clear(stack_t **peak)
 {
 	if (!peak)
 		return;
