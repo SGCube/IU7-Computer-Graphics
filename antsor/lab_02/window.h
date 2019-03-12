@@ -21,6 +21,9 @@ public:
 	explicit window(QWidget *parent = 0);
 	~window();
 	
+private slots:
+	void on_moveButton_released();
+	
 private:
 	Ui::window *ui;
 	QGraphicsScene *scene;
