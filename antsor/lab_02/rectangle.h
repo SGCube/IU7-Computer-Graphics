@@ -6,7 +6,6 @@
 class Rectangle : public Outline
 {
 public:
-	Rectangle();
 	Rectangle(Point p1, int w, int h);
 	
 private:

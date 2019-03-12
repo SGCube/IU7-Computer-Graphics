@@ -6,7 +6,6 @@
 class LineSeg : public Outline
 {
 public:
-	LineSeg();
 	LineSeg(Point p1, Point p2);
 	
 	double length();

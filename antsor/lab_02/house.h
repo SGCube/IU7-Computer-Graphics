@@ -33,13 +33,11 @@
 class House
 {
 public:
-	House();
+	House(Point pos);
 	
 	void draw(QGraphicsScene *scene);
 	
 private:
-	Point pos;
-	
 	Rectangle base;						// корпус дома
 	Triangle roof;						// крыша дома
 	Ellipse roof_window;				// окно крышы
@@ -49,8 +47,8 @@ private:
 	LineSeg base_window1_line;			// "линия" левого окна корпуса
 	
 	Ellipse base_window2;				// основа правого окна корпуса
-	LineSeg base_window2_lineh;			// "линии" правого окна корпуса
 	LineSeg base_window2_linev;			// "линии" правого окна корпуса
+	LineSeg base_window2_lineh;			// "линии" правого окна корпуса
 };
 
 #endif // HOUSE_H

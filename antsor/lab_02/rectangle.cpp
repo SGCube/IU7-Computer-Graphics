@@ -1,17 +1,7 @@
 #include "rectangle.h"
 
-Rectangle::Rectangle()
-{
-	for (int i = 0; i < 4; i++)
-	{
-		vertex[i].setX(0);
-		vertex[i].setY(0);
-	}
-	vertex_amount = 4;
-	vertex_ptr = vertex;
-}
-
-Rectangle::Rectangle(Point p1, int w, int h)
+Rectangle::Rectangle(Point p1 = Point(0, 0), int w = 0, int h = 0)
+	: Outline::Outline(4, vertex, true)
 {
 	vertex[0].setX(p1.x());
 	vertex[0].setY(p1.y());
@@ -24,7 +14,4 @@ Rectangle::Rectangle(Point p1, int w, int h)
 	
 	vertex[3].setX(p1.x() + w);
 	vertex[3].setY(p1.y() + h);
-	
-	vertex_amount = 4;
-	vertex_ptr = vertex;
 }

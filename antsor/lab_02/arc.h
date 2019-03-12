@@ -6,7 +6,7 @@
 class Arc : public Ellipse
 {
 public:
-	Arc(Point p, float a, float b);
+	Arc(Point p = Point(0, 0), float a = 100, float b = 100, int ang = 180);
 private:
 	int angle;
 };
