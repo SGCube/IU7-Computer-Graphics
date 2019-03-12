@@ -59,7 +59,7 @@ void Outline::scale(float kx, float ky, Point pm)
 
 void Outline::rotate(int deg, Point pc)
 {
-	float rad = qDegreesToRadians(deg);
+	float rad = qDegreesToRadians((float)deg);
 	float x, y;
 	float xc = pc.x(), yc = pc.y();
 	for (int i = 0; i < vertex_amount; i++)
