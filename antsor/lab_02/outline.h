@@ -22,7 +22,7 @@ private:
 	Point pos;
 	int vertex_amount;
 	Point *vertex_ptr;
-	bool is_locked;
+	bool is_closed;
 };
 
 #endif // OUTLINE_H

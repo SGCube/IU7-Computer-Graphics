@@ -2,6 +2,7 @@
 #define WINDOW_H
 
 #include <QMainWindow>
+#include "house.h"
 
 namespace Ui {
 class window;
@@ -17,6 +18,8 @@ public:
 	
 private:
 	Ui::window *ui;
+	
+	House house_obj;
 };
 
 #endif // WINDOW_H
