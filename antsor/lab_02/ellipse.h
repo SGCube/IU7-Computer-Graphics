@@ -1,11 +1,11 @@
 #ifndef ELLIPSE_H
 #define ELLIPSE_H
 
-#include "point.h"
+#include "outline.h"
 
 #define POINTS_N 1000
 
-class Ellipse
+class Ellipse : public Outline
 {
 public:
 	Ellipse();
@@ -22,7 +22,7 @@ public:
 private:
 	Point pc;
 	float ra, rb;
-	Point outline[4 * POINTS_N];
+	Point line[4 * POINTS_N];
 };
 
 #endif // ELLIPSE_H

@@ -32,7 +32,8 @@ SOURCES += \
     ellipse.cpp \
     rectangle.cpp \
     house.cpp \
-    arc.cpp
+    arc.cpp \
+    outline.cpp
 
 HEADERS += \
 		point.h \
@@ -42,7 +43,8 @@ HEADERS += \
     ellipse.h \
     rectangle.h \
     house.h \
-    arc.h
+    arc.h \
+    outline.h
 
 FORMS += \
         window.ui

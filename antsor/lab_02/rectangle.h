@@ -1,20 +1,16 @@
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
 
-#include "point.h"
-#include "lineseg.h"
+#include "outline.h"
 
-class Rectangle
+class Rectangle : public Outline
 {
 public:
 	Rectangle();
 	Rectangle(Point p1, int w, int h);
 	
-	Point *vertex(int i);
-	void setVertex(Point p, int i);
-	
 private:
-	Point vert[4];
+	Point vertex[4];
 };
 
 #endif // RECTANGLE_H

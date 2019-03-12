@@ -6,6 +6,7 @@
 #include "ellipse.h"
 #include "triangle.h"
 #include "arc.h"
+#include "outline.h"
 
 #define POINTS_N 1000
 
@@ -50,6 +51,36 @@ private:
 	
 	Ellipse base_window2;				// правое окно корпуса
 	LineSeg base_window2_lines[2];		// "линии" правого окна корпуса
+	
+	/*
+	Point base[4];						// корпус дома
+	Point roof_peak_pos;				// позиция вершины крыши
+	
+	Point roof_window[4 * POINTS_N];	// окно крышы
+	
+	Point base_window1_arc[POINTS_N];	// дуга левого окна корпуса
+	Point base_window1_line[2];			// "линия" левого окна корпуса
+	Point base_window1_rect[4];			// основа левого окна корпуса
+	
+	Point base_window2[4 * POINTS_N];	// правое окно корпуса
+	Point base_window2_linev[2];		// "линии" правого окна корпуса
+	Point base_window2_lineh[2];		// "линии" правого окна корпуса
+	*/
+	
+	/*
+	Outline base;						// корпус дома
+	Outline roof;						// крыша дома
+	
+	Outline roof_window;				// окно крышы
+	
+	Outline base_window1_arc;			// дуга левого окна корпуса
+	Outline base_window1_line;			// "линия" левого окна корпуса
+	Outline base_window1_rect;			// основа левого окна корпуса
+	
+	Outline base_window2;				// правое окно корпуса
+	Outline base_window2_linev;			// "линии" правого окна корпуса
+	Outline base_window2_lineh;			// "линии" правого окна корпуса
+	*/
 };
 
 #endif // HOUSE_H
