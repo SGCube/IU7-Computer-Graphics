@@ -4,7 +4,7 @@
 Arc::Arc(Point p, float a, float b, int angle)
 	: Outline::Outline(POINTS_N, line, false)
 {
-	float ang = 0, pi_angle = M_PI;
+	float ang = 0, pi_angle = qDegreesToRadians((float)angle);
 	float dang = pi_angle / POINTS_N;
 	
 	for (int i = 0; i < POINTS_N && abs(ang) < abs(pi_angle); ang += dang, i++)

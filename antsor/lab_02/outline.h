@@ -17,7 +17,7 @@ public:
 	
 	void move(int dx, int dy);
 	void scale(float kx, float ky, Point pm);
-	rotate(int deg, Point pc);
+	void rotate(int deg, Point pc);
 	
 	void draw(QGraphicsScene *scene);
 	
