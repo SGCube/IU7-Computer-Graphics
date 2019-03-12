@@ -8,10 +8,14 @@ window::window(QWidget *parent) :
 {
 	ui->setupUi(this);
 	
+	scene = new QGraphicsScene();
+	ui->gView->setScene(scene);
+	
 	house_obj.draw(ui->gView->scene());
 }
 
 window::~window()
 {
 	delete ui;
+	delete scene;
 }

@@ -18,7 +18,7 @@ public:
 	
 private:
 	Ui::window *ui;
-	
+	QGraphicsScene *scene;
 	House house_obj;
 };
 
