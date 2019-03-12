@@ -30,3 +30,12 @@ void set_rotate(command_t *com, int deg, Point pc)
 		com->args.rotarg.pc = pc;
 	}
 }
+
+void save_house(command_t *com, House &house_state)
+{
+	if (com)
+	{
+		com->type = ZEROSC_COM;
+		com->args.house_state = House(house_state);
+	}
+}

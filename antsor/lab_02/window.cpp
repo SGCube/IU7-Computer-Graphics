@@ -97,7 +97,10 @@ void window::on_scaleButton_released()
 	}
 	
 	command_t com = {};
-	set_scale(&com, kx, ky, Point(xm, ym));
+	if (kx == 0 || ky == 0)
+		save_house(&com, house_obj);
+	else
+		set_scale(&com, kx, ky, Point(xm, ym));
 	comlist.prepend(com);
 	ui->undoButton->setDisabled(false);
 	
@@ -164,6 +167,8 @@ void window::on_undoButton_released()
 							com.args.sclarg.pm);
 		else if (com.type == ROTATE_COM)
 			house_obj.rotate(-com.args.rotarg.deg, com.args.rotarg.pc);
+		else if (com.type == ZEROSC_COM)
+			house_obj = House(com.args.house_state);
 		
 		house_obj.draw(scene);
 		
