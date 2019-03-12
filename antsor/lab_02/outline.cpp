@@ -43,6 +43,18 @@ void Outline::move(int dx, int dy)
 	}
 }
 
+void Outline::scale(float kx, float ky, float xm, float ym)
+{
+	float x, y;
+	for (int i = 0; i < vertex_amount; i++)
+	{
+		x = vertex_ptr[i].x();
+		y = vertex_ptr[i].y();
+		vertex_ptr[i].setX(kx * x + (1 - kx) * xm);
+		vertex_ptr[i].setY(ky * y + (1 - ky) * ym);
+	}
+}
+
 void Outline::draw(QGraphicsScene *scene)
 {
 	if (vertex_ptr)

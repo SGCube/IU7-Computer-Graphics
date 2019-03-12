@@ -30,6 +30,7 @@ House::House(Point pos = Point(0, 0))
 {
 	
 }
+
 void House::move(int dx, int dy)
 {
 	base.move(dx, dy);
@@ -41,6 +42,19 @@ void House::move(int dx, int dy)
 	base_window2.move(dx, dy);
 	base_window2_linev.move(dx, dy);
 	base_window2_lineh.move(dx, dy);
+}
+
+void House::scale(float kx, float ky, float xm, float ym)
+{
+	base.scale(kx, ky, xm, ym);
+	roof.scale(kx, ky, xm, ym);
+	roof_window.scale(kx, ky, xm, ym);
+	base_window1.scale(kx, ky, xm, ym);
+	base_window1_line.scale(kx, ky, xm, ym);
+	base_window1_arc.scale(kx, ky, xm, ym);
+	base_window2.scale(kx, ky, xm, ym);
+	base_window2_linev.scale(kx, ky, xm, ym);
+	base_window2_lineh.scale(kx, ky, xm, ym);
 }
 
 void House::draw(QGraphicsScene *scene)
