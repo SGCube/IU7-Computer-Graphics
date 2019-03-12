@@ -30,6 +30,18 @@ House::House(Point pos = Point(0, 0))
 {
 	
 }
+void House::move(int dx, int dy)
+{
+	base.move(dx, dy);
+	roof.move(dx, dy);
+	roof_window.move(dx, dy);
+	base_window1.move(dx, dy);
+	base_window1_line.move(dx, dy);
+	base_window1_arc.move(dx, dy);
+	base_window2.move(dx, dy);
+	base_window2_linev.move(dx, dy);
+	base_window2_lineh.move(dx, dy);
+}
 
 void House::draw(QGraphicsScene *scene)
 {

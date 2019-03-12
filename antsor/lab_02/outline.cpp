@@ -34,6 +34,15 @@ void Outline::set_vamount(int n)
 		vertex_amount = n;
 }
 
+void Outline::move(int dx, int dy)
+{
+	for (int i = 0; i < vertex_amount; i++)
+	{
+		vertex_ptr[i].setX(vertex_ptr[i].x() + dx);
+		vertex_ptr[i].setY(vertex_ptr[i].x() + dy);
+	}
+}
+
 void Outline::draw(QGraphicsScene *scene)
 {
 	if (vertex_ptr)

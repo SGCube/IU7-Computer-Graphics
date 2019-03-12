@@ -15,6 +15,8 @@ public:
 	int vamount();
 	void set_vamount(int n);
 	
+	void move(int dx, int dy);
+	
 	void draw(QGraphicsScene *scene);
 	
 private:

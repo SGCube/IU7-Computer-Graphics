@@ -36,6 +36,8 @@ class House
 public:
 	House(Point pos);
 	
+	void move(int dx, int dy);
+	
 	void draw(QGraphicsScene *scene);
 	
 private:
