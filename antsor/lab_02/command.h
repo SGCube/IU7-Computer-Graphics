@@ -29,8 +29,8 @@ struct command_t
 	} args;
 };
 
-command_t *movcom(float dx, float dy);
-command_t *sclcom(float kx, float ky, Point pm);
-command_t *rotcom(int deg, Point pc);
+void set_move(command_t *com, float dx, float dy);
+void set_scale(command_t *com, float kx, float ky, Point pm);
+void set_rotate(command_t *com, int deg, Point pc);
 
 #endif // COMMAND_H

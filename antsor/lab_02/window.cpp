@@ -44,9 +44,9 @@ void window::on_moveButton_released()
 		return;
 	}
 	
-	command_t *com = movcom(dx, dy);
-	if (com)
-		comlist.prepend(com);
+	command_t com = {};
+	set_move(&com, dx, dy);
+	comlist.prepend(com);
 	
 	if (dx != 0 || dy != 0)
 	{
@@ -93,9 +93,9 @@ void window::on_scaleButton_released()
 		return;
 	}
 	
-	command_t *com = sclcom(kx, ky, Point(xm, ym));
-	if (com)
-		comlist.prepend(com);
+	command_t com = {};
+	set_scale(&com, kx, ky, Point(xm, ym));
+	comlist.prepend(com);
 	
 	if (kx != 1 || ky != 1)
 	{
@@ -135,9 +135,9 @@ void window::on_rotateButton_released()
 		return;
 	}
 	
-	command_t *com = rotcom(deg, Point(xc, yc));
-	if (com)
-		comlist.prepend(com);
+	command_t com = {};
+	set_rotate(&com, deg, Point(xc, yc));
+	comlist.prepend(com);
 	
 	if (deg != 0)
 	{
