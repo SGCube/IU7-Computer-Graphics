@@ -46,7 +46,8 @@ HEADERS += \
     house.h \
     arc.h \
     outline.h \
-    stack.h
+    stack.h \
+    command.h
 
 FORMS += \
         window.ui
