@@ -60,9 +60,19 @@ void Outline::draw(QGraphicsScene *scene)
 	if (vertex_ptr)
 	{
 		QPen pen = QPen(Qt::blue, 2, Qt::SolidLine, Qt::FlatCap);
+		int ibase = 0;
+		float dx, dy;
 		for (int i = 1; i < vertex_amount; i++)
-			scene->addLine(vertex_ptr[i - 1].x(), vertex_ptr[i - 1].y(),
-					vertex_ptr[i].x(), vertex_ptr[i].y(), pen);
+		{
+			dx = vertex_ptr[i].x() - vertex_ptr[ibase].x();
+			dy = vertex_ptr[i].y() - vertex_ptr[ibase].y();
+			if (abs(dx) >= 1 || abs(dy) >= 1)
+			{
+				scene->addLine(vertex_ptr[ibase].x(), vertex_ptr[ibase].y(),
+						vertex_ptr[i].x(), vertex_ptr[i].y(), pen);
+				ibase = i;
+			}
+		}
 		if (is_closed)
 			scene->addLine(vertex_ptr[vertex_amount - 1].x(),
 					vertex_ptr[vertex_amount - 1].y(),
