@@ -90,7 +90,7 @@ void window::on_scaleButton_released()
 	
 	if (kx != 1 || ky != 1)
 	{
-		house_obj.scale(kx, ky, xm, ym);
+		house_obj.scale(kx, ky, Point(xm, ym));
 		house_obj.draw(scene);
 	}
 }

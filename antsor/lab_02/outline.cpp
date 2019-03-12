@@ -1,3 +1,5 @@
+#include <QtMath>
+
 #include "outline.h"
 
 Outline::Outline(int vn = 0, Point *ptr = nullptr, bool closed = true)
@@ -43,15 +45,15 @@ void Outline::move(int dx, int dy)
 	}
 }
 
-void Outline::scale(float kx, float ky, float xm, float ym)
+void Outline::scale(float kx, float ky, Point pm)
 {
 	float x, y;
 	for (int i = 0; i < vertex_amount; i++)
 	{
 		x = vertex_ptr[i].x();
 		y = vertex_ptr[i].y();
-		vertex_ptr[i].setX(kx * x + (1 - kx) * xm);
-		vertex_ptr[i].setY(ky * y + (1 - ky) * ym);
+		vertex_ptr[i].setX(kx * x + (1 - kx) * pm.x());
+		vertex_ptr[i].setY(ky * y + (1 - ky) * pm.y());
 	}
 }
 
