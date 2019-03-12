@@ -39,7 +39,7 @@ void Outline::move(int dx, int dy)
 	for (int i = 0; i < vertex_amount; i++)
 	{
 		vertex_ptr[i].setX(vertex_ptr[i].x() + dx);
-		vertex_ptr[i].setY(vertex_ptr[i].x() + dy);
+		vertex_ptr[i].setY(vertex_ptr[i].y() + dy);
 	}
 }
 
