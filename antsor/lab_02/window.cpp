@@ -158,12 +158,12 @@ void window::on_undoButton_released()
 		command_t com = comlist.takeFirst();
 		
 		if (com.type == MOVE_COM)
-			house_obj.move(com.args.movarg.dx, com.args.movarg.dy);
+			house_obj.move(-com.args.movarg.dx, -com.args.movarg.dy);
 		else if (com.type == SCALE_COM)
-			house_obj.scale(com.args.sclarg.kx, com.args.sclarg.ky,
+			house_obj.scale(1 / com.args.sclarg.kx, 1 / com.args.sclarg.ky,
 							com.args.sclarg.pm);
 		else if (com.type == ROTATE_COM)
-			house_obj.rotate(com.args.rotarg.deg, com.args.rotarg.pc);
+			house_obj.rotate(-com.args.rotarg.deg, com.args.rotarg.pc);
 		
 		house_obj.draw(scene);
 		

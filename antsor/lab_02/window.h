@@ -29,6 +29,8 @@ private slots:
 	
 	void on_rotateButton_released();
 	
+	void on_undoButton_released();
+	
 private:
 	Ui::window *ui;
 	QGraphicsScene *scene;
