@@ -66,29 +66,29 @@ void window::on_scaleButton_released()
 	QString ymstr = ui->ymEdit->text();
 	
 	bool correct = true;
-	float kx, ky, xm, ym;
-	kx = kxstr.toFloat(&correct);
+	double kx, ky, xm, ym;
+	kx = kxstr.toDouble(&correct);
 	if (!correct)
 	{
 		QMessageBox::critical(this, "Ошибка",
 							  "Некорректное значение kx!");
 		return;
 	}
-	ky = kystr.toFloat(&correct);
+	ky = kystr.toDouble(&correct);
 	if (!correct)
 	{
 		QMessageBox::critical(this, "Ошибка",
 							  "Некорректное значение ky!");
 		return;
 	}
-	xm = xmstr.toFloat(&correct);
+	xm = xmstr.toDouble(&correct);
 	if (!correct)
 	{
 		QMessageBox::critical(this, "Ошибка",
 							  "Некорректное значение x центра!");
 		return;
 	}
-	ym = ymstr.toFloat(&correct);
+	ym = ymstr.toDouble(&correct);
 	if (!correct)
 	{
 		QMessageBox::critical(this, "Ошибка",
@@ -119,7 +119,7 @@ void window::on_rotateButton_released()
 	
 	bool correct = true;
 	int deg;
-	float xc, yc;
+	double xc, yc;
 	deg = degstr.toInt(&correct);
 	if (!correct)
 	{
@@ -127,14 +127,14 @@ void window::on_rotateButton_released()
 							  "Некорректное значение угла!");
 		return;
 	}
-	xc = xcstr.toFloat(&correct);
+	xc = xcstr.toDouble(&correct);
 	if (!correct)
 	{
 		QMessageBox::critical(this, "Ошибка",
 							  "Некорректное значение x центра!");
 		return;
 	}
-	yc = ycstr.toFloat(&correct);
+	yc = ycstr.toDouble(&correct);
 	if (!correct)
 	{
 		QMessageBox::critical(this, "Ошибка",

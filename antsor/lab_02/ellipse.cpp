@@ -1,11 +1,11 @@
 ﻿#include "ellipse.h"
 #include <QtMath>
 
-Ellipse::Ellipse(Point center = Point(0, 0), float a = 100, float b = 100)
+Ellipse::Ellipse(Point center = Point(0, 0), double a = 100, double b = 100)
 	: Outline::Outline(POINTS_N, line, true)
 {
-	float ang = 0, pi2 = 2 * M_PI;
-	float dang = pi2 / POINTS_N;
+	double ang = 0, pi2 = 2 * M_PI;
+	double dang = pi2 / POINTS_N;
 	
 	for (int i = 0; i < POINTS_N && ang < pi2; ang += dang, i++)
 	{

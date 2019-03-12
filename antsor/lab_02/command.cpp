@@ -1,6 +1,6 @@
 #include "command.h"
 
-void set_move(command_t *com, float dx, float dy)
+void set_move(command_t *com, double dx, double dy)
 {
 	if (com)
 	{
@@ -10,7 +10,7 @@ void set_move(command_t *com, float dx, float dy)
 	}
 }
 
-void set_scale(command_t *com, float kx, float ky, Point pm)
+void set_scale(command_t *com, double kx, double ky, Point pm)
 {
 	if (com)
 	{

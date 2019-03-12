@@ -44,7 +44,7 @@ void House::move(int dx, int dy)
 	base_window2_lineh.move(dx, dy);
 }
 
-void House::scale(float kx, float ky, Point pm)
+void House::scale(double kx, double ky, Point pm)
 {
 	base.scale(kx, ky, pm);
 	roof.scale(kx, ky, pm);

@@ -8,7 +8,7 @@
 class Ellipse : public Outline
 {
 public:
-	Ellipse(Point center, float a, float b);
+	Ellipse(Point center, double a, double b);
 	
 private:
 	Point line[POINTS_N];

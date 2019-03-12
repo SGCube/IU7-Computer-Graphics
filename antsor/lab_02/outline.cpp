@@ -45,9 +45,9 @@ void Outline::move(int dx, int dy)
 	}
 }
 
-void Outline::scale(float kx, float ky, Point pm)
+void Outline::scale(double kx, double ky, Point pm)
 {
-	float x, y;
+	double x, y;
 	for (int i = 0; i < vertex_amount; i++)
 	{
 		x = vertex_ptr[i].x();
@@ -59,9 +59,9 @@ void Outline::scale(float kx, float ky, Point pm)
 
 void Outline::rotate(int deg, Point pc)
 {
-	float rad = qDegreesToRadians((float)deg);
-	float x, y;
-	float xc = pc.x(), yc = pc.y();
+	double rad = qDegreesToRadians((double)deg);
+	double x, y;
+	double xc = pc.x(), yc = pc.y();
 	for (int i = 0; i < vertex_amount; i++)
 	{
 		x = vertex_ptr[i].x();
@@ -77,7 +77,7 @@ void Outline::draw(QGraphicsScene *scene)
 	{
 		QPen pen = QPen(Qt::blue, 2, Qt::SolidLine, Qt::FlatCap);
 		int ibase = 0;
-		float dx, dy;
+		double dx, dy;
 		for (int i = 1; i < vertex_amount; i++)
 		{
 			dx = vertex_ptr[i].x() - vertex_ptr[ibase].x();

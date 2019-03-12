@@ -13,13 +13,13 @@ struct command_t
 	{
 		struct
 		{
-			float dx;
-			float dy;
+			double dx;
+			double dy;
 		} movarg;
 		struct
 		{
-			float kx;
-			float ky;
+			double kx;
+			double ky;
 			Point pm;
 		} sclarg;
 		struct
@@ -31,8 +31,8 @@ struct command_t
 	} args;
 };
 
-void set_move(command_t *com, float dx, float dy);
-void set_scale(command_t *com, float kx, float ky, Point pm);
+void set_move(command_t *com, double dx, double dy);
+void set_scale(command_t *com, double kx, double ky, Point pm);
 void set_rotate(command_t *com, int deg, Point pc);
 void save_house(command_t *com, House &house_state);
 

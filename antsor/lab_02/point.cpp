@@ -8,35 +8,35 @@ Point::Point()
 	ycoord = 0;
 }
 
-Point::Point(float x, float y)
+Point::Point(double x, double y)
 {
 	xcoord = x;
 	ycoord = y;
 }
 
-float Point::x()
+double Point::x()
 {
 	return xcoord;
 }
 
-float Point::y()
+double Point::y()
 {
 	return ycoord;
 }
 
-void Point::setX(float x)
+void Point::setX(double x)
 {
 	xcoord = x;
 }
 
-void Point::setY(float y)
+void Point::setY(double y)
 {
 	ycoord = y;
 }
 
 double dist(Point p1, Point p2)
 {
-	float dx = p2.x() - p1.x();
-	float dy = p2.y() - p1.y();
+	double dx = p2.x() - p1.x();
+	double dy = p2.y() - p1.y();
 	return sqrt(dx * dx + dy * dy);
 }
