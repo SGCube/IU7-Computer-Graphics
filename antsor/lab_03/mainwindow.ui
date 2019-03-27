@@ -38,9 +38,9 @@
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>660</x>
+      <x>670</x>
       <y>30</y>
-      <width>281</width>
+      <width>261</width>
       <height>602</height>
      </rect>
     </property>
@@ -135,7 +135,7 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QComboBox" name="comboBox">
+        <widget class="QComboBox" name="algBox">
          <property name="font">
           <font>
            <pointsize>12</pointsize>
@@ -413,7 +413,7 @@
      <rect>
       <x>660</x>
       <y>660</y>
-      <width>281</width>
+      <width>271</width>
       <height>51</height>
      </rect>
     </property>

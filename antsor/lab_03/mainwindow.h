@@ -28,10 +28,11 @@ private slots:
 	
 private:
 	Ui::MainWindow *ui;
-	QPixmap pixmap;
-	QColor color;
-	double x1, y1, x2, y2;
 	QGraphicsScene scene;
+	QImage img;
+	QColor color;
+	
+	double x1, y1, x2, y2;
 };
 
 #endif // MAINWINDOW_H

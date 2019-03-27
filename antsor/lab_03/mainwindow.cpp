@@ -1,32 +1,32 @@
 #include <QMessageBox>
 #include <QPainter>
 
+#include <math.h>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
+#include "point.h"
+#include "draw.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow),
-	pixmap(640, 640),
-	color(255, 0, 0),
-	scene(0, 0, 640, 640)
+	scene(0, 0, 640, 640),
+	img(640, 640, QImage::Format_RGB32),
+	color(255, 0, 0)
 {
 	ui->setupUi(this);
 	ui->gView->setScene(&scene);
 	
-	pixmap.fill(QColor(255, 255, 255));
-	scene.addPixmap(pixmap);
+	img.fill(QColor(255, 255, 255));
+	scene.addPixmap(QPixmap::fromImage(img));
 }
 
 MainWindow::~MainWindow()
 {
 	delete ui;
 }
-
-/*void paintEvent(QPaintEvent *event)
-{
-	
-}*/
 
 void MainWindow::on_drawLineBtn_released()
 {
@@ -65,13 +65,18 @@ void MainWindow::on_drawLineBtn_released()
 		return;
 	}
 	
-	QPainter painter(&pixmap);
+	QPainter painter(&img);
 	QPen pen(color);
 	
-	painter.setPen(pen);
-	painter.drawLine(x1, y1, x2, y2);
+	if (ui->algBox->currentIndex() == 0)
+		draw_line_dda(&img, Point(x1, y1), Point(x2, y2), color);
+	else if (ui->algBox->currentIndex() == 4)
+	{
+		painter.setPen(pen);
+		painter.drawLine(x1, y1, x2, y2);
+	}
 	
-	scene.addPixmap(pixmap);
+	scene.addPixmap(QPixmap::fromImage(img));
 }
 
 void MainWindow::on_bgcolBtn_released()
@@ -82,6 +87,6 @@ void MainWindow::on_bgcolBtn_released()
 void MainWindow::on_clearButton_released()
 {
     scene.clear();
-	pixmap.fill(QColor(255, 255, 255));
-	scene.addPixmap(pixmap);
+	img.fill(QColor(255, 255, 255));
+	scene.addPixmap(QPixmap::fromImage(img));
 }
