@@ -26,6 +26,8 @@ private slots:
 	
 	void on_clearButton_released();
 	
+	void on_palletteBtn_released();
+	
 private:
 	Ui::MainWindow *ui;
 	QGraphicsScene scene;
@@ -33,6 +35,8 @@ private:
 	QColor color;
 	
 	double x1, y1, x2, y2;
+	
+	void set_colorFrame();
 };
 
 #endif // MAINWINDOW_H
