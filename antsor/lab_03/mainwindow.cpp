@@ -80,6 +80,10 @@ void MainWindow::on_drawLineBtn_released()
 	
 	if (ui->algBox->currentIndex() == 0)
 		draw_line_dda(&img, Point(x1, y1), Point(x2, y2), color);
+	else if (ui->algBox->currentIndex() == 1)
+		draw_line_brez_real(&img, Point(x1, y1), Point(x2, y2), color);
+	else if (ui->algBox->currentIndex() == 2)
+		draw_line_brez_int(&img, Point(x1, y1), Point(x2, y2), color);
 	else if (ui->algBox->currentIndex() == 4)
 	{
 		painter.setPen(pen);

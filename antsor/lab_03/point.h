@@ -5,18 +5,18 @@ class Point
 {
 public:
 	Point();
-	Point(double x, double y);
+	Point(int x, int y);
 	
-	double x();
-	double y();
-	void setX(double x);
-	void setY(double y);
+	int x();
+	int y();
+	void setX(int x);
+	void setY(int y);
 	
 	bool operator==(const Point &p);
 	
 private:
-	double xcoord;
-	double ycoord;
+	int xcoord;
+	int ycoord;
 };
 
 double dist(Point p1, Point p2);

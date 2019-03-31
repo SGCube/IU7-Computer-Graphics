@@ -8,28 +8,28 @@ Point::Point()
 	ycoord = 0;
 }
 
-Point::Point(double x, double y)
+Point::Point(int x, int y)
 {
 	xcoord = x;
 	ycoord = y;
 }
 
-double Point::x()
+int Point::x()
 {
 	return xcoord;
 }
 
-double Point::y()
+int Point::y()
 {
 	return ycoord;
 }
 
-void Point::setX(double x)
+void Point::setX(int x)
 {
 	xcoord = x;
 }
 
-void Point::setY(double y)
+void Point::setY(int y)
 {
 	ycoord = y;
 }
@@ -41,7 +41,7 @@ bool Point::operator==(const Point &p)
 
 double dist(Point p1, Point p2)
 {
-	double dx = p2.x() - p1.x();
-	double dy = p2.y() - p1.y();
+	int dx = p2.x() - p1.x();
+	int dy = p2.y() - p1.y();
 	return sqrt(dx * dx + dy * dy);
 }
