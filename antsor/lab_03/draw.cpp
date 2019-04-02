@@ -2,6 +2,8 @@
 
 #include "draw.h"
 
+#define MAX_INTENS 255
+
 template <typename T>
 int sgn(T x)
 {
@@ -36,7 +38,7 @@ void draw_line_dda(QImage *img, Point p1, Point p2, QColor color)
 	}
 }
 
-void draw_line_brez_real(QImage *img, Point p1, Point p2, QColor color)
+void draw_line_bres_real(QImage *img, Point p1, Point p2, QColor color)
 {
 	if (p1 == p2)
 	{
@@ -62,7 +64,7 @@ void draw_line_brez_real(QImage *img, Point p1, Point p2, QColor color)
 	double m = dy / dx;
 	double e = m - 0.5;
 	
-	for (int i = 1; i <= dx + 1; i += 1)
+	for (int i = 0; i < dx; i++)
 	{
 		img->setPixel(x, y, color.rgb());
 		if (e >= 0)
@@ -81,7 +83,7 @@ void draw_line_brez_real(QImage *img, Point p1, Point p2, QColor color)
 	}
 }
 
-void draw_line_brez_int(QImage *img, Point p1, Point p2, QColor color)
+void draw_line_bres_int(QImage *img, Point p1, Point p2, QColor color)
 {
 	if (p1 == p2)
 	{
@@ -97,7 +99,7 @@ void draw_line_brez_int(QImage *img, Point p1, Point p2, QColor color)
 	bool xchg = false;
 	if (dy > dx)
 	{
-		double t = dx;
+		int t = dx;
 		dx = dy;
 		dy = t;
 		xchg = true;
@@ -107,7 +109,7 @@ void draw_line_brez_int(QImage *img, Point p1, Point p2, QColor color)
 	int ddy = 2 * dy;
 	int e = ddy - dx;
 	
-	for (int i = 1; i <= dx + 1; i += 1)
+	for (int i = 0; i < dx; i++)
 	{
 		img->setPixel(x, y, color.rgb());
 		if (e >= 0)
@@ -123,5 +125,53 @@ void draw_line_brez_int(QImage *img, Point p1, Point p2, QColor color)
 		else
 			x += sx;
 		e += ddy;
+	}
+}
+
+void draw_line_bres_aa(QImage *img, Point p1, Point p2, QColor color)
+{
+	if (p1 == p2)
+	{
+		img->setPixel(p1.x(), p1.y(), color.rgb());
+		return;
+	}
+	int x = p1.x(), y = p1.y();
+	double dx = p2.x() - p1.x(), dy = p2.y() - p1.y();
+	int sx = sgn(dx), sy = sgn(dy);
+	dx = abs(dx);
+	dy = abs(dy);
+	
+	bool xchg = false;
+	if (dy > dx)
+	{
+		double t = dx;
+		dx = dy;
+		dy = t;
+		xchg = true;
+	}
+	
+	double tang = dx == 0 ? 0 : dy / dx;
+	double e = (double)MAX_INTENS / 2;
+	double m = tang * MAX_INTENS;
+	double w = MAX_INTENS - m;
+	
+	for (int i = 0; i < dx; i++)
+	{
+		color.setAlpha((MAX_INTENS - e) / 255);
+		img->setPixel(x, y, color.rgba());
+		if (e >= w)
+		{
+			x += sx;
+			y += sy;
+			e -= w;
+		}
+		else
+		{
+			if (xchg)
+				y += sy;
+			else
+				x += sx;
+			e += m;
+		}
 	}
 }
