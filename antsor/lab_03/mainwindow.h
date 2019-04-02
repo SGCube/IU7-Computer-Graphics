@@ -28,13 +28,16 @@ private slots:
 	
 	void on_palletteBtn_released();
 	
+	void on_drawSunBtn_released();
+	
 private:
 	Ui::MainWindow *ui;
 	QGraphicsScene scene;
 	QImage img;
 	QColor color;
 	
-	double x1, y1, x2, y2;
+	int x1, y1, x2, y2;
+	double angle, len;
 	
 	void set_colorFrame();
 };

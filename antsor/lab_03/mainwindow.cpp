@@ -1,6 +1,7 @@
 #include <QMessageBox>
 #include <QColorDialog>
 #include <QPainter>
+#include <QtMath>
 
 #include <math.h>
 
@@ -46,28 +47,28 @@ void MainWindow::on_drawLineBtn_released()
 	QString y2str = ui->y2Edit->text();
 	
 	bool correct = true;
-	x1 = x1str.toDouble(&correct);
+	x1 = x1str.toInt(&correct);
 	if (!correct)
 	{
 		QMessageBox::critical(this, "Ошибка",
 							  "Некорректное значение x начальной точки!");
 		return;
 	}
-	y1 = y1str.toDouble(&correct);
+	y1 = y1str.toInt(&correct);
 	if (!correct)
 	{
 		QMessageBox::critical(this, "Ошибка",
 							  "Некорректное значение y начальной точки!");
 		return;
 	}
-	x2 = x2str.toDouble(&correct);
+	x2 = x2str.toInt(&correct);
 	if (!correct)
 	{
 		QMessageBox::critical(this, "Ошибка",
 							  "Некорректное значение x конечной точки!");
 		return;
 	}
-	y2 = y2str.toDouble(&correct);
+	y2 = y2str.toInt(&correct);
 	if (!correct)
 	{
 		QMessageBox::critical(this, "Ошибка",
@@ -77,6 +78,7 @@ void MainWindow::on_drawLineBtn_released()
 	
 	QPainter painter(&img);
 	QPen pen(color);
+	painter.setPen(pen);
 	
 	if (ui->algBox->currentIndex() == 0)
 		draw_line_dda(&img, Point(x1, y1), Point(x2, y2), color);
@@ -87,10 +89,7 @@ void MainWindow::on_drawLineBtn_released()
 	else if (ui->algBox->currentIndex() == 3)
 		draw_line_bres_aa(&img, Point(x1, y1), Point(x2, y2), color);
 	else if (ui->algBox->currentIndex() == 4)
-	{
-		painter.setPen(pen);
 		painter.drawLine(x1, y1, x2, y2);
-	}
 	
 	scene.addPixmap(QPixmap::fromImage(img));
 }
@@ -116,4 +115,59 @@ void MainWindow::on_palletteBtn_released()
 		color = newcolor;
 		set_colorFrame();
 	}
+}
+
+void MainWindow::on_drawSunBtn_released()
+{
+	QString angle_str = ui->angleEdit->text();
+	QString len_str = ui->lenEdit->text();
+	
+	bool correct = true;
+	angle = angle_str.toDouble(&correct);
+	if (!correct || angle < 0)
+	{
+		QMessageBox::critical(this, "Ошибка",
+							  "Некорректное значение x начальной точки!");
+		return;
+	}
+	len = len_str.toDouble(&correct);
+	if (!correct || len <= 0)
+	{
+		QMessageBox::critical(this, "Ошибка",
+							  "Некорректное значение y начальной точки!");
+		return;
+	}
+	
+	Point center(320, 320);
+	
+	double rad = qDegreesToRadians(angle);
+	const double pi2 = 2 * M_PI;
+	
+	void (*method)(QImage*, Point, Point, QColor) = nullptr;
+	
+	QPainter painter(&img);
+	QPen pen(color);
+	painter.setPen(pen);
+	
+	if (ui->algBox->currentIndex() == 0)
+		method = draw_line_dda;
+	else if (ui->algBox->currentIndex() == 1)
+		method = draw_line_bres_real;
+	else if (ui->algBox->currentIndex() == 2)
+		method = draw_line_bres_int;
+	else if (ui->algBox->currentIndex() == 3)
+		method = draw_line_bres_aa;
+	
+	for (double cur_ang = 0; cur_ang < pi2; cur_ang += rad)
+	{
+		Point endp(center.x() + len * qCos(cur_ang),
+				   center.y() - len * qSin(cur_ang));
+		if (method)
+			method(&img, center, endp, color);
+		else
+			painter.drawLine(center.x(), center.y(),
+							 endp.x(), endp.y());
+	}
+	
+	scene.addPixmap(QPixmap::fromImage(img));
 }
