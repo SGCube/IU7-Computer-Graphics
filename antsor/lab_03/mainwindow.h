@@ -37,7 +37,8 @@ private:
 	QColor color;
 	
 	int x1, y1, x2, y2;
-	double angle, len;
+	int angle;
+	double len;
 	
 	void set_colorFrame();
 };

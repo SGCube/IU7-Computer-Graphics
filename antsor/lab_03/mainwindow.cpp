@@ -123,25 +123,20 @@ void MainWindow::on_drawSunBtn_released()
 	QString len_str = ui->lenEdit->text();
 	
 	bool correct = true;
-	angle = angle_str.toDouble(&correct);
+	angle = angle_str.toInt(&correct);
 	if (!correct || angle < 0)
 	{
 		QMessageBox::critical(this, "Ошибка",
-							  "Некорректное значение x начальной точки!");
+							  "Некорректное значение угла!");
 		return;
 	}
 	len = len_str.toDouble(&correct);
 	if (!correct || len <= 0)
 	{
 		QMessageBox::critical(this, "Ошибка",
-							  "Некорректное значение y начальной точки!");
+							  "Некорректное значение длины!");
 		return;
 	}
-	
-	Point center(320, 320);
-	
-	double rad = qDegreesToRadians(angle);
-	const double pi2 = 2 * M_PI;
 	
 	void (*method)(QImage*, Point, Point, QColor) = nullptr;
 	
@@ -158,10 +153,18 @@ void MainWindow::on_drawSunBtn_released()
 	else if (ui->algBox->currentIndex() == 3)
 		method = draw_line_bres_aa;
 	
+	const double pi2 = 2 * M_PI;
+	double rad = qDegreesToRadians((double)(angle % 360));
+	if (angle % 360 == 0)
+		rad = pi2;
+	
+	Point center(320, 320);
+	Point endp(320, 320);
+	
 	for (double cur_ang = 0; cur_ang < pi2; cur_ang += rad)
 	{
-		Point endp(center.x() + len * qCos(cur_ang),
-				   center.y() - len * qSin(cur_ang));
+		endp.setX(center.x() + len * qCos(cur_ang));
+		endp.setY(center.y() - len * qSin(cur_ang));
 		if (method)
 			method(&img, center, endp, color);
 		else
