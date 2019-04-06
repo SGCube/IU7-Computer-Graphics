@@ -20,10 +20,14 @@ public:
 private slots:
     void on_build_clicked();
 
+    void on_build_sp_clicked();
+
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
-    QPixmap px;
+
 };
 
 #endif // MAINWINDOW_H

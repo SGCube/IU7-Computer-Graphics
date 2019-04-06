@@ -93,7 +93,7 @@ void MainWindow::on_build_clicked()
     int col = ui->colour->currentIndex();
     int bgc_col = ui->bgc->isChecked();
     if (alg == 0)
-        draw_cda(sX, sY, eX, eY, col, bgc_col, scene, px);
+        draw_dda(sX, sY, eX, eY, col, bgc_col, scene);
     if (alg == 1)
         draw_real(sX, sY, eX, eY, col, bgc_col, scene);
     if (alg == 2)
@@ -102,4 +102,30 @@ void MainWindow::on_build_clicked()
         draw_step(sX, sY, eX, eY, col, bgc_col, scene);
     if (alg == 4)
         draw_library(sX, sY, eX, eY, col, bgc_col, scene);
+}
+
+void MainWindow::on_build_sp_clicked()
+{
+    QString deg = ui->deg->text();
+    if (deg == NULL)
+    {
+        QMessageBox::critical(this, "Ошибка", "Введите угол!");
+        return;
+    }
+    int check = check_point(deg);
+    if (check != 0)
+    {
+        QMessageBox::critical(this, "Ошибка", "Введите корректный угол!");
+        return;
+    }
+    int bgc_col = ui->bgc_2->isChecked();
+    int alg = ui->algor_2->currentIndex();
+    int col = ui->colour_2->currentIndex();
+    float degr = deg.toFloat();
+    draw_spectrum(col, bgc_col, alg, degr, scene);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    scene->clear();
 }

@@ -5,54 +5,40 @@
 #include <QPixmap>
 #include <QDebug>
 
+#define R 150
+
 void draw_library(float sX, float sY, float eX, float eY, int col, int bgc_col, QGraphicsScene *scene)
 {
+    QPen pen;
     if (bgc_col == 1)
-    {
-        QPen pen(Qt::white);
-        pen.setWidth(1);
-        scene->addLine(sX, -sY, eX, -eY, pen);
-    }
+        pen.setColor("white");
     else if (col == 0)
-    {
-        QPen pen(Qt::red);
-        pen.setWidth(1);
-        scene->addLine(sX, -sY, eX, -eY, pen);
-    }
-
+        pen.setColor("red");
     else if (col == 1)
-    {
-        QPen pen(Qt::green);
-        pen.setWidth(1);
-        scene->addLine(sX, -sY, eX, -eY, pen);
-    }
+        pen.setColor("green");
     else if (col == 2)
-    {
-        QPen pen(Qt::blue);
-        pen.setWidth(1);
-        scene->addLine(sX, -sY, eX, -eY, pen);
-    }
-    else if (col == 3)
-    {
-        QPen pen(Qt::black);
-        pen.setWidth(1);
-        scene->addLine(sX, -sY, eX, -eY, pen);
-    }
+        pen.setColor("blue");
+    else
+        pen.setColor("black");
+    pen.setWidth(1);
+    scene->addLine(sX, -sY, eX, -eY, pen);
 }
 
-void draw_cda(float sX, float sY, float eX, float eY, int col, int bgc_col, QGraphicsScene *scene, QPixmap px)
+void draw_dda(float sX, float sY, float eX, float eY, int col, int bgc_col, QGraphicsScene *scene)
 {
-    QImage img = px.toImage();
-    QRgb value;
-    value = qRgb(255,0,0);
 
-    for(int i=0; i < 100; i++)
-    {
-        for(int j=0; j < 200; j++)
-            img.setPixel(i, j, value);
-    }
-    img.setPixel(1, 1, value);
-    px = px.fromImage(img);
+    QPen pen;
+    pen.setWidth(1);
+    if (bgc_col == 1)
+        pen.setColor("white");
+    else if (col == 0)
+        pen.setColor("red");
+    else if (col == 1)
+        pen.setColor("green");
+    else if (col == 2)
+        pen.setColor("blue");
+    else
+        pen.setColor("black");
     double dx = eX - sX;
     double dy = eY - sY;
     double l;
@@ -67,62 +53,64 @@ void draw_cda(float sX, float sY, float eX, float eY, int col, int bgc_col, QGra
     int i = 1;
     while (i <= l)
     {
-        //scene->addLine(qFloor(x), -(qFloor(y-1)), qFloor(x), -(qFloor(y-1)), pen);
-        //qDebug() << qFloor(x) << -(qFloor(y-1));
+        scene->addRect(my_round(x), -my_round(y), 1, 1, pen);
         x += sx;
         y += sy;
         i++;
     }
-
 }
 
 void draw_real(float sX, float sY, float eX, float eY, int col, int bgc_col, QGraphicsScene *scene)
 {
-    QPen pen(Qt::green);
+    QPen pen;
     pen.setWidth(1);
+    if (bgc_col == 1)
+        pen.setColor("white");
+    else if (col == 0)
+        pen.setColor("red");
+    else if (col == 1)
+        pen.setColor("green");
+    else if (col == 2)
+        pen.setColor("blue");
+    else
+        pen.setColor("black");
     double x = sX;
     double y = sY;
     double dx = eX - sX;
     double dy = eY - sY;
-    double sx, sy;
-    if (dx > 0)
-        sx = 1;
-    else if (dx == 0)
-        sx = 0;
-    else
-        sx = -1;
-    if (dy > 0)
-        sy = 1;
-    else if (dy == 0)
-        sy = 0;
-    else
-        sy = -1;
+    int sign_x = (dx > 0 ? 1 : -1);
+    int sign_y = (dy > 0 ? 1 : -1);
     dx = qFabs(dx);
     dy = qFabs(dy);
     int obmen;
     if (dx > dy)
         obmen = 0;
     else
+    {
         obmen = 1;
+        double t = dx;
+        dx = dy;
+        dy = t;
+    }
     double m = dy / dx;
     double e = m - 0.5;
     for (int i = 0; i <= dx; i++)
     {
-        scene->addLine(x, -y, x, -y, pen);
+        scene->addRect(x, -y, 1, 1, pen);
         if (e >=0)
         {
             if (obmen == 0)
-                y += sy;
+                y += sign_y;
             else
-                x += sx;
+                x += sign_x;
             e -= 1;
         }
         if (e < 0)
         {
             if (obmen == 0)
-                x += sx;
+                x += sign_x;
             else
-                y += sy;
+                y += sign_y;
         }
         e += m;
     }
@@ -130,8 +118,18 @@ void draw_real(float sX, float sY, float eX, float eY, int col, int bgc_col, QGr
 
 void draw_int(float sX, float sY, float eX, float eY, int col, int bgc_col, QGraphicsScene *scene)
 {
-    QPen pen(Qt::green);
+    QPen pen;
     pen.setWidth(1);
+    if (bgc_col == 1)
+        pen.setColor("white");
+    else if (col == 0)
+        pen.setColor("red");
+    else if (col == 1)
+        pen.setColor("green");
+    else if (col == 2)
+        pen.setColor("blue");
+    else
+        pen.setColor("black");
     double x = sX;
     double y = sY;
     double dx = eX - sX;
@@ -155,12 +153,17 @@ void draw_int(float sX, float sY, float eX, float eY, int col, int bgc_col, QGra
     if (dx > dy)
         obmen = 0;
     else
+    {
         obmen = 1;
+        double t = dx;
+        dx = dy;
+        dy = t;
+    }
     int f1 = 2 * dy - dx;
 
     for (int i = 0; i <= dx; i++)
     {
-        scene->addLine(x, -y, x, -y, pen);
+        scene->addRect(x, -y, 1, 1, pen);
         if (f1 >=0)
         {
             if (obmen == 0)
@@ -182,59 +185,97 @@ void draw_int(float sX, float sY, float eX, float eY, int col, int bgc_col, QGra
 
 void draw_step(float sX, float sY, float eX, float eY, int col, int bgc_col, QGraphicsScene *scene)
 {
-    QPen pen(Qt::green);
+    QPen pen;
+    QColor co;
     pen.setWidth(1);
-    int delta_x = abs(eX - sX);
-    int delta_y = abs(eY - sY);
+    int dx = abs(eX - sX);
+    int dy = abs(eY - sY);
     int sign_x = (sX < eX ? 1 : -1);
     int sign_y = (sY < eY ? 1 : -1);
 
-    double start_x = sX;
-    double start_y = sY;
+    double x = sX;
+    double y = sY;
 
-    double angle_tan = (delta_x != 0? (double)delta_y / (double)delta_x : 0);
+    double angle_tan;
+    if (dx != 0)
+        angle_tan = dy / dx;
+    else
+        angle_tan = 0;
     const int MAX_INTENSITY = 255;
 
-    bool is_changed = false;
+    int is_changed = 0;
+    double error;
 
-    if (delta_y > delta_x)
+    if (angle_tan > 1)
     {
-        int temp = delta_y;
-        delta_y = delta_x;
-        delta_x = temp;
-
-        is_changed = true;
-
-        if (angle_tan != 0)
-            angle_tan = 1 / angle_tan;
+        double temp = dy;
+        dy = dx;
+        dx = temp;
+        angle_tan = 1 / angle_tan;
+        is_changed = 1;
     }
-
+    if (angle_tan < 1)
+        is_changed = 0;
+    qDebug() << dx << dy;
     double correct_angle_tan = angle_tan * MAX_INTENSITY;
-    double error = (double)MAX_INTENSITY / 2;
+    error = MAX_INTENSITY / 2;
     double w = MAX_INTENSITY - correct_angle_tan;
-    for(int i = 0; i <= delta_x; ++i)
+    for(int i = 1; i <= dx; i++)
     {
-        scene->addLine(start_x, start_y, start_x, start_y, pen);
-
         if (error < w)
         {
-            if (is_changed)
-                start_y += sign_y;
+            if (is_changed == 0)
+                y += sign_y;
             else
-                start_x += sign_x;
+                x += sign_x;
             error += correct_angle_tan;
         }
         else
         {
-            start_x += sign_x;
-            start_y += sign_y;
+            x += sign_x;
+            y += sign_y;
             error -= w;
         }
+        if (bgc_col == 1)
+            co.setHsv(0, 0, 255, 255 - error);
+        else if (col == 0)
+            co.setHsv(0, 255, 255, 255 - error);
+        else if (col == 1)
+            co.setHsv(112, 199, 122, 255 - error);
+        else if (col == 2)
+            co.setHsv(227, 205, 205, 255 - error);
+        else
+            co.setHsv(0, 0, 0, 255 - error);
+        pen.setColor(co);
+        scene->addRect(x, -y, 1, 1, pen);
     }
 }
 
-double round(double y)
+void draw_spectrum(int col, int bgc_col, int alg, float degr, QGraphicsScene *scene)
 {
-    double yy = y - 1;
-    return yy;
+    int kol = 360 / degr;
+    double d = qDegreesToRadians(degr);
+
+    double x = 1, y = 1;
+    for (int i = 0; i < kol; i++)
+    {
+        x = R * qCos(d);
+        y = R * qSin(d);
+        if (alg == 0)
+            draw_dda(0, 0, x, y, col, bgc_col, scene);
+        else if (alg == 1)
+            draw_real(0, 0, x, y, col, bgc_col, scene);
+        else if (alg == 2)
+            draw_int(0, 0, x, y, col, bgc_col, scene);
+        else if (alg == 3)
+            draw_step(0, 0, x, y, col, bgc_col, scene);
+        else
+            draw_library(0, 0, x, y, col, bgc_col, scene);
+        d += qDegreesToRadians(degr);
+    }
+}
+
+int my_round(double number)
+{
+    return (number >= 0) ? (int)(number + 0.5) : (int)(number - 0.5);
 }
