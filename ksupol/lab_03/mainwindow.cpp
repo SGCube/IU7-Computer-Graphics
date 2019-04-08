@@ -80,11 +80,6 @@ void MainWindow::on_build_clicked()
                                             " координату Y для начала отрезка!");
         return;
     }
-    if (startX == endX && startY == endY)
-    {
-        QMessageBox::critical(this, "Ошибка", "Отрезок вырожден!");
-        return;
-    }
     float sX = startX.toFloat();
     float sY = startY.toFloat();
     float eX = endX.toFloat();
@@ -92,16 +87,18 @@ void MainWindow::on_build_clicked()
     int alg = ui->algor->currentIndex();
     int col = ui->colour->currentIndex();
     int bgc_col = ui->bgc->isChecked();
+    c = new QColor;
+    set_colour(c, bgc_col, col);
     if (alg == 0)
-        draw_dda(sX, sY, eX, eY, col, bgc_col, scene);
+        draw_dda(sX, sY, eX, eY, c, scene);
     if (alg == 1)
-        draw_real(sX, sY, eX, eY, col, bgc_col, scene);
+        draw_real(sX, sY, eX, eY, c, scene);
     if (alg == 2)
-        draw_int(sX, sY, eX, eY, col, bgc_col, scene);
+        draw_int(sX, sY, eX, eY, c, scene);
     if (alg == 3)
-        draw_step(sX, sY, eX, eY, col, bgc_col, scene);
+        draw_step(sX, sY, eX, eY, c, scene);
     if (alg == 4)
-        draw_library(sX, sY, eX, eY, col, bgc_col, scene);
+        draw_library(sX, sY, eX, eY, c, scene);
 }
 
 void MainWindow::on_build_sp_clicked()
@@ -122,10 +119,21 @@ void MainWindow::on_build_sp_clicked()
     int alg = ui->algor_2->currentIndex();
     int col = ui->colour_2->currentIndex();
     float degr = deg.toFloat();
-    draw_spectrum(col, bgc_col, alg, degr, scene);
+    c_spectr = new QColor;
+    set_colour(c_spectr, bgc_col, col);
+    draw_spectrum(c_spectr, alg, degr, scene);
 }
 
 void MainWindow::on_pushButton_clicked()
 {
     scene->clear();
+}
+
+void MainWindow::on_delete_all_clicked()
+{
+    ui->startX->clear();
+    ui->startY->clear();
+    ui->endX->clear();
+    ui->endY->clear();
+    ui->deg->clear();
 }

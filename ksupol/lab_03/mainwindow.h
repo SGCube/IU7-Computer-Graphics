@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
-#include <QPixmap>
+#include <QColor>
 
 namespace Ui {
 class MainWindow;
@@ -24,10 +24,13 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_delete_all_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
-
+    QColor *c;
+    QColor *c_spectr;
 };
 
 #endif // MAINWINDOW_H

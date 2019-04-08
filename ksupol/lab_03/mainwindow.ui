@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="interactive">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QWidget" name="layoutWidget">
@@ -186,7 +186,22 @@
       <widget class="QComboBox" name="colour">
        <item>
         <property name="text">
+         <string>Черный</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Красный</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Оранжевый</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Желтый</string>
         </property>
        </item>
        <item>
@@ -196,12 +211,17 @@
        </item>
        <item>
         <property name="text">
+         <string>Голубой</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Синий</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Черный</string>
+         <string>Фиолетовый</string>
         </property>
        </item>
       </widget>
@@ -318,7 +338,22 @@
       <widget class="QComboBox" name="colour_2">
        <item>
         <property name="text">
+         <string>Черный</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Красный</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Оранжевый</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Желтый</string>
         </property>
        </item>
        <item>
@@ -328,12 +363,17 @@
        </item>
        <item>
         <property name="text">
+         <string>Голубой</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Синий</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Черный</string>
+         <string>Фиолетовый</string>
         </property>
        </item>
       </widget>
@@ -368,7 +408,7 @@
     <property name="geometry">
      <rect>
       <x>620</x>
-      <y>630</y>
+      <y>600</y>
       <width>461</width>
       <height>31</height>
      </rect>
@@ -379,7 +419,25 @@
      </font>
     </property>
     <property name="text">
-     <string>ОЧИСТИТЬ ПОЛЕ</string>
+     <string>ОЧИСТИТЬ ОБЛАСТЬ РИСОВАНИЯ</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="delete_all">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>640</y>
+      <width>461</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ОЧИСТИТЬ ВСЕ ПОЛЯ</string>
     </property>
    </widget>
   </widget>
