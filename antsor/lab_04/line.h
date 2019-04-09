@@ -1,9 +1,7 @@
 #ifndef DRAW_H
 #define DRAW_H
 
-//#include <QPainter>
-#include <QImage>
-
+#include <QPainter>
 #include "point.h"
 
 void draw_line_dda(QPainter *painter, Point p1, Point p2);

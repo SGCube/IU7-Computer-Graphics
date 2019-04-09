@@ -27,12 +27,16 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     point.cpp \
-    line.cpp
+    line.cpp \
+    circle.cpp \
+    ellipse.cpp
 
 HEADERS += \
         mainwindow.h \
     point.h \
-    line.h
+    line.h \
+    circle.h \
+    ellipse.h
 
 FORMS += \
         mainwindow.ui

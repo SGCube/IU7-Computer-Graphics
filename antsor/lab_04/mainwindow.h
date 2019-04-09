@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 
+#include "point.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -46,6 +48,10 @@ private slots:
 	void on_drawConBtn_released();
 	
 	void on_drawConeEdit_released();
+	
+	void on_circleAlgBox_currentIndexChanged(int index);
+	
+	void on_ellipseAlgBox_currentIndexChanged(int index);
 	
 private:
 	Ui::MainWindow *ui;

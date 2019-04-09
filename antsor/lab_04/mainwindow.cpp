@@ -8,8 +8,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "point.h"
 #include "line.h"
+#include "circle.h"
+#include "ellipse.h"
 
 #define CANVAS_W 640
 #define CANVAS_H 640
@@ -28,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	scene.addPixmap(QPixmap::fromImage(img));
 	set_colorFrame();
 	
-	draw_circle = nullptr;
-	draw_ellipse = nullptr;
+	draw_circle = draw_circle_lib;
+	draw_ellipse = draw_ellipse_lib;
 }
 
 MainWindow::~MainWindow()
@@ -135,7 +136,7 @@ void MainWindow::on_drawCircleBtn_released()
 	QPainter painter(&img);
 	QPen pen(color);
 	painter.setPen(pen);
-	func(&painter, Point(xc, yc), r);
+	draw_circle(&painter, Point(xc, yc), r);
 	
 	scene.addPixmap(QPixmap::fromImage(img));
 }
@@ -180,7 +181,7 @@ void MainWindow::on_drawEllipseBtn_released()
 	QPainter painter(&img);
 	QPen pen(color);
 	painter.setPen(pen);
-	func(&painter, Point(xc, yc), a, b);
+	draw_ellipse(&painter, Point(xc, yc), a, b);
 	
 	scene.addPixmap(QPixmap::fromImage(img));
 }
@@ -221,7 +222,7 @@ void MainWindow::on_drawConBtn_released()
 	
 	double rad = r;
 	for (int i = 0; i < n; i++, rad += dr)
-		func(&painter, center, rad);
+		draw_circle(&painter, center, rad);
 	
 	scene.addPixmap(QPixmap::fromImage(img));
 }
@@ -278,7 +279,7 @@ void MainWindow::on_drawConeEdit_released()
 	
 	double alen = a, blen = b;
 	for (int i = 0; i < n; i++, alen += da, blen += db)
-		func(&painter, center, alen, blen);
+		draw_ellipse(&painter, center, alen, blen);
 	
 	scene.addPixmap(QPixmap::fromImage(img));
 }
@@ -296,7 +297,7 @@ void MainWindow::on_circleAlgBox_currentIndexChanged(int index)
 	case 3:
 		break;
 	default:
-		break;
+		draw_circle = draw_circle_lib;
 	}
 }
 
@@ -313,6 +314,6 @@ void MainWindow::on_ellipseAlgBox_currentIndexChanged(int index)
 	case 3:
 		break;
 	default:
-		break;
+		draw_ellipse = draw_ellipse_lib;
 	}
 }
