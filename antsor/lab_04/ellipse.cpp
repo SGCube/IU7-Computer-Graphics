@@ -9,15 +9,18 @@ void draw_ellipse_canon(QPainter *painter, Point pc, double a, double b)
 	double x_end = a2 / sqrt(a2 + b2);
 	double m = b / a;
 	double x, y;
+	int xx, yy;
 	
 	for (x = 0; x <= x_end; x += 1)
 	{
 		y = sqrt(a2 - x * x) * m;
+		xx = round(x);
+		yy = round(y);
 		
-		painter->drawPoint(pc.x() + round(x), pc.y() + round(y));
-		painter->drawPoint(pc.x() - round(x), pc.y() + round(y));
-		painter->drawPoint(pc.x() + round(x), pc.y() - round(y));
-		painter->drawPoint(pc.x() - round(x), pc.y() - round(y));
+		painter->drawPoint(pc.x() + xx, pc.y() + yy);
+		painter->drawPoint(pc.x() - xx, pc.y() + yy);
+		painter->drawPoint(pc.x() + xx, pc.y() - yy);
+		painter->drawPoint(pc.x() - xx, pc.y() - yy);
 	}
 	
 	double y_end = b2 / sqrt(a2 + b2);
@@ -26,11 +29,13 @@ void draw_ellipse_canon(QPainter *painter, Point pc, double a, double b)
 	for (y = 0; y <= y_end; y += 1)
 	{
 		x = sqrt(b2 - y * y) * m;
+		xx = round(x);
+		yy = round(y);
 		
-		painter->drawPoint(pc.x() + round(x), pc.y() + round(y));
-		painter->drawPoint(pc.x() - round(x), pc.y() + round(y));
-		painter->drawPoint(pc.x() + round(x), pc.y() - round(y));
-		painter->drawPoint(pc.x() - round(x), pc.y() - round(y));
+		painter->drawPoint(pc.x() + xx, pc.y() + yy);
+		painter->drawPoint(pc.x() - xx, pc.y() + yy);
+		painter->drawPoint(pc.x() + xx, pc.y() - yy);
+		painter->drawPoint(pc.x() - xx, pc.y() - yy);
 	}
 }
 
