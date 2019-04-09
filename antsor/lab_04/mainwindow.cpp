@@ -27,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	img.fill(QColor(255, 255, 255));
 	scene.addPixmap(QPixmap::fromImage(img));
 	set_colorFrame();
+	
+	draw_circle = nullptr;
+	draw_ellipse = nullptr;
 }
 
 MainWindow::~MainWindow()
@@ -129,21 +132,6 @@ void MainWindow::on_drawCircleBtn_released()
 		return;
 	}
 	
-	void (*func)(QPainter *, Point, double) = nullptr;
-	switch (ui->circleAlgBox->currentIndex())
-	{
-	case 0:
-		break;
-	case 1:
-		break;
-	case 2:
-		break;
-	case 3:
-		break;
-	case 4:
-		break;
-	}
-	
 	QPainter painter(&img);
 	QPen pen(color);
 	painter.setPen(pen);
@@ -189,21 +177,6 @@ void MainWindow::on_drawEllipseBtn_released()
 		return;
 	}
 	
-	void (*func)(QPainter *, Point, double, double) = nullptr;
-	switch (ui->ellipseAlgBox->currentIndex())
-	{
-	case 0:
-		break;
-	case 1:
-		break;
-	case 2:
-		break;
-	case 3:
-		break;
-	case 4:
-		break;
-	}
-	
 	QPainter painter(&img);
 	QPen pen(color);
 	painter.setPen(pen);
@@ -239,21 +212,6 @@ void MainWindow::on_drawConBtn_released()
 		QMessageBox::critical(this, "Ошибка",
 							  "Некорректное значение количества окружностей!");
 		return;
-	}
-	
-	void (*func)(QPainter *, Point, double) = nullptr;
-	switch (ui->circleAlgBox->currentIndex())
-	{
-	case 0:
-		break;
-	case 1:
-		break;
-	case 2:
-		break;
-	case 3:
-		break;
-	case 4:
-		break;
 	}
 	
 	QPainter painter(&img);
@@ -313,21 +271,6 @@ void MainWindow::on_drawConeEdit_released()
 		return;
 	}
 	
-	void (*func)(QPainter *, Point, double, double) = nullptr;
-	switch (ui->ellipseAlgBox->currentIndex())
-	{
-	case 0:
-		break;
-	case 1:
-		break;
-	case 2:
-		break;
-	case 3:
-		break;
-	case 4:
-		break;
-	}
-	
 	QPainter painter(&img);
 	QPen pen(color);
 	painter.setPen(pen);
@@ -338,4 +281,38 @@ void MainWindow::on_drawConeEdit_released()
 		func(&painter, center, alen, blen);
 	
 	scene.addPixmap(QPixmap::fromImage(img));
+}
+
+void MainWindow::on_circleAlgBox_currentIndexChanged(int index)
+{
+	switch (index)
+	{
+	case 0:
+		break;
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	default:
+		break;
+	}
+}
+
+void MainWindow::on_ellipseAlgBox_currentIndexChanged(int index)
+{
+	switch (index)
+	{
+	case 0:
+		break;
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	default:
+		break;
+	}
 }

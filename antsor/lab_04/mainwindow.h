@@ -59,6 +59,9 @@ private:
 	double r, a, b;
 	double dr, da, db;
 	int n;
+	
+	void (*draw_circle)(QPainter *, Point, double);
+	void (*draw_ellipse)(QPainter *, Point, double, double);
 };
 
 #endif // MAINWINDOW_H
