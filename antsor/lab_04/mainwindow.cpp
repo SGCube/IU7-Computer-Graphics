@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	scene.addPixmap(QPixmap::fromImage(img));
 	set_colorFrame();
 	
-	draw_circle = draw_circle_lib;
+	draw_circle = draw_circle_canon;
 	draw_ellipse = draw_ellipse_lib;
 }
 
@@ -289,8 +289,10 @@ void MainWindow::on_circleAlgBox_currentIndexChanged(int index)
 	switch (index)
 	{
 	case 0:
+		draw_circle = draw_circle_canon;
 		break;
 	case 1:
+		draw_circle = draw_circle_param;
 		break;
 	case 2:
 		break;
