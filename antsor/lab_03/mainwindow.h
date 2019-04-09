@@ -30,6 +30,14 @@ private slots:
 	
 	void on_drawSunBtn_released();
 	
+	void on_redBtn_released();
+	
+	void on_blueBtn_released();
+	
+	void on_greenBtn_released();
+	
+	void on_blackBtn_released();
+	
 private:
 	Ui::MainWindow *ui;
 	QGraphicsScene scene;

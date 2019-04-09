@@ -81,13 +81,13 @@ void MainWindow::on_drawLineBtn_released()
 	painter.setPen(pen);
 	
 	if (ui->algBox->currentIndex() == 0)
-		draw_line_dda(&img, Point(x1, y1), Point(x2, y2), color);
+		draw_line_dda(&painter, Point(x1, y1), Point(x2, y2), color);
 	else if (ui->algBox->currentIndex() == 1)
-		draw_line_bres_real(&img, Point(x1, y1), Point(x2, y2), color);
+		draw_line_bres_real(&painter, Point(x1, y1), Point(x2, y2), color);
 	else if (ui->algBox->currentIndex() == 2)
-		draw_line_bres_int(&img, Point(x1, y1), Point(x2, y2), color);
+		draw_line_bres_int(&painter, Point(x1, y1), Point(x2, y2), color);
 	else if (ui->algBox->currentIndex() == 3)
-		draw_line_bres_aa(&img, Point(x1, y1), Point(x2, y2), color);
+		draw_line_bres_aa(&painter, Point(x1, y1), Point(x2, y2), color);
 	else if (ui->algBox->currentIndex() == 4)
 		painter.drawLine(x1, y1, x2, y2);
 	
@@ -138,7 +138,7 @@ void MainWindow::on_drawSunBtn_released()
 		return;
 	}
 	
-	void (*method)(QImage*, Point, Point, QColor) = nullptr;
+	void (*method)(QPainter*, Point, Point, QColor) = nullptr;
 	
 	QPainter painter(&img);
 	QPen pen(color);
@@ -153,24 +153,47 @@ void MainWindow::on_drawSunBtn_released()
 	else if (ui->algBox->currentIndex() == 3)
 		method = draw_line_bres_aa;
 	
-	const double pi2 = 2 * M_PI;
-	double rad = qDegreesToRadians((double)(angle % 360));
 	if (angle % 360 == 0)
-		rad = pi2;
+		angle = 360;
 	
 	Point center(320, 320);
 	Point endp(320, 320);
 	
-	for (double cur_ang = 0; cur_ang < pi2; cur_ang += rad)
+	for (double cur_ang = 0; cur_ang < 360; cur_ang += angle)
 	{
-		endp.setX(center.x() + len * qCos(cur_ang));
-		endp.setY(center.y() - len * qSin(cur_ang));
+		double rad = qDegreesToRadians(double(cur_ang));
+		endp.setX(center.x() + len * qCos(rad));
+		endp.setY(center.y() - len * qSin(rad));
 		if (method)
-			method(&img, center, endp, color);
+			method(&painter, center, endp, color);
 		else
 			painter.drawLine(center.x(), center.y(),
 							 endp.x(), endp.y());
 	}
 	
 	scene.addPixmap(QPixmap::fromImage(img));
+}
+
+void MainWindow::on_redBtn_released()
+{
+	color.setRgb(255, 0, 0);
+	set_colorFrame();
+}
+
+void MainWindow::on_blueBtn_released()
+{
+	color.setRgb(0, 0, 255);
+	set_colorFrame();
+}
+
+void MainWindow::on_greenBtn_released()
+{
+	color.setRgb(0, 255, 0);
+	set_colorFrame();
+}
+
+void MainWindow::on_blackBtn_released()
+{
+	color.setRgb(0, 0, 0);
+	set_colorFrame();
 }

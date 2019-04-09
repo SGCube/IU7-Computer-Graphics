@@ -1,5 +1,7 @@
 #include <math.h>
 
+#include <QPainter>
+
 #include "draw.h"
 
 #define MAX_INTENS 255
@@ -14,11 +16,11 @@ int sgn(T x)
     return 0;
 }
 
-void draw_line_dda(QImage *img, Point p1, Point p2, QColor color)
+void draw_line_dda(QPainter *painter, Point p1, Point p2, QColor color)
 {
 	if (p1 == p2)
 	{
-		img->setPixel(p1.x(), p1.y(), color.rgb());
+		painter->drawPoint(p1.x(), p1.y());
 		return;
 	}
 	double xlen = p2.x() - p1.x(), ylen = p2.y() - p1.y();
@@ -32,17 +34,17 @@ void draw_line_dda(QImage *img, Point p1, Point p2, QColor color)
 	double x = p1.x(), y = p1.y();
 	for (int i = 1; i <= dx + len; i++)
 	{
-		img->setPixel(round(x), round(y), color.rgb());
+		painter->drawPoint(round(x), round(y));
 		x += dx;
 		y += dy;
 	}
 }
 
-void draw_line_bres_real(QImage *img, Point p1, Point p2, QColor color)
+void draw_line_bres_real(QPainter *painter, Point p1, Point p2, QColor color)
 {
 	if (p1 == p2)
 	{
-		img->setPixel(p1.x(), p1.y(), color.rgb());
+		painter->drawPoint(p1.x(), p1.y());
 		return;
 	}
 	
@@ -66,7 +68,7 @@ void draw_line_bres_real(QImage *img, Point p1, Point p2, QColor color)
 	
 	for (int i = 0; i < dx; i++)
 	{
-		img->setPixel(x, y, color.rgb());
+		painter->drawPoint(x, y);
 		if (e >= 0)
 		{
 			if (xchg)
@@ -83,11 +85,11 @@ void draw_line_bres_real(QImage *img, Point p1, Point p2, QColor color)
 	}
 }
 
-void draw_line_bres_int(QImage *img, Point p1, Point p2, QColor color)
+void draw_line_bres_int(QPainter *painter, Point p1, Point p2, QColor color)
 {
 	if (p1 == p2)
 	{
-		img->setPixel(p1.x(), p1.y(), color.rgb());
+		painter->drawPoint(p1.x(), p1.y());
 		return;
 	}
 	int x = p1.x(), y = p1.y();
@@ -111,7 +113,7 @@ void draw_line_bres_int(QImage *img, Point p1, Point p2, QColor color)
 	
 	for (int i = 0; i < dx; i++)
 	{
-		img->setPixel(x, y, color.rgb());
+		painter->drawPoint(x, y);
 		if (e >= 0)
 		{
 			if (xchg)
@@ -128,11 +130,11 @@ void draw_line_bres_int(QImage *img, Point p1, Point p2, QColor color)
 	}
 }
 
-void draw_line_bres_aa(QImage *img, Point p1, Point p2, QColor color)
+void draw_line_bres_aa(QPainter *painter, Point p1, Point p2, QColor color)
 {
 	if (p1 == p2)
 	{
-		img->setPixel(p1.x(), p1.y(), color.rgb());
+		painter->drawPoint(p1.x(), p1.y());
 		return;
 	}
 	int x = p1.x(), y = p1.y();
@@ -157,8 +159,10 @@ void draw_line_bres_aa(QImage *img, Point p1, Point p2, QColor color)
 	
 	for (int i = 0; i < dx; i++)
 	{
-		color.setAlpha((MAX_INTENS - e) / 255);
-		img->setPixel(x, y, color.rgba());
+		QColor col(color);
+		col.setAlpha(e);
+		painter->setPen(QPen(col));
+		painter->drawPoint(x, y);
 		if (e >= w)
 		{
 			x += sx;
