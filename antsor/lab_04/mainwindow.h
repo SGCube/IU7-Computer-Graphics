@@ -35,6 +35,18 @@ private slots:
 	
 	void on_blackBtn_released();
 	
+	void on_centerBtn_released();
+	
+	void on_centereBtn_released();
+	
+	void on_drawCircleBtn_released();
+	
+	void on_drawEllipseBtn_released();
+	
+	void on_drawConBtn_released();
+	
+	void on_drawConeEdit_released();
+	
 private:
 	Ui::MainWindow *ui;
 	QGraphicsScene scene;
@@ -42,6 +54,11 @@ private:
 	QColor color;
 	
 	void set_colorFrame();
+	
+	int xc, yc;
+	double r, a, b;
+	double dr, da, db;
+	int n;
 };
 
 #endif // MAINWINDOW_H
