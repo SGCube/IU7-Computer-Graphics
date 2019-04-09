@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	set_colorFrame();
 	
 	draw_circle = draw_circle_canon;
-	draw_ellipse = draw_ellipse_lib;
+	draw_ellipse = draw_ellipse_canon;
 }
 
 MainWindow::~MainWindow()
@@ -308,8 +308,10 @@ void MainWindow::on_ellipseAlgBox_currentIndexChanged(int index)
 	switch (index)
 	{
 	case 0:
+		draw_ellipse = draw_ellipse_canon;
 		break;
 	case 1:
+		draw_ellipse = draw_ellipse_param;
 		break;
 	case 2:
 		break;
