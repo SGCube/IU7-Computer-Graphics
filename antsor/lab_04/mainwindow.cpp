@@ -295,6 +295,7 @@ void MainWindow::on_circleAlgBox_currentIndexChanged(int index)
 		draw_circle = draw_circle_param;
 		break;
 	case 2:
+		draw_circle = draw_circle_bresem;
 		break;
 	case 3:
 		break;

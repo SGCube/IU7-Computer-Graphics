@@ -40,6 +40,58 @@ void draw_circle_param(QPainter *painter, Point pc, double r)
 	}
 }
 
+void draw_circle_bresem(QPainter *painter, Point pc, double r)
+{
+	int x = 0, y = r;
+	int d = 2 * (1 - r);
+	int d1, d2;
+	
+	while(y >= 0)
+	{
+		painter->drawPoint(pc.x() + x, pc.y() - y);
+		painter->drawPoint(pc.x() - x, pc.y() - y);
+		painter->drawPoint(pc.x() + x, pc.y() + y);
+		painter->drawPoint(pc.x() - x, pc.y() + y);
+		
+		if (d < 0)
+		{
+			d1 = 2 * d + 2 * y - 1;
+			if (d1 < 0)
+			{
+				x++;
+				d += 2 * x + 1;
+			}
+			else
+			{
+				x++;
+				y--;
+				d += 2 * (x - y + 1);
+			}
+		}
+		else if (d > 0)
+		{
+			d2 = 2 * d - 2 * x - 1;
+			if (d2 < 0)
+			{
+				x++;
+				y--;
+				d += 2 * (x - y + 1);
+			}
+			else
+			{
+				y--;
+				d -= 2 * y - 1;
+			}
+		}
+		else
+		{
+			x++;
+			y--;
+			d += 2 * (x - y + 1);
+		}
+	}
+}
+
 void draw_circle_lib(QPainter *painter, Point pc, double r)
 {
 	painter->drawEllipse(QPointF(pc.x(), pc.y()), r, r);
