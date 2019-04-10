@@ -27,11 +27,15 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    check.cpp
+    check.cpp \
+    draw_circle.cpp \
+    draw_ellipse.cpp
 
 HEADERS += \
         mainwindow.h \
-    check.h
+    check.h \
+    draw_circle.h \
+    draw_ellipse.h
 
 FORMS += \
         mainwindow.ui

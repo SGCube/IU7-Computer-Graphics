@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QGraphicsScene>
+#include <QColor>
 
 namespace Ui {
 class MainWindow;
@@ -16,10 +18,18 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_build_cir_clicked();
+    void on_cir_build_clicked();
+
+    void on_pushButton_2_clicked();
+
+    void on_cir_build_2_clicked();
+
+    void on_el_build_clicked();
 
 private:
     Ui::MainWindow *ui;
+    QGraphicsScene *scene;
+    QColor *c;
 };
 
 #endif // MAINWINDOW_H
