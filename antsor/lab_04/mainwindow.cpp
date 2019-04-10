@@ -315,6 +315,7 @@ void MainWindow::on_ellipseAlgBox_currentIndexChanged(int index)
 		draw_ellipse = draw_ellipse_param;
 		break;
 	case 2:
+		draw_ellipse = draw_ellipse_bresem;
 		break;
 	case 3:
 		break;
