@@ -16,7 +16,7 @@ int sgn(T x)
     return 0;
 }
 
-void draw_line_dda(QPainter *painter, Point p1, Point p2, QColor color)
+void draw_line_dda(QPainter *painter, Point p1, Point p2)
 {
 	if (p1 == p2)
 	{
@@ -40,7 +40,7 @@ void draw_line_dda(QPainter *painter, Point p1, Point p2, QColor color)
 	}
 }
 
-void draw_line_bres_real(QPainter *painter, Point p1, Point p2, QColor color)
+void draw_line_bres_real(QPainter *painter, Point p1, Point p2)
 {
 	if (p1 == p2)
 	{
@@ -66,7 +66,7 @@ void draw_line_bres_real(QPainter *painter, Point p1, Point p2, QColor color)
 	double m = dy / dx;
 	double e = m - 0.5;
 	
-	for (int i = 0; i < dx; i++)
+	for (int i = 0; i <= dx; i++)
 	{
 		painter->drawPoint(x, y);
 		if (e >= 0)
@@ -85,7 +85,7 @@ void draw_line_bres_real(QPainter *painter, Point p1, Point p2, QColor color)
 	}
 }
 
-void draw_line_bres_int(QPainter *painter, Point p1, Point p2, QColor color)
+void draw_line_bres_int(QPainter *painter, Point p1, Point p2)
 {
 	if (p1 == p2)
 	{
@@ -111,7 +111,7 @@ void draw_line_bres_int(QPainter *painter, Point p1, Point p2, QColor color)
 	int ddy = 2 * dy;
 	int e = ddy - dx;
 	
-	for (int i = 0; i < dx; i++)
+	for (int i = 0; i <= dx; i++)
 	{
 		painter->drawPoint(x, y);
 		if (e >= 0)
@@ -130,7 +130,7 @@ void draw_line_bres_int(QPainter *painter, Point p1, Point p2, QColor color)
 	}
 }
 
-void draw_line_bres_aa(QPainter *painter, Point p1, Point p2, QColor color)
+void draw_line_bres_aa(QPainter *painter, Point p1, Point p2)
 {
 	if (p1 == p2)
 	{
@@ -159,7 +159,7 @@ void draw_line_bres_aa(QPainter *painter, Point p1, Point p2, QColor color)
 	
 	for (int i = 0; i < dx; i++)
 	{
-		QColor col(color);
+		QColor col(painter->pen().color());
 		col.setAlpha(e);
 		painter->setPen(QPen(col));
 		painter->drawPoint(x, y);

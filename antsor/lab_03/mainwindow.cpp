@@ -81,13 +81,13 @@ void MainWindow::on_drawLineBtn_released()
 	painter.setPen(pen);
 	
 	if (ui->algBox->currentIndex() == 0)
-		draw_line_dda(&painter, Point(x1, y1), Point(x2, y2), color);
+		draw_line_dda(&painter, Point(x1, y1), Point(x2, y2));
 	else if (ui->algBox->currentIndex() == 1)
-		draw_line_bres_real(&painter, Point(x1, y1), Point(x2, y2), color);
+		draw_line_bres_real(&painter, Point(x1, y1), Point(x2, y2));
 	else if (ui->algBox->currentIndex() == 2)
-		draw_line_bres_int(&painter, Point(x1, y1), Point(x2, y2), color);
+		draw_line_bres_int(&painter, Point(x1, y1), Point(x2, y2));
 	else if (ui->algBox->currentIndex() == 3)
-		draw_line_bres_aa(&painter, Point(x1, y1), Point(x2, y2), color);
+		draw_line_bres_aa(&painter, Point(x1, y1), Point(x2, y2));
 	else if (ui->algBox->currentIndex() == 4)
 		painter.drawLine(x1, y1, x2, y2);
 	
@@ -138,7 +138,7 @@ void MainWindow::on_drawSunBtn_released()
 		return;
 	}
 	
-	void (*method)(QPainter*, Point, Point, QColor) = nullptr;
+	void (*method)(QPainter*, Point, Point) = nullptr;
 	
 	QPainter painter(&img);
 	QPen pen(color);
@@ -165,7 +165,7 @@ void MainWindow::on_drawSunBtn_released()
 		endp.setX(center.x() + len * qCos(rad));
 		endp.setY(center.y() - len * qSin(rad));
 		if (method)
-			method(&painter, center, endp, color);
+			method(&painter, center, endp);
 		else
 			painter.drawLine(center.x(), center.y(),
 							 endp.x(), endp.y());
