@@ -110,7 +110,7 @@ void draw_real(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene
     for (int i = 0; i <= dx + 1; i++)
     {
         scene->addRect(x, -y, 1, 1, pen);
-        if (e >=0)
+        if (e >= 0)
         {
             if (obmen == 0)
                 y += sign_y;
@@ -143,7 +143,7 @@ void draw_int(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene 
     double y = sY;
     double dx = eX - sX;
     double dy = eY - sY;
-    double sx = sign(dx), sy = sign(dy);
+    int sx = sign(dx), sy = sign(dy);
 
     dx = abs(dx);
     dy = abs(dy);
