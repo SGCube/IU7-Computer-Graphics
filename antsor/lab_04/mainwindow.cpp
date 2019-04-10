@@ -298,6 +298,7 @@ void MainWindow::on_circleAlgBox_currentIndexChanged(int index)
 		draw_circle = draw_circle_bresem;
 		break;
 	case 3:
+		draw_circle = draw_circle_midpoint;
 		break;
 	default:
 		draw_circle = draw_circle_lib;

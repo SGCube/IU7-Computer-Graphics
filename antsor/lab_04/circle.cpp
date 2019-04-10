@@ -92,6 +92,32 @@ void draw_circle_bresem(QPainter *painter, Point pc, double r)
 	}
 }
 
+void draw_circle_midpoint(QPainter *painter, Point pc, double r)
+{
+	int x = 0, y = r;
+	double f = 0.25 - r;
+	
+	for (x = 0; x <= y; x++)
+	{
+		painter->drawPoint(pc.x() + x, pc.y() - y);
+		painter->drawPoint(pc.x() - x, pc.y() - y);
+		painter->drawPoint(pc.x() + x, pc.y() + y);
+		painter->drawPoint(pc.x() - x, pc.y() + y);
+		
+		painter->drawPoint(pc.x() + y, pc.y() - x);
+		painter->drawPoint(pc.x() - y, pc.y() - x);
+		painter->drawPoint(pc.x() + y, pc.y() + x);
+		painter->drawPoint(pc.x() - y, pc.y() + x);
+		
+		if (f >= 0)
+		{
+			y--;
+			f -= 2 * y;
+		}
+		f += 2 * x + 1;
+	}
+}
+
 void draw_circle_lib(QPainter *painter, Point pc, double r)
 {
 	painter->drawEllipse(QPointF(pc.x(), pc.y()), r, r);

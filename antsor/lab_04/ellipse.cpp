@@ -122,7 +122,7 @@ void draw_ellipse_midpoint(QPainter *painter, Point pc, double a, double b)
 			f += d;
 		}
 		df += bd;
-		f += df + b2;
+		f += df;
 	}
 	
 	d = bd * x;
@@ -143,7 +143,7 @@ void draw_ellipse_midpoint(QPainter *painter, Point pc, double a, double b)
 			f += d;
 		}
 		df += ad;
-		f += df + a2;
+		f += df;
 	}
 }
 
