@@ -10,6 +10,8 @@ void draw_circle_param(QPainter *painter, Point pc, double r);
 
 void draw_circle_bresem(QPainter *painter, Point pc, double r);
 
+//void draw_circle_midpoint(QPainter *painter, Point pc, double r);
+
 void draw_circle_lib(QPainter *painter, Point pc, double r);
 
 #endif // CIRCLE_H

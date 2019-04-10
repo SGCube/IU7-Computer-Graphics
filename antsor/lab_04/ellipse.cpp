@@ -93,8 +93,58 @@ void draw_ellipse_bresem(QPainter *painter, Point pc, double a, double b)
 		d += a2 * (8 * y + 12);
 		y++;
 	}
+}
+
+void draw_ellipse_midpoint(QPainter *painter, Point pc, double a, double b)
+{
+	int a2 = a * a, b2 = b * b;
+	int ad = 2 * a2, bd = 2 * b2;
 	
+	int mid = a2 / sqrt(a2 + b2);
 	
+	int x = 0, y = b;
+	
+	int d = -ad * b;	// -ad * y
+	double df = 0;		// bd * x
+	double f = b2 - a2 * y + 0.25 * a2 + 0.5;
+	
+	for (x = 0; x <= mid; x++)
+	{
+		painter->drawPoint(pc.x() + x, pc.y() - y);
+		painter->drawPoint(pc.x() - x, pc.y() - y);
+		painter->drawPoint(pc.x() + x, pc.y() + y);
+		painter->drawPoint(pc.x() - x, pc.y() + y);
+		
+		if (f >= 0)
+		{
+			y--;
+			d += ad;
+			f += d;
+		}
+		df += bd;
+		f += df + b2;
+	}
+	
+	d = bd * x;
+	df = -ad * y;
+	f += -b2 * (x + 0.75) - a2 * (y - 0.75);
+	
+	for (; y >= 0; y--)
+	{
+		painter->drawPoint(pc.x() + x, pc.y() - y);
+		painter->drawPoint(pc.x() - x, pc.y() - y);
+		painter->drawPoint(pc.x() + x, pc.y() + y);
+		painter->drawPoint(pc.x() - x, pc.y() + y);
+		
+		if (f < 0)
+		{
+			x++;
+			d += bd;
+			f += d;
+		}
+		df += ad;
+		f += df + a2;
+	}
 }
 
 void draw_ellipse_lib(QPainter *painter, Point pc, double a, double b)

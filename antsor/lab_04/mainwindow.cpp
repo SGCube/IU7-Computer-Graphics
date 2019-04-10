@@ -318,6 +318,7 @@ void MainWindow::on_ellipseAlgBox_currentIndexChanged(int index)
 		draw_ellipse = draw_ellipse_bresem;
 		break;
 	case 3:
+		draw_ellipse = draw_ellipse_midpoint;
 		break;
 	default:
 		draw_ellipse = draw_ellipse_lib;
