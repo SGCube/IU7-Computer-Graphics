@@ -228,12 +228,26 @@ void MainWindow::on_el_build_clicked()
         draw_el_kanon(x, y, a, b, c, scene);
     if (alg == 1)
         draw_el_param(x, y, a, b, c, scene);
-    /*
     if (alg == 2)
-        draw_bres(x, y, r, c, scene);
+        draw_el_bres(x, y, a, b, c, scene);
     if (alg == 3)
-        draw_mid(x, y, r, c, scene);
-        */
+        draw_el_mid(x, y, a, b, c, scene);
     if (alg == 4)
         draw_el_library(x, y, a, b, c, scene);
+}
+
+void MainWindow::on_el_build_sp_clicked()
+{
+    QString st_a = ui->st_a->text();
+    QString end_a = ui->end_a->text();
+    QString st_b = ui->st_b->text();
+    QString kol = ui->el_am->text();
+    double s_a = st_a.toFloat();
+    double e_a =
+
+    int alg = ui->el_alg_2->currentIndex();
+    int col = ui->el_col_2->currentIndex();
+    int bgc_col = ui->el_bgc_2->isChecked();
+    c = new QColor;
+
 }

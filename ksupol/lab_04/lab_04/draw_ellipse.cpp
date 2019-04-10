@@ -22,20 +22,38 @@ void draw_el_kanon(double x, double y, double a, double b, QColor *c, QGraphicsS
     pen.setColor(*c);
     pen.setWidth(1);
 
-    double yy;
-    double xx;
+    double a2 = a * a;
+    double b2 = b * b;
+    double x_end = a2 / sqrt(a2 + b2);
+    double m = b / a;
+    double x0, y0;
+    int xx, yy;
 
-    for (xx = -a; xx <= a+1; xx++)
+    for (x0 = 0; x0 <= x_end; x0 += 1)
     {
-        yy = sqrt(1 - qPow(xx, 2));
-        scene->addRect(xx + x, -(yy + y), 1, 1, pen);
-        scene->addRect(xx + x, yy - y, 1, 1, pen);
+        y0 = sqrt(a2 - x0 * x0) * m;
+        xx = round(x0);
+        yy = round(y0);
+
+        scene->addRect(x + xx, -y - yy, 1, 1, pen);
+        scene->addRect(x - xx, -y - yy, 1, 1, pen);
+        scene->addRect(x + xx, -y + yy, 1, 1, pen);
+        scene->addRect(x - xx, -y + yy, 1, 1, pen);
     }
-    for (yy = -a; yy <= a; yy++)
+
+    double y_end = b2 / sqrt(a2 + b2);
+    m = 1 / m;
+
+    for (y0 = 0; y0 <= y_end; y0 += 1)
     {
-        xx = sqrt(1 - qPow(yy, 2));
-        scene->addRect(xx + x, yy - y, 1, 1, pen);
-        scene->addRect(x - xx, yy - y, 1, 1, pen);
+        x0 = sqrt(b2 - y0 * y0) * m;
+        xx = round(x0);
+        yy = round(y0);
+
+        scene->addRect(x + xx, -y - yy, 1, 1, pen);
+        scene->addRect(x - xx, -y - yy, 1, 1, pen);
+        scene->addRect(x + xx, -y + yy, 1, 1, pen);
+        scene->addRect(x - xx, -y + yy, 1, 1, pen);
     }
 }
 
@@ -58,19 +76,104 @@ void draw_el_param(double x, double y, double a, double b, QColor *c, QGraphicsS
 
 void draw_el_mid(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene)
 {
-    double x0 = 0;
-    double y0 = b;
+    QPen pen;
+    pen.setColor(*c);
+    pen.setWidth(1);
 
-    double pl0 = qPow(b, 2) - qPow(a, 2)*b + 1/4*qPow()a, 2;
-    /*
-    while (2 * qPow(b, 2) * x >= 2 * qPow(a, 2) * y)
+    int a2 = a * a, b2 = b * b;
+    int ad = 2 * a2, bd = 2 * b2;
+
+    int mid = a2 / sqrt(a2 + b2);
+
+    int x0 = 0, y0 = b;
+
+    int d = -ad * b;	// -ad * y
+    double df = 0;		// bd * x
+    double f = b2 - a2 * y + 0.25 * a2 + 0.5;
+
+    for (x0 = 0; x0 <= mid; x0++)
     {
+        scene->addRect(x + x0, -y - y0, 1, 1, pen);
+        scene->addRect(x - x0, -y - y0, 1, 1, pen);
+        scene->addRect(x + x0, -y + y0, 1, 1, pen);
+        scene->addRect(x - x0, -y + y0, 1, 1, pen);
 
+        if (f >= 0)
+        {
+            y0--;
+            d += ad;
+            f += d;
+        }
+        df += bd;
+        f += df;
     }
-    */
+
+    d = bd * x0;
+    df = -ad * y0;
+    f += -b2 * (x0 + 0.75) - a2 * (y0 - 0.75);
+
+    for (; y0 >= 0; y0--)
+    {
+        scene->addRect(x + x0, -y - y0, 1, 1, pen);
+        scene->addRect(x - x0, -y - y0, 1, 1, pen);
+        scene->addRect(x + x0, -y + y0, 1, 1, pen);
+        scene->addRect(x - x0, -y + y0, 1, 1, pen);
+
+        if (f < 0)
+        {
+            x0++;
+            d += bd;
+            f += d;
+        }
+        df += ad;
+        f += df;
+    }
+
 }
 
 void draw_el_bres(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene)
 {
+    QPen pen;
+    pen.setColor(*c);
+    pen.setWidth(1);
 
+    int a2 = a * a;
+    int b2 = b * b;
+
+    int x0 = 0, y0 = b;
+    int d = 4 * b2 + a2 * (1 - 4 * b);
+
+    while (b2 * x0 <= a2 * y0)
+    {
+        scene->addRect(x + x0, -y - y0, 1, 1, pen);
+        scene->addRect(x - x0, -y - y0, 1, 1, pen);
+        scene->addRect(x + x0, -y + y0, 1, 1, pen);
+        scene->addRect(x - x0, -y + y0, 1, 1, pen);
+
+        if (d >= 0)
+        {
+            d -= 8 * a2 * (y0 - 1);
+            y0--;
+        }
+        d += b2 * (8 * x0 + 12);
+        x0++;
+    }
+
+    x0 = a, y0 = 0;
+    d = 4 * a2 + b2 * (1 - 4 * a);
+    while (a2 * y0 <= b2 * x0)
+    {
+        scene->addRect(x + x0, -y - y0, 1, 1, pen);
+        scene->addRect(x - x0, -y - y0, 1, 1, pen);
+        scene->addRect(x + x0, -y + y0, 1, 1, pen);
+        scene->addRect(x - x0, -y + y0, 1, 1, pen);
+
+        if (d >= 0)
+        {
+            d -= 8 * b2 * (x0 + 1);
+            x0--;
+        }
+        d += a2 * (8 * y0 + 12);
+        y0++;
+    }
 }

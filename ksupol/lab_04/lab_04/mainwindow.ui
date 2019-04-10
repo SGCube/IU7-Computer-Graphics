@@ -235,7 +235,7 @@
      <rect>
       <x>1000</x>
       <y>0</y>
-      <width>321</width>
+      <width>367</width>
       <height>221</height>
      </rect>
     </property>
@@ -460,8 +460,8 @@
      <rect>
       <x>1000</x>
       <y>280</y>
-      <width>323</width>
-      <height>154</height>
+      <width>367</width>
+      <height>247</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -475,12 +475,12 @@
           </font>
          </property>
          <property name="text">
-          <string>Начальный радиус</string>
+          <string>Начальная a</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_8"/>
+        <widget class="QLineEdit" name="st_a"/>
        </item>
       </layout>
      </item>
@@ -494,12 +494,31 @@
           </font>
          </property>
          <property name="text">
-          <string>Конечный радиус</string>
+          <string>Конечная a</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_9"/>
+        <widget class="QLineEdit" name="end_a"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_19">
+       <item>
+        <widget class="QLabel" name="label_23">
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Начальная b</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="st_b"/>
        </item>
       </layout>
      </item>
@@ -513,12 +532,57 @@
           </font>
          </property>
          <property name="text">
-          <string>Количество окружностей</string>
+          <string>Количество эллипсов</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_10"/>
+        <widget class="QLineEdit" name="el_am"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_21">
+       <item>
+        <widget class="QLabel" name="label_25">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Алгоритм</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="el_alg_2">
+         <item>
+          <property name="text">
+           <string>Каноническое уравнение</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Параметрическое уравнение</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Модифицированный алгоритм Брезенхема</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Алгоритм средней точки</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Библиотечный алгоритм</string>
+          </property>
+         </item>
+        </widget>
        </item>
       </layout>
      </item>
@@ -537,7 +601,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="col_3">
+        <widget class="QComboBox" name="el_col_2">
          <item>
           <property name="text">
            <string>Черный</string>
@@ -581,7 +645,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QRadioButton" name="bgc_3">
+        <widget class="QRadioButton" name="el_bgc_2">
          <property name="font">
           <font>
            <pointsize>8</pointsize>
@@ -595,7 +659,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="el_build_sp">
        <property name="text">
         <string>Построить спектр окружностей</string>
        </property>

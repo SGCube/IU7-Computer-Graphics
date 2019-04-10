@@ -11,4 +11,8 @@ void draw_el_kanon(double x, double y, double a, double b, QColor *c, QGraphicsS
 
 void draw_el_param(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene);
 
+void draw_el_mid(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene);
+
+void draw_el_bres(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene);
+
 #endif // DRAW_ELLIPSE_H
