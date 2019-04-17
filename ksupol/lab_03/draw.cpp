@@ -268,8 +268,3 @@ void draw_spectrum(QColor *c, int alg, float degr, QGraphicsScene *scene)
         d += qDegreesToRadians(degr);
     }
 }
-
-int my_round(double number)
-{
-    return (number >= 0) ? (int)(number + 0.5) : (int)(number - 0.5);
-}
