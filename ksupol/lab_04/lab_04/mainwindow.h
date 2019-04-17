@@ -26,6 +26,8 @@ private slots:
 
     void on_el_build_clicked();
 
+    void on_el_build_sp_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;

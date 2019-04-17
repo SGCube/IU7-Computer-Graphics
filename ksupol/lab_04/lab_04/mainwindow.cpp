@@ -243,11 +243,14 @@ void MainWindow::on_el_build_sp_clicked()
     QString st_b = ui->st_b->text();
     QString kol = ui->el_am->text();
     double s_a = st_a.toFloat();
-    double e_a =
+    double e_a = end_a.toFloat();
+    double s_b = st_b.toFloat();
+    int k = kol.toInt();
 
     int alg = ui->el_alg_2->currentIndex();
     int col = ui->el_col_2->currentIndex();
     int bgc_col = ui->el_bgc_2->isChecked();
     c = new QColor;
-
+    set_colour(bgc_col, col, c);
+    draw_el_spectr(s_a, e_a, s_b, k, c, scene, alg);
 }

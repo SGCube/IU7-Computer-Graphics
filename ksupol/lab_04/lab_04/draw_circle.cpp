@@ -71,6 +71,7 @@ void draw_param(double x, double y, double r, QColor *c, QGraphicsScene *scene)
     double xx;
     double yy;
     //double t = 1 / r;
+
     for (int i = 0; i < 360; i++)
     {
         xx = x + r * cos(i);
@@ -87,30 +88,52 @@ void draw_bres(double xx, double yy, double r, QColor *c, QGraphicsScene *scene)
 
     int x = 0;
     int y = r;
-    int gap = 0;
-    int delta = 2 - 2 * r;
+
+    int d = 2 - 2 * r;
+    int d1, d2;
+
     while (y >= 0)
     {
         scene->addRect(x + xx, y - yy, 1, 1, pen);
         scene->addRect(-x + xx, y - yy, 1, 1, pen);
         scene->addRect(x + xx, -y - yy, 1, 1, pen);
         scene->addRect(-x + xx, -y - yy, 1, 1, pen);
-        gap = 2 * (delta + y) - 1;
-        if (delta < 0 && gap <= 0)
+        if (d < 0)
         {
-            x++;
-            delta += 2 * x + 1;
-            continue;
+            d1 = 2 * d + 2 * y - 1;
+            if (d1 < 0)
+            {
+                x += 1;
+                d += 2 * x + 1;
+            }
+            else
+            {
+                x += 1;
+                y -= 1;
+                d += 2 * (x - y + 1);
+            }
         }
-        if (delta > 0 && gap > 0)
+        else if (d > 0)
         {
-            y--;
-            delta -= 2 * y + 1;
-            continue;
+            d2 = 2 * d - 2 * x - 1;
+            if (d2 < 0)
+            {
+                x += 1;
+                y -= 1;
+                d += 2 * (x - y + 1);
+            }
+            else
+            {
+                y -= 1;
+                d -= 2 * y - 1;
+            }
         }
-        x++;
-        delta += 2 * (x - y);
-        y--;
+        else
+        {
+            x += 1;
+            y -= 1;
+            d += 2 * (x - y + 1);
+        }
     }
 }
 
@@ -134,13 +157,16 @@ void draw_mid(double xx, double yy, double r, QColor *c, QGraphicsScene *scene)
 
     int x = 0;
     int y = r;
+
     int d = 1 - r;
     int p = 3;
     int q = -2 * r + 5;
+
     color_pix(xx, yy, x, y, pen, scene);
+
     while (y > x)
     {
-        if (d<0)
+        if (d < 0)
         {
             d += p;
             p += 2;

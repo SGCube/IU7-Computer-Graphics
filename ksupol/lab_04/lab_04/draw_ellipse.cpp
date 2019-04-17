@@ -177,3 +177,29 @@ void draw_el_bres(double x, double y, double a, double b, QColor *c, QGraphicsSc
         y0++;
     }
 }
+
+void draw_el_spectr(double s_a, double e_a, double s_b, int k, QColor *c, QGraphicsScene *scene, int alg)
+{
+    double step_a = (e_a - s_a) / k;
+    double koef = e_a / s_a;
+    double step_b = (koef * s_b - s_b) / k;
+
+    double a = s_a;
+    double b = s_b;
+
+    for (int i = 0; i < k; i++)
+    {
+        if (alg == 0)
+            draw_el_kanon(0, 0, a, b, c, scene);
+        if (alg == 1)
+            draw_el_param(0, 0, a, b, c, scene);
+        if (alg == 2)
+            draw_el_bres(0, 0, a, b, c, scene);
+        if (alg == 3)
+            draw_el_mid(0, 0, a, b, c, scene);
+        if (alg == 4)
+            draw_el_library(0, 0, a, b, c, scene);
+        a += step_a;
+        b += step_b;
+    }
+}
