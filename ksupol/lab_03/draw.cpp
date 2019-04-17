@@ -50,10 +50,10 @@ void draw_library(float sX, float sY, float eX, float eY, QColor *c, QGraphicsSc
 
 void draw_dda(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene *scene)
 {
-
     QPen pen;
     pen.setWidth(1);
     pen.setColor(*c);
+
     if (sX == eX && sY == eY)
     {
         scene->addRect(sX, -sY, 1, 1, pen);
@@ -83,6 +83,7 @@ void draw_real(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene
     QPen pen;
     pen.setWidth(1);
     pen.setColor(*c);
+
     if (sX == eX && sY == eY)
     {
         scene->addRect(sX, -sY, 1, 1, pen);
@@ -94,8 +95,8 @@ void draw_real(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene
     double dy = eY - sY;
     int sign_x = sign(dx);
     int sign_y = sign(dy);
-    dx = qFabs(dx);
-    dy = qFabs(dy);
+    dx = abs(dx);
+    dy = abs(dy);
 
     int obmen = 0;
     if (dy >= dx)
@@ -107,7 +108,7 @@ void draw_real(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene
     }
     double m = dy / dx;
     double e = m - 0.5;
-    for (int i = 0; i <= dx + 1; i++)
+    for (int i = 1; i <= dx + 1; i++)
     {
         scene->addRect(x, -y, 1, 1, pen);
         if (e >= 0)
@@ -134,6 +135,7 @@ void draw_int(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene 
     QPen pen;
     pen.setWidth(1);
     pen.setColor(*c);
+
     if (sX == eX && sY == eY)
     {
         scene->addRect(sX, -sY, 1, 1, pen);
@@ -156,27 +158,27 @@ void draw_int(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene 
         dx = dy;
         dy = t;
     }
-    int f1 = 2 * dy - dx;
+    int e = 2 * dy - dx;
 
-    for (int i = 0; i <= dx + 1; i++)
+    for (int i = 1; i <= dx + 1; i++)
     {
         scene->addRect(x, -y, 1, 1, pen);
-        if (f1 >=0)
+        if (e >=0)
         {
             if (obmen == 0)
                 y += sy;
             else
                 x += sx;
-            f1 -= 2 * dx;
+            e -= 2 * dx;
         }
-        if (f1 < 0)
+        if (e < 0)
         {
             if (obmen == 0)
                 x += sx;
             else
                 y += sy;
         }
-        f1 += 2 * dy;
+        e += 2 * dy;
     }
 }
 
@@ -185,6 +187,7 @@ void draw_step(float stX, float stY, float eX, float eY, QColor *c, QGraphicsSce
     QPen pen;
     pen.setWidth(1);
     pen.setColor(*c);
+
     if (stX == eX && stY == eY)
     {
         scene->addRect(stX, -stY, 1, 1, pen);
@@ -201,14 +204,14 @@ void draw_step(float stX, float stY, float eX, float eY, QColor *c, QGraphicsSce
 
     double x = stX;
     double y = stY;
-    unsigned int is_changed = 0;
+    unsigned int obmen = 0;
 
     if (dy > dx)
     {
         double temp = dx;
         dx = dy;
         dy = temp;
-        is_changed = 1;
+        obmen = 1;
     }
 
     double tan;
@@ -218,26 +221,26 @@ void draw_step(float stX, float stY, float eX, float eY, QColor *c, QGraphicsSce
         tan = 0;
 
     double m = tan * MAX_INTENSITY;
-    double error = (double)MAX_INTENSITY / 2;
+    double e = (double)MAX_INTENSITY / 2;
     double w = MAX_INTENSITY - m;
     for(int i = 1; i <= dx; i++)
     {
-        c->setAlpha(MAX_INTENSITY - error);
+        c->setAlpha(MAX_INTENSITY - e);
         pen.setColor(*c);
         scene->addRect(x, -y, 1, 1, pen);
-        if (error < w)
+        if (e < w)
         {
-            if (is_changed == 0)
+            if (obmen == 0)
                 x += sx;
             else
                 y += sy;
-            error += m;
+            e += m;
         }
         else
         {
             x += sx;
             y += sy;
-            error -= w;
+            e -= w;
         }
     }
 }
