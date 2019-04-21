@@ -5,16 +5,16 @@
 #include <QPen>
 #include <QGraphicsScene>
 
-void draw_el_library(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene);
+void draw_el_library(int x, int y, int a, int b, QColor *c, QGraphicsScene *scene);
 
-void draw_el_kanon(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene);
+void draw_el_kanon(int x, int y, float a, float b, QColor *c, QGraphicsScene *scene);
 
-void draw_el_param(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene);
+void draw_el_param(int x, int y, float a, float b, QColor *c, QGraphicsScene *scene);
 
-void draw_el_mid(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene);
+void draw_el_mid(int x, int y, int a, int b, QColor *c, QGraphicsScene *scene);
 
-void draw_el_bres(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene);
+void draw_el_bres(int x, int y, int a, int b, QColor *c, QGraphicsScene *scene);
 
-void draw_el_spectr(double s_a, double e_a, double s_b, int k, QColor *c, QGraphicsScene *scene, int alg);
+void draw_el_spectr(int s_a, int e_a, int s_b, int k, QColor *c, QGraphicsScene *scene, int alg);
 
 #endif // DRAW_ELLIPSE_H

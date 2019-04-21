@@ -5,8 +5,10 @@
 #include <QGraphicsScene>
 #include "math.h"
 
+#define PI 3.1415926535
 
-void draw_el_library(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene)
+
+void draw_el_library(int x, int y, int a, int b, QColor *c, QGraphicsScene *scene)
 {
     QPen pen;
     pen.setColor(*c);
@@ -16,22 +18,22 @@ void draw_el_library(double x, double y, double a, double b, QColor *c, QGraphic
 }
 
 
-void draw_el_kanon(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene)
+void draw_el_kanon(int x, int y, float a, float b, QColor *c, QGraphicsScene *scene)
 {
     QPen pen;
     pen.setColor(*c);
     pen.setWidth(1);
 
-    double a2 = a * a;
-    double b2 = b * b;
-    double x_end = a2 / sqrt(a2 + b2);
-    double m = b / a;
-    double x0, y0;
-    int xx, yy;
+    int a2 = a * a;
+    int b2 = b * b;
+    float x_end = a2 / sqrt(a2 + b2);
+    float k = b / a;
+    float x0, y0;
+    float xx, yy;
 
     for (x0 = 0; x0 <= x_end; x0 += 1)
     {
-        y0 = sqrt(a2 - x0 * x0) * m;
+        y0 = sqrt(a2 - x0 * x0) * k;
         xx = round(x0);
         yy = round(y0);
 
@@ -41,12 +43,12 @@ void draw_el_kanon(double x, double y, double a, double b, QColor *c, QGraphicsS
         scene->addRect(x - xx, -y + yy, 1, 1, pen);
     }
 
-    double y_end = b2 / sqrt(a2 + b2);
-    m = 1 / m;
+    float y_end = b2 / sqrt(a2 + b2);
+    k = 1 / k;
 
     for (y0 = 0; y0 <= y_end; y0 += 1)
     {
-        x0 = sqrt(b2 - y0 * y0) * m;
+        x0 = sqrt(b2 - y0 * y0) * k;
         xx = round(x0);
         yy = round(y0);
 
@@ -57,24 +59,25 @@ void draw_el_kanon(double x, double y, double a, double b, QColor *c, QGraphicsS
     }
 }
 
-void draw_el_param(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene)
+void draw_el_param(int x, int y, float a, float b, QColor *c, QGraphicsScene *scene)
 {
     QPen pen;
     pen.setColor(*c);
     pen.setWidth(1);
 
-    double xx;
-    double yy;
-    //double t = 1 / r;
-    for (int i = 0; i < 360; i++)
+    float xx;
+    float yy;
+    float t = 1 / a;
+
+    for (float tt = 0; tt < 2 * PI; tt += t)
     {
-        xx = a * cos(i);
-        yy = b * sin(i);
-        scene->addRect(xx + x, -yy - y, 1, 1, pen);
+        xx = a * cos(tt);
+        yy = b * sin(tt);
+        scene->addRect(round(xx) + x, -round(yy) - y, 1, 1, pen);
     }
 }
 
-void draw_el_mid(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene)
+void draw_el_mid(int x, int y, int a, int b, QColor *c, QGraphicsScene *scene)
 {
     QPen pen;
     pen.setColor(*c);
@@ -87,8 +90,8 @@ void draw_el_mid(double x, double y, double a, double b, QColor *c, QGraphicsSce
 
     int x0 = 0, y0 = b;
 
-    int d = -ad * b;	// -ad * y
-    double df = 0;		// bd * x
+    int d = -ad * b;
+    double df = 0;
     double f = b2 - a2 * y + 0.25 * a2 + 0.5;
 
     for (x0 = 0; x0 <= mid; x0++)
@@ -131,7 +134,7 @@ void draw_el_mid(double x, double y, double a, double b, QColor *c, QGraphicsSce
 
 }
 
-void draw_el_bres(double x, double y, double a, double b, QColor *c, QGraphicsScene *scene)
+void draw_el_bres(int x, int y, int a, int b, QColor *c, QGraphicsScene *scene)
 {
     QPen pen;
     pen.setColor(*c);
@@ -178,14 +181,14 @@ void draw_el_bres(double x, double y, double a, double b, QColor *c, QGraphicsSc
     }
 }
 
-void draw_el_spectr(double s_a, double e_a, double s_b, int k, QColor *c, QGraphicsScene *scene, int alg)
+void draw_el_spectr(int s_a, int e_a, int s_b, int k, QColor *c, QGraphicsScene *scene, int alg)
 {
     double step_a = (e_a - s_a) / k;
     double koef = e_a / s_a;
     double step_b = (koef * s_b - s_b) / k;
 
-    double a = s_a;
-    double b = s_b;
+    int a = s_a;
+    int b = s_b;
 
     for (int i = 0; i < k; i++)
     {

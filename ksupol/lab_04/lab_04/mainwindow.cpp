@@ -26,8 +26,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_cir_build_clicked()
 {
-    double x;
-    double y;
+    int x;
+    int y;
     int check;
     QString cor_x = ui->cir_x->text();
     QString cor_y = ui->cir_y->text();
@@ -55,8 +55,8 @@ void MainWindow::on_cir_build_clicked()
             QMessageBox::critical(this, "Ошибка", "Введите корректную координату Y!");
             return;
         }
-        x = cor_x.toFloat();
-        y = cor_y.toFloat();
+        x = cor_x.toInt();
+        y = cor_y.toInt();
     }
     QString rad = ui->cir_r->text();
     if (rad == NULL)
@@ -70,7 +70,8 @@ void MainWindow::on_cir_build_clicked()
         QMessageBox::critical(this, "Ошибка", "Введите корректный радиус!");
         return;
     }
-    double r = rad.toFloat();
+    int r = rad.toInt();
+    float rr = rad.toFloat();
     int alg = ui->cir_alg->currentIndex();
     int col = ui->cir_col->currentIndex();
     int bgc_col = ui->cir_bgc->isChecked();
@@ -79,7 +80,7 @@ void MainWindow::on_cir_build_clicked()
     if (alg == 0)
         draw_kanon(x, y, r, c, scene);
     if (alg == 1)
-        draw_param(x, y, r, c, scene);
+        draw_param(x, y, rr, c, scene);
     if (alg == 2)
         draw_bres(x, y, r, c, scene);
     if (alg == 3)
@@ -149,9 +150,9 @@ void MainWindow::on_cir_build_2_clicked()
         QMessageBox::critical(this, "Ошибка", "Количество окружностей не может быть отрицательным!");
         return;
     }
-    int alg = ui->cir_alg_2->currentIndex();
-    int col = ui->cir_col_2->currentIndex();
-    int bgc_col = ui->cir_bgc_2->isChecked();
+    int alg = ui->cir_alg->currentIndex();
+    int col = ui->cir_col->currentIndex();
+    int bgc_col = ui->cir_bgc->isChecked();
     c = new QColor;
     set_colour(bgc_col, col, c);
     draw_cir_spectr(s_r, e_r, k, c, scene, alg);
@@ -159,8 +160,8 @@ void MainWindow::on_cir_build_2_clicked()
 
 void MainWindow::on_el_build_clicked()
 {
-    double x;
-    double y;
+    int x;
+    int y;
     int check;
     QString cor_x = ui->el_x->text();
     QString cor_y = ui->el_y->text();
@@ -188,8 +189,8 @@ void MainWindow::on_el_build_clicked()
             QMessageBox::critical(this, "Ошибка", "Введите корректную координату Y!");
             return;
         }
-        x = cor_x.toFloat();
-        y = cor_y.toFloat();
+        x = cor_x.toInt();
+        y = cor_y.toInt();
     }
     QString aa = ui->el_a->text();
     if (aa == NULL)
@@ -203,7 +204,7 @@ void MainWindow::on_el_build_clicked()
         QMessageBox::critical(this, "Ошибка", "Введите корректную большую ось эллипса!");
         return;
     }
-    double a = aa.toFloat();
+    int a = aa.toInt();
 
     QString bb = ui->el_b->text();
     if (bb == NULL)
@@ -217,7 +218,7 @@ void MainWindow::on_el_build_clicked()
         QMessageBox::critical(this, "Ошибка", "Введите корректную малую ось эллипса!");
         return;
     }
-    double b = bb.toFloat();
+    int b = bb.toInt();
 
     int alg = ui->el_alg->currentIndex();
     int col = ui->el_col->currentIndex();
@@ -242,14 +243,14 @@ void MainWindow::on_el_build_sp_clicked()
     QString end_a = ui->end_a->text();
     QString st_b = ui->st_b->text();
     QString kol = ui->el_am->text();
-    double s_a = st_a.toFloat();
-    double e_a = end_a.toFloat();
-    double s_b = st_b.toFloat();
+    int s_a = st_a.toInt();
+    int e_a = end_a.toInt();
+    int s_b = st_b.toInt();
     int k = kol.toInt();
 
-    int alg = ui->el_alg_2->currentIndex();
-    int col = ui->el_col_2->currentIndex();
-    int bgc_col = ui->el_bgc_2->isChecked();
+    int alg = ui->el_alg->currentIndex();
+    int col = ui->el_col->currentIndex();
+    int bgc_col = ui->el_bgc->isChecked();
     c = new QColor;
     set_colour(bgc_col, col, c);
     draw_el_spectr(s_a, e_a, s_b, k, c, scene, alg);
