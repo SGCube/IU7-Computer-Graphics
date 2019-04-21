@@ -40,7 +40,7 @@ void set_colour(QColor *c, int bgc_col, int col)
         c->setRgb(221, 0, 255);
 }
 
-void draw_library(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene *scene)
+void draw_library(int sX, int sY, int eX, int eY, QColor *c, QGraphicsScene *scene)
 {
     QPen pen;
     pen.setWidth(1);
@@ -48,7 +48,7 @@ void draw_library(float sX, float sY, float eX, float eY, QColor *c, QGraphicsSc
     scene->addLine(sX, -sY, eX, -eY, pen);
 }
 
-void draw_dda(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene *scene)
+void draw_dda(int sX, int sY, int eX, int eY, QColor *c, QGraphicsScene *scene)
 {
     QPen pen;
     pen.setWidth(1);
@@ -78,7 +78,7 @@ void draw_dda(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene 
     }
 }
 
-void draw_real(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene *scene)
+void draw_real(int sX, int sY, int eX, int eY, QColor *c, QGraphicsScene *scene)
 {
     QPen pen;
     pen.setWidth(1);
@@ -89,10 +89,10 @@ void draw_real(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene
         scene->addRect(sX, -sY, 1, 1, pen);
         return;
     }
-    double x = sX;
-    double y = sY;
-    double dx = eX - sX;
-    double dy = eY - sY;
+    int x = sX;
+    int y = sY;
+    float dx = eX - sX;
+    float dy = eY - sY;
     int sign_x = sign(dx);
     int sign_y = sign(dy);
     dx = abs(dx);
@@ -110,6 +110,7 @@ void draw_real(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene
     double e = m - 0.5;
     for (int i = 1; i <= dx + 1; i++)
     {
+
         scene->addRect(x, -y, 1, 1, pen);
         if (e >= 0)
         {
@@ -130,7 +131,7 @@ void draw_real(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene
     }
 }
 
-void draw_int(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene *scene)
+void draw_int(int sX, int sY, int eX, int eY, QColor *c, QGraphicsScene *scene)
 {
     QPen pen;
     pen.setWidth(1);
@@ -141,10 +142,10 @@ void draw_int(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene 
         scene->addRect(sX, -sY, 1, 1, pen);
         return;
     }
-    double x = sX;
-    double y = sY;
-    double dx = eX - sX;
-    double dy = eY - sY;
+    int x = sX;
+    int y = sY;
+    int dx = eX - sX;
+    int dy = eY - sY;
     int sx = sign(dx), sy = sign(dy);
 
     dx = abs(dx);
@@ -154,7 +155,7 @@ void draw_int(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene 
     if (dy >= dx)
     {
         obmen = 1;
-        double t = dx;
+        int t = dx;
         dx = dy;
         dy = t;
     }
@@ -182,7 +183,7 @@ void draw_int(float sX, float sY, float eX, float eY, QColor *c, QGraphicsScene 
     }
 }
 
-void draw_step(float stX, float stY, float eX, float eY, QColor *c, QGraphicsScene *scene)
+void draw_step(int stX, int stY, int eX, int eY, QColor *c, QGraphicsScene *scene)
 {
     QPen pen;
     pen.setWidth(1);
@@ -250,7 +251,7 @@ void draw_spectrum(QColor *c, int alg, float degr, QGraphicsScene *scene)
     int kol = 360 / degr;
     double d = qDegreesToRadians(degr);
 
-    double x = 1, y = 1;
+    float x = 1, y = 1;
     for (int i = 0; i < kol; i++)
     {
         x = R * qCos(d);
