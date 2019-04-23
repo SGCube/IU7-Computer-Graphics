@@ -48,17 +48,13 @@ void draw_kanon(int x, int y, int r, QColor *c, QGraphicsScene *scene)
     float yy;
     float xx;
 
-    for (xx = -a; xx < a + 1; xx++)
+    for (xx = -a; xx <= a; xx++)
     {
         yy = sqrt(qPow(r, 2) - qPow(xx, 2));
         scene->addRect(round(xx) + x, -(round(yy) + y), 1, 1, pen);
         scene->addRect(round(xx) + x, round(yy) - y, 1, 1, pen);
-    }
-    for (yy = -a; yy < a; yy++)
-    {
-        xx = sqrt(qPow(r, 2) - qPow(yy, 2));
-        scene->addRect(round(xx) + x, round(yy) - y, 1, 1, pen);
-        scene->addRect(x - round(xx), round(yy) - y, 1, 1, pen);
+        scene->addRect(round(yy) + x, round(xx) - y, 1, 1, pen);
+        scene->addRect(x - round(yy), round(xx) - y, 1, 1, pen);
     }
 }
 
@@ -74,9 +70,9 @@ void draw_param(int x, int y, float r, QColor *c, QGraphicsScene *scene)
 
     for (float tt = 0; tt < 2 * PI; tt += t)
     {
-        xx = x + r * cos(tt);
-        yy = r * sin(tt) - y;
-        scene->addRect(round(xx), round(yy), 1, 1, pen);
+        xx = x + round(r * cos(tt));
+        yy = round(r * sin(tt)) - y;
+        scene->addRect(xx, yy, 1, 1, pen);
     }
 }
 
@@ -90,18 +86,18 @@ void draw_bres(int xx, int yy, float r, QColor *c, QGraphicsScene *scene)
     int y = r;
 
     int d = 2 - 2 * r;
-    int d1, d2;
+    int di, si;
 
-    while (y >= 0)
+    while (y > 0)
     {
         scene->addRect(x + xx, y - yy, 1, 1, pen);
         scene->addRect(-x + xx, y - yy, 1, 1, pen);
         scene->addRect(x + xx, -y - yy, 1, 1, pen);
         scene->addRect(-x + xx, -y - yy, 1, 1, pen);
-        if (d < 0)
+        if (d <= 0)
         {
-            d1 = 2 * d + 2 * y - 1;
-            if (d1 < 0)
+            di = 2 * (d + y) - 1;
+            if (di < 0)
             {
                 x += 1;
                 d += 2 * x + 1;
@@ -115,8 +111,8 @@ void draw_bres(int xx, int yy, float r, QColor *c, QGraphicsScene *scene)
         }
         else if (d > 0)
         {
-            d2 = 2 * d - 2 * x - 1;
-            if (d2 < 0)
+            si = 2 * (d - x) - 1;
+            if (si <= 0)
             {
                 x += 1;
                 y -= 1;
@@ -125,7 +121,7 @@ void draw_bres(int xx, int yy, float r, QColor *c, QGraphicsScene *scene)
             else
             {
                 y -= 1;
-                d -= 2 * y - 1;
+                d += 1 - 2 * y;
             }
         }
         else
