@@ -55,33 +55,25 @@ void draw_circle_bresem(QPainter *painter, Point pc, double r)
 		
 		if (d < 0)
 		{
-			d1 = 2 * d + 2 * y - 1;
-			if (d1 < 0)
+			d1 = 2 * (d + y) - 1;
+			if (d1 >= 0)
+			{
+				y--;
+				d += -2 * y + 1;
+			}
+			x++;
+			d += 2 * x + 1;
+		}
+		else if (d > 0)
+		{
+			d2 = 2 * (d - x) - 1;
+			if (d2 < 0)
 			{
 				x++;
 				d += 2 * x + 1;
 			}
-			else
-			{
-				x++;
-				y--;
-				d += 2 * (x - y + 1);
-			}
-		}
-		else if (d > 0)
-		{
-			d2 = 2 * d - 2 * x - 1;
-			if (d2 < 0)
-			{
-				x++;
-				y--;
-				d += 2 * (x - y + 1);
-			}
-			else
-			{
-				y--;
-				d -= 2 * y - 1;
-			}
+			y--;
+			d += -2 * y + 1;
 		}
 		else
 		{
@@ -104,10 +96,10 @@ void draw_circle_midpoint(QPainter *painter, Point pc, double r)
 		painter->drawPoint(pc.x() + x, pc.y() + y);
 		painter->drawPoint(pc.x() - x, pc.y() + y);
 		
-		painter->drawPoint(pc.x() + y, pc.y() - x);
-		painter->drawPoint(pc.x() - y, pc.y() - x);
 		painter->drawPoint(pc.x() + y, pc.y() + x);
 		painter->drawPoint(pc.x() - y, pc.y() + x);
+		painter->drawPoint(pc.x() + y, pc.y() - x);
+		painter->drawPoint(pc.x() - y, pc.y() - x);
 		
 		if (f >= 0)
 		{

@@ -62,7 +62,7 @@ void draw_ellipse_bresem(QPainter *painter, Point pc, double a, double b)
 	int d = b2 - 2 * a2 * b + a2;
 	int d1, d2;
 	
-	while(y >= 0)
+	while (y >= 0)
 	{
 		painter->drawPoint(pc.x() + x, pc.y() - y);
 		painter->drawPoint(pc.x() - x, pc.y() - y);
@@ -72,17 +72,13 @@ void draw_ellipse_bresem(QPainter *painter, Point pc, double a, double b)
 		if (d < 0)
 		{
 			d1 = 2 * (d + a2 * y) - a2;
-			if (d1 < 0)
+			if (d1 >= 0)
 			{
-				x++;
-				d += b2 * (2 * x + 1);
-			}
-			else
-			{
-				x++;
 				y--;
-				d += b2 * (2 * x + 1) - a2 * (2 * y - 1);
+				d += -a2 * (2 * y - 1);
 			}
+			x++;
+			d += b2 * (2 * x + 1);
 		}
 		else if (d > 0)
 		{
@@ -90,14 +86,10 @@ void draw_ellipse_bresem(QPainter *painter, Point pc, double a, double b)
 			if (d2 < 0)
 			{
 				x++;
-				y--;
-				d += b2 * (2 * x + 1) - a2 * (2 * y - 1);
+				d += b2 * (2 * x + 1);
 			}
-			else
-			{
-				y--;
-				d -= a2 * (2 * y - 1);
-			}
+			y--;
+			d -= a2 * (2 * y - 1);
 		}
 		else
 		{
