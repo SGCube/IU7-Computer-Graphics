@@ -419,7 +419,7 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>659</x>
+      <x>680</x>
       <y>490</y>
       <width>151</width>
       <height>24</height>
@@ -440,9 +440,9 @@
    <widget class="QLineEdit" name="rstartEdit">
     <property name="geometry">
      <rect>
-      <x>821</x>
+      <x>856</x>
       <y>490</y>
-      <width>128</width>
+      <width>91</width>
       <height>24</height>
      </rect>
     </property>
@@ -455,8 +455,8 @@
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>661</x>
-      <y>520</y>
+      <x>680</x>
+      <y>526</y>
       <width>151</width>
       <height>48</height>
      </rect>
@@ -467,8 +467,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Шаг изменения
-радиуса</string>
+     <string>Шаг изменения</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -602,9 +601,9 @@ selection-background-color: rgb(0, 0, 0);</string>
    <widget class="QLineEdit" name="rstepEdit">
     <property name="geometry">
      <rect>
-      <x>821</x>
-      <y>530</y>
-      <width>128</width>
+      <x>856</x>
+      <y>540</y>
+      <width>91</width>
       <height>24</height>
      </rect>
     </property>
@@ -617,9 +616,9 @@ selection-background-color: rgb(0, 0, 0);</string>
    <widget class="QLineEdit" name="nEdit">
     <property name="geometry">
      <rect>
-      <x>820</x>
+      <x>856</x>
       <y>590</y>
-      <width>128</width>
+      <width>91</width>
       <height>24</height>
      </rect>
     </property>
@@ -636,8 +635,8 @@ selection-background-color: rgb(0, 0, 0);</string>
     <property name="geometry">
      <rect>
       <x>660</x>
-      <y>580</y>
-      <width>151</width>
+      <y>578</y>
+      <width>191</width>
       <height>48</height>
      </rect>
     </property>
@@ -647,8 +646,7 @@ selection-background-color: rgb(0, 0, 0);</string>
      </font>
     </property>
     <property name="text">
-     <string>Количество
-окружностей</string>
+     <string>Количество окружностей</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -758,7 +756,7 @@ selection-background-color: rgb(0, 0, 0);</string>
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>414</y>
+      <y>416</y>
       <width>290</width>
       <height>48</height>
      </rect>
@@ -793,36 +791,6 @@ selection-background-color: rgb(0, 0, 0);</string>
     <property name="text">
      <string>Центр
 холста</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="bstepEdit">
-    <property name="geometry">
-     <rect>
-      <x>1188</x>
-      <y>551</y>
-      <width>71</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="bstartEdit">
-    <property name="geometry">
-     <rect>
-      <x>1188</x>
-      <y>508</y>
-      <width>71</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
     </property>
    </widget>
    <widget class="QPushButton" name="drawConeEdit">
@@ -864,9 +832,9 @@ selection-background-color: rgb(0, 0, 0);</string>
    <widget class="QLabel" name="label_9">
     <property name="geometry">
      <rect>
-      <x>970</x>
-      <y>584</y>
-      <width>151</width>
+      <x>975</x>
+      <y>576</y>
+      <width>181</width>
       <height>48</height>
      </rect>
     </property>
@@ -876,8 +844,7 @@ selection-background-color: rgb(0, 0, 0);</string>
      </font>
     </property>
     <property name="text">
-     <string>Количество
- эллипсов</string>
+     <string>Количество эллипсов</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -909,10 +876,10 @@ selection-background-color: rgb(0, 0, 0);</string>
    <widget class="QLabel" name="label_10">
     <property name="geometry">
      <rect>
-      <x>1060</x>
-      <y>500</y>
-      <width>111</width>
-      <height>41</height>
+      <x>970</x>
+      <y>460</y>
+      <width>141</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -921,8 +888,7 @@ selection-background-color: rgb(0, 0, 0);</string>
      </font>
     </property>
     <property name="text">
-     <string>Начальное
-значение</string>
+     <string>Начальная длина</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -946,9 +912,9 @@ selection-background-color: rgb(0, 0, 0);</string>
    <widget class="QLineEdit" name="neEdit">
     <property name="geometry">
      <rect>
-      <x>1130</x>
-      <y>594</y>
-      <width>128</width>
+      <x>1170</x>
+      <y>590</y>
+      <width>91</width>
       <height>24</height>
      </rect>
     </property>
@@ -1070,9 +1036,9 @@ selection-background-color: rgb(0, 0, 0);</string>
    <widget class="QLabel" name="label_12">
     <property name="geometry">
      <rect>
-      <x>1070</x>
-      <y>540</y>
-      <width>91</width>
+      <x>970</x>
+      <y>546</y>
+      <width>191</width>
       <height>48</height>
      </rect>
     </property>
@@ -1082,8 +1048,7 @@ selection-background-color: rgb(0, 0, 0);</string>
      </font>
     </property>
     <property name="text">
-     <string>Шаг
-изменения</string>
+     <string>Шаг изменения</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1167,77 +1132,12 @@ selection-background-color: rgb(0, 0, 0);</string>
      </font>
     </property>
    </widget>
-   <widget class="QLabel" name="p2Label_3">
-    <property name="geometry">
-     <rect>
-      <x>1040</x>
-      <y>474</y>
-      <width>151</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Длины полуосей</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="xcLabel_5">
-    <property name="geometry">
-     <rect>
-      <x>1000</x>
-      <y>471</y>
-      <width>21</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>a</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="xcLabel_6">
-    <property name="geometry">
-     <rect>
-      <x>1210</x>
-      <y>473</y>
-      <width>21</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>b</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="astartEdit">
     <property name="geometry">
      <rect>
-      <x>975</x>
-      <y>507</y>
-      <width>71</width>
+      <x>1170</x>
+      <y>490</y>
+      <width>91</width>
       <height>24</height>
      </rect>
     </property>
@@ -1250,9 +1150,9 @@ selection-background-color: rgb(0, 0, 0);</string>
    <widget class="QLineEdit" name="astepEdit">
     <property name="geometry">
      <rect>
-      <x>975</x>
-      <y>550</y>
-      <width>71</width>
+      <x>1170</x>
+      <y>560</y>
+      <width>91</width>
       <height>24</height>
      </rect>
     </property>
@@ -1260,6 +1160,63 @@ selection-background-color: rgb(0, 0, 0);</string>
      <font>
       <pointsize>12</pointsize>
      </font>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="bstartEdit">
+    <property name="geometry">
+     <rect>
+      <x>1170</x>
+      <y>520</y>
+      <width>91</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_14">
+    <property name="geometry">
+     <rect>
+      <x>978</x>
+      <y>480</y>
+      <width>191</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>горизонтальной полуоси</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_15">
+    <property name="geometry">
+     <rect>
+      <x>981</x>
+      <y>510</y>
+      <width>181</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>вертикальной полуоси</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
    <zorder>gView</zorder>
@@ -1299,8 +1256,6 @@ selection-background-color: rgb(0, 0, 0);</string>
    <zorder>yceEdit</zorder>
    <zorder>label_8</zorder>
    <zorder>centereBtn</zorder>
-   <zorder>bstepEdit</zorder>
-   <zorder>bstartEdit</zorder>
    <zorder>drawConeEdit</zorder>
    <zorder>drawEllipseBtn</zorder>
    <zorder>label_9</zorder>
@@ -1318,11 +1273,11 @@ selection-background-color: rgb(0, 0, 0);</string>
    <zorder>xcLabel_3</zorder>
    <zorder>xcLabel_4</zorder>
    <zorder>bEdit</zorder>
-   <zorder>p2Label_3</zorder>
-   <zorder>xcLabel_5</zorder>
-   <zorder>xcLabel_6</zorder>
    <zorder>astartEdit</zorder>
    <zorder>astepEdit</zorder>
+   <zorder>bstartEdit</zorder>
+   <zorder>label_14</zorder>
+   <zorder>label_15</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

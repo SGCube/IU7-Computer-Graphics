@@ -230,9 +230,8 @@ void MainWindow::on_drawConBtn_released()
 void MainWindow::on_drawConeEdit_released()
 {
 	QString astartstr = ui->astartEdit->text();
-	QString astepstr = ui->astepEdit->text();
 	QString bstartstr = ui->bstartEdit->text();
-	QString bstepstr = ui->bstepEdit->text();
+	QString astepstr = ui->astepEdit->text();
 	QString nstr = ui->neEdit->text();
 	
 	bool correct = true;
@@ -257,13 +256,6 @@ void MainWindow::on_drawConeEdit_released()
 							  "Некорректное начальное значение b!");
 		return;
 	}
-	db = bstepstr.toDouble(&correct);
-	if (!correct || db <= 0)
-	{
-		QMessageBox::critical(this, "Ошибка",
-							  "Некорректное значение шага изменения b!");
-		return;
-	}
 	n = nstr.toInt(&correct);
 	if (!correct || n < 1)
 	{
@@ -271,6 +263,8 @@ void MainWindow::on_drawConeEdit_released()
 							  "Некорректное значение количества окружностей!");
 		return;
 	}
+	db = b * da / a;
+	
 	
 	QPainter painter(&img);
 	QPen pen(color);

@@ -95,7 +95,7 @@ void draw_circle_bresem(QPainter *painter, Point pc, double r)
 void draw_circle_midpoint(QPainter *painter, Point pc, double r)
 {
 	int x = 0, y = r;
-	double f = 0.25 - r;
+	double f = 1.25 - r;
 	
 	for (x = 0; x <= y; x++)
 	{
