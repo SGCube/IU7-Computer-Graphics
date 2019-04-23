@@ -29,14 +29,23 @@ void draw_circle_canon(QPainter *painter, Point pc, double r)
 void draw_circle_param(QPainter *painter, Point pc, double r)
 {
 	double dt = 1 / r;
-	double t_end = 2 * M_PI;
+	double t_end = M_PI / 4;
 	int x, y;
 	
 	for (double t = 0; t < 2 * t_end; t += dt)
 	{
-		x = pc.x() + (int)round(r * cos(t));
-		y = pc.y() + (int)round(r * sin(t));
-		painter->drawPoint(x, y);
+		x = round(r * cos(t));
+		y = round(r * sin(t));
+		
+		painter->drawPoint(pc.x() + x, pc.y() + y);
+		painter->drawPoint(pc.x() - x, pc.y() + y);
+		painter->drawPoint(pc.x() + x, pc.y() - y);
+		painter->drawPoint(pc.x() - x, pc.y() - y);
+		
+		painter->drawPoint(pc.x() + y, pc.y() + x);
+		painter->drawPoint(pc.x() - y, pc.y() + x);
+		painter->drawPoint(pc.x() + y, pc.y() - x);
+		painter->drawPoint(pc.x() - y, pc.y() - x);
 	}
 }
 
@@ -87,7 +96,7 @@ void draw_circle_bresem(QPainter *painter, Point pc, double r)
 void draw_circle_midpoint(QPainter *painter, Point pc, double r)
 {
 	int x = 0, y = r;
-	double f = 1.25 - r;
+	int f = 5 - 4 * r;
 	
 	for (x = 0; x <= y; x++)
 	{
@@ -104,9 +113,9 @@ void draw_circle_midpoint(QPainter *painter, Point pc, double r)
 		if (f >= 0)
 		{
 			y--;
-			f -= 2 * y;
+			f -= 8 * y;
 		}
-		f += 2 * x + 1;
+		f += 8 * x + 4;
 	}
 }
 
