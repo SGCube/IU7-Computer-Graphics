@@ -109,46 +109,49 @@ void draw_ellipse_midpoint(QPainter *painter, Point pc, double a, double b)
 	
 	int x = 0, y = b;
 	
-	int d = -ad * b;	// -ad * y
-	double df = 0;		// bd * x
-	double f = b2 - a2 * y + 0.25 * a2 + 0.5;
+	double f = b2 - a2 * b + 0.25 * a2;
+	double dx = 0, dy = -ad * y;
 	
-	for (x = 0; x <= mid; x++)
+	while (x <= mid)
 	{
 		painter->drawPoint(pc.x() + x, pc.y() - y);
 		painter->drawPoint(pc.x() - x, pc.y() - y);
 		painter->drawPoint(pc.x() + x, pc.y() + y);
 		painter->drawPoint(pc.x() - x, pc.y() + y);
 		
-		if (f >= 0)
+		if (f > 0)
 		{
 			y--;
-			d += ad;
-			f += d;
+			// f -= ad * y;
+			dy += ad;
+			f += dy;
 		}
-		df += bd;
-		f += df;
+		x++;
+		// f += bd * x + b2;
+		dx += bd;
+		f += dx + b2;
 	}
 	
-	d = bd * x;
-	df = -ad * y;
 	f += -b2 * (x + 0.75) - a2 * (y - 0.75);
 	
-	for (; y >= 0; y--)
+	while (y >= 0)
 	{
 		painter->drawPoint(pc.x() + x, pc.y() - y);
 		painter->drawPoint(pc.x() - x, pc.y() - y);
 		painter->drawPoint(pc.x() + x, pc.y() + y);
 		painter->drawPoint(pc.x() - x, pc.y() + y);
 		
-		if (f < 0)
+		if (f <= 0)
 		{
 			x++;
-			d += bd;
-			f += d;
+			// f += bd * x;
+			dx += bd;
+			f += dx;
 		}
-		df += ad;
-		f += df;
+		y--;
+		// f += a2 - ad * y;
+		dy += ad;
+		f += a2 + dy;
 	}
 }
 
