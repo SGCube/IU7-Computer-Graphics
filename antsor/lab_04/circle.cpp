@@ -32,7 +32,7 @@ void draw_circle_param(QPainter *painter, Point pc, double r)
 	double t_end = M_PI / 4;
 	int x, y;
 	
-	for (double t = 0; t < 2 * t_end; t += dt)
+	for (double t = 0; t <= t_end; t += dt)
 	{
 		x = round(r * cos(t));
 		y = round(r * sin(t));
