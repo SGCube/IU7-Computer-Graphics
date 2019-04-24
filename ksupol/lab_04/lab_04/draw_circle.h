@@ -18,6 +18,6 @@ void draw_mid(int xx, int yy, int r, QColor *c, QGraphicsScene *scene);
 
 void color_pix(int x0, int y0, int x, int y, QPen pen, QGraphicsScene *scene);
 
-void draw_cir_spectr(int s_r, int e_r, int k, QColor *c, QGraphicsScene *scene, int alg);
+void draw_cir_spectr(int x, int y, int s_r, int e_r, int k, QColor *c, QGraphicsScene *scene, int alg);
 
 #endif // DRAW_H

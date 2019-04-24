@@ -16,6 +16,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    int xc = 0;
+    int yc = 0;
 
 private slots:
     void on_cir_build_clicked();

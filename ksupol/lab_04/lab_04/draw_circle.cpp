@@ -94,7 +94,7 @@ void draw_bres(int xx, int yy, float r, QColor *c, QGraphicsScene *scene)
         scene->addRect(-x + xx, y - yy, 1, 1, pen);
         scene->addRect(x + xx, -y - yy, 1, 1, pen);
         scene->addRect(-x + xx, -y - yy, 1, 1, pen);
-        if (d <= 0)
+        if (d < 0)
         {
             di = 2 * (d + y) - 1;
             if (di < 0)
@@ -181,7 +181,7 @@ void draw_mid(int xx, int yy, int r, QColor *c, QGraphicsScene *scene)
     }
 }
 
-void draw_cir_spectr(int s_r, int e_r, int k, QColor *c, QGraphicsScene *scene, int alg)
+void draw_cir_spectr(int x, int y, int s_r, int e_r, int k, QColor *c, QGraphicsScene *scene, int alg)
 {
     double step = (e_r - s_r) / k;
     double r = s_r;
@@ -189,15 +189,15 @@ void draw_cir_spectr(int s_r, int e_r, int k, QColor *c, QGraphicsScene *scene, 
     for (int i = 0; i < k; i++)
     {
         if (alg == 0)
-            draw_kanon(0, 0, r, c, scene);
+            draw_kanon(x, y, r, c, scene);
         if (alg == 1)
-            draw_param(0, 0, r, c, scene);
+            draw_param(x, y, r, c, scene);
         if (alg == 2)
-            draw_bres(0, 0, r, c, scene);
+            draw_bres(x, y, r, c, scene);
         if (alg == 3)
-            draw_mid(0, 0, r, c, scene);
+            draw_mid(x, y, r, c, scene);
         if (alg == 4)
-            draw_library(0, 0, r, c, scene);
+            draw_library(x, y, r, c, scene);
         r += step;
     }
 }

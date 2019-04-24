@@ -70,6 +70,8 @@ void MainWindow::on_cir_build_clicked()
         QMessageBox::critical(this, "Ошибка", "Введите корректный радиус!");
         return;
     }
+    xc = x;
+    yc = y;
     int r = rad.toInt();
     float rr = rad.toFloat();
     int alg = ui->cir_alg->currentIndex();
@@ -155,7 +157,7 @@ void MainWindow::on_cir_build_2_clicked()
     int bgc_col = ui->cir_bgc->isChecked();
     c = new QColor;
     set_colour(bgc_col, col, c);
-    draw_cir_spectr(s_r, e_r, k, c, scene, alg);
+    draw_cir_spectr(xc, yc, s_r, e_r, k, c, scene, alg);
 }
 
 void MainWindow::on_el_build_clicked()
@@ -218,6 +220,8 @@ void MainWindow::on_el_build_clicked()
         QMessageBox::critical(this, "Ошибка", "Введите корректную малую ось эллипса!");
         return;
     }
+    xc = x;
+    yc = y;
     int b = bb.toInt();
 
     int alg = ui->el_alg->currentIndex();
@@ -253,5 +257,5 @@ void MainWindow::on_el_build_sp_clicked()
     int bgc_col = ui->el_bgc->isChecked();
     c = new QColor;
     set_colour(bgc_col, col, c);
-    draw_el_spectr(s_a, e_a, s_b, k, c, scene, alg);
+    draw_el_spectr(xc, yc, s_a, e_a, s_b, k, c, scene, alg);
 }
