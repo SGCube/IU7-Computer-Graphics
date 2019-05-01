@@ -55,16 +55,6 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QListView" name="edgeList">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>90</y>
-      <width>288</width>
-      <height>320</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="labelEdge">
     <property name="geometry">
      <rect>
@@ -418,6 +408,35 @@ Shift.</string>
     <property name="text">
      <string>Замкнуть фигуру</string>
     </property>
+   </widget>
+   <widget class="QTableWidget" name="pointTable">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>80</y>
+      <width>288</width>
+      <height>320</height>
+     </rect>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>144</number>
+    </attribute>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>144</number>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>X</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Y</string>
+     </property>
+    </column>
    </widget>
   </widget>
  </widget>

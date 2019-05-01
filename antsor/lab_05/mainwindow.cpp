@@ -6,14 +6,15 @@
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow),
-	scene(0, 0, 640, 640),
 	img(640, 640, QImage::Format_RGB32),
 	color_edge(0, 0, 0),
 	color_fill(0, 0, 255),
 	color_bg(255, 255, 255)
 {
 	ui->setupUi(this);
-	ui->gView->setScene(&scene);
+	scene = new Canvas();
+	ui->gView->setScene(scene);
+	ui->gView->setMouseTracking(true);
 	
 	QPixmap pxm(ui->colorEdge->rect().size());
 	pxm.fill(color_edge);
@@ -26,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+	delete scene;
 	delete ui;
 }
 

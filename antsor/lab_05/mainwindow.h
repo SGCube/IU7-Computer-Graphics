@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 
+#include "canvas.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -25,11 +27,11 @@ private slots:
 	
 private:
 	Ui::MainWindow *ui;
-	QGraphicsScene scene;
 	QImage img;
 	QColor color_edge;
 	QColor color_fill;
 	QColor color_bg;
+	Canvas *scene;
 };
 
 #endif // MAINWINDOW_H
