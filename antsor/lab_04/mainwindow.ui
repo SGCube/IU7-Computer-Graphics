@@ -467,7 +467,8 @@
      </font>
     </property>
     <property name="text">
-     <string>Шаг изменения</string>
+     <string>Шаг изменения
+радиуса</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -833,7 +834,7 @@ selection-background-color: rgb(0, 0, 0);</string>
     <property name="geometry">
      <rect>
       <x>975</x>
-      <y>576</y>
+      <y>583</y>
       <width>181</width>
       <height>48</height>
      </rect>
@@ -913,7 +914,7 @@ selection-background-color: rgb(0, 0, 0);</string>
     <property name="geometry">
      <rect>
       <x>1170</x>
-      <y>590</y>
+      <y>595</y>
       <width>91</width>
       <height>24</height>
      </rect>
@@ -1048,7 +1049,8 @@ selection-background-color: rgb(0, 0, 0);</string>
      </font>
     </property>
     <property name="text">
-     <string>Шаг изменения</string>
+     <string>Шаг изменения длины
+горизонтальной полуоси</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

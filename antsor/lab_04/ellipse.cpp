@@ -65,7 +65,7 @@ void draw_ellipse_bresem(QPainter *painter, Point pc, double a, double b)
 	int d = b2 - 2 * a2 * b + a2;
 	int d1, d2;
 	
-	while (y >= 0)
+	while (y > 0)
 	{
 		painter->drawPoint(pc.x() + x, pc.y() - y);
 		painter->drawPoint(pc.x() - x, pc.y() - y);
