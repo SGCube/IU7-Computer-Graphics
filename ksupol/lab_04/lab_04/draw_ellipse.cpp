@@ -92,38 +92,36 @@ void draw_el_bres(int xx, int yy, int a, int b, QColor *c, QGraphicsScene *scene
     int d = b2 - a2 * (2 * b + 1);
     int di, si;
 
-    while (y >= 0)
+    while (y > 0)
     {
         color_pixel(xx, yy, x, y, pen, scene);
         if (d < 0)
         {
-            di = 2 * d - 2 * a2 * y + a2;
-            if (di < 0)
+            di = 2 * d + 2 * a2 * y - a2;
+            if (di >= 0)
             {
-                x += 1;
-                d += b2 * (2 * x + 3);
+                y--;
+                d += -a2 * (2 * y - 1);
             }
-            else
-            {
-                x += 1;
-                y -= 1;
-                d += b2 * (2 * x + 3) + a2 * (-2 * y + 3);
-            }
+            x++;
+            d += b2 * (2 * x + 1);
         }
         else if (d > 0)
         {
-            si = 2 * d - 2 * b2 * x - b2;
+            si = 2 * (d - b2 * x) - b2;
             if (si < 0)
             {
-                x += 1;
-                y -= 1;
-                d += b2 * (2 * x + 3) + a2 * (-2 * y + 3);
+                x++;
+                d += b2 * (2 * x + 1);
             }
-            else
-            {
-                y -= 1;
-                d += a2 * (-2 * y + 3);
-            }
+            y--;
+            d -= a2 * (2 * y - 1);
+        }
+        else
+        {
+            x += 1;
+            y -= 1;
+            d += b2 * (2 * x + 1) - a2 * (2 * y - 1);
         }
     }
 }
@@ -141,7 +139,7 @@ void draw_el_mid(int xx, int yy, int a, int b, QColor *c, QGraphicsScene *scene)
     int y = b;
 
     float p = b2 - a2 * b + 0.25 * a2;
-    while (2 * b2 * x < 2 * a2 * y)
+    while (b2 * x <= a2 * y)
     {
         color_pixel(xx, yy, x, y, pen, scene);
         if (p < 0)
