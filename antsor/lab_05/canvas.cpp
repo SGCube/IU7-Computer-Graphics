@@ -3,15 +3,14 @@
 #include "canvas.h"
 
 Canvas::Canvas(QImage *image, std::vector<Polygon> *polygons,
-			   MainWindow *w, QWidget *parent) :
+			   Painter *p, MainWindow *w, QWidget *parent) :
 	QGraphicsScene(parent),
-	color_edge(0, 0, 0),
-	pen(color_edge),
-	painter(),
-	polygon_set(polygons),
-	parLine(false),
+	window(w),
 	img(image),
-	window(w)
+	painter(p),
+	polygon_set(polygons),
+	new_polygon(),
+	parLine(false)
 {
 	setSceneRect(0, 0, 640, 640);
 	addPixmap(QPixmap::fromImage(*img));
@@ -38,11 +37,11 @@ void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	int y = event->scenePos().y();
 	int new_x = x, new_y = y;
 	
-	painter.begin(img);
-	painter.setPen(pen);
+	painter->begin(img);
+	painter->set_pen();
 	
 	if (new_polygon.number_of_vertexes() == 0)
-		painter.drawPoint(x, y);
+		painter->drawPoint(x, y);
 	else
 	{
 		Point plast = new_polygon.last_point();
@@ -64,11 +63,11 @@ void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 					new_x = plast.x();
 			}
 		}
-		painter.drawLine(plast.x(), plast.y(), new_x, new_y);
+		painter->drawLine(plast.x(), plast.y(), new_x, new_y);
 	}
 	addPixmap(QPixmap::fromImage(*img));
 	
-	painter.end();
+	painter->end();
 	
 	new_polygon.add_point(Point(new_x, new_y));
 	
@@ -84,13 +83,13 @@ void Canvas::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 	Point pfirst = new_polygon.first_point();
 	Point plast = new_polygon.last_point();
 	
-	painter.begin(img);
-	painter.setPen(pen);
+	painter->begin(img);
+	painter->set_pen();
 	
-	painter.drawLine(plast.x(), plast.y(), pfirst.x(), pfirst.y());
+	painter->drawLine(plast.x(), plast.y(), pfirst.x(), pfirst.y());
 	addPixmap(QPixmap::fromImage(*img));
 	
-	painter.end();
+	painter->end();
 	
 	polygon_set->push_back(new_polygon);
 	new_polygon.clear();
@@ -105,8 +104,8 @@ void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	
 	QImage tmp_img(*img);
-	painter.begin(&tmp_img);
-	painter.setPen(pen);
+	painter->begin(&tmp_img);
+	painter->set_pen();
 	
 	Point plast = new_polygon.last_point();
 	
@@ -131,8 +130,8 @@ void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 				new_x = plast.x();
 		}
 	}
-	painter.drawLine(plast.x(), plast.y(), new_x, new_y);
+	painter->drawLine(plast.x(), plast.y(), new_x, new_y);
 	addPixmap(QPixmap::fromImage(tmp_img));
 	
-	painter.end();
+	painter->end();
 }

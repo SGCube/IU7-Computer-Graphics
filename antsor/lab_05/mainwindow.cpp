@@ -6,17 +6,16 @@
 #include <QMessageBox>
 
 MainWindow::MainWindow(QImage *image, std::vector<Polygon> *polygons,
-					   QWidget *parent) :
+					   Painter *p, QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow),
+	painter(p),
+	img(image),
+	polygon_set(polygons),
+	new_polygon(),
 	color_edge(0, 0, 0),
 	color_fill(0, 0, 255),
-	color_bg(255, 255, 255),
-	painter(),
-	pen(color_edge),
-	polygon_set(polygons),
-	img(image)
-	
+	color_bg(255, 255, 255)
 {
 	ui->setupUi(this);
 	ui->gView->setMouseTracking(true);
@@ -72,7 +71,7 @@ void MainWindow::on_palEdgeBtn_released()
 	QPixmap pxm(ui->colorEdge->rect().size());
 	pxm.fill(color_edge);
 	ui->colorEdge->setPixmap(pxm);
-	pen.setColor(color_edge);
+	painter->set_color(color_edge);
 }
 
 void MainWindow::on_palFillBtn_released()
@@ -83,7 +82,6 @@ void MainWindow::on_palFillBtn_released()
 	QPixmap pxm(ui->colorFill->rect().size());
 	pxm.fill(color_fill);
 	ui->colorFill->setPixmap(pxm);
-	pen.setColor(color_fill);
 }
 
 void MainWindow::on_palBgBtn_released()
@@ -94,7 +92,6 @@ void MainWindow::on_palBgBtn_released()
 	QPixmap pxm(ui->colorBg->rect().size());
 	pxm.fill(color_bg);
 	ui->colorBg->setPixmap(pxm);
-	pen.setColor(color_bg);
 }
 
 void MainWindow::on_addButton_released()
@@ -120,20 +117,20 @@ void MainWindow::on_addButton_released()
 	Point new_point(x, y);
 	add_point(new_point);
 	
-	painter.begin(img);
-	painter.setPen(pen);
+	painter->begin(img);
+	painter->set_pen();
 	
 	if (new_polygon.number_of_vertexes() == 0)
-		painter.drawPoint(x, y);
+		painter->drawPoint(x, y);
 	else
 	{
 		Point plast = new_polygon.last_point();
-		painter.drawLine(plast.x(), plast.y(), x, y);
+		painter->drawLine(plast.x(), plast.y(), x, y);
 	}
 	QGraphicsScene *scene = ui->gView->scene();
 	scene->addPixmap(QPixmap::fromImage(*img));
 	
-	painter.end();
+	painter->end();
 	
 	new_polygon.add_point(new_point);
 	if (new_polygon.number_of_vertexes() > 2)
@@ -144,17 +141,17 @@ void MainWindow::on_lockButton_released()
 {
     end_polygon();
 	
-	painter.begin(img);
-	painter.setPen(pen);
+	painter->begin(img);
+	painter->set_pen();
 	
 	Point pfirst = new_polygon.first_point();
 	Point plast = new_polygon.last_point();
-	painter.drawLine(plast.x(), plast.y(), pfirst.x(), pfirst.y());
+	painter->drawLine(plast.x(), plast.y(), pfirst.x(), pfirst.y());
 	
 	QGraphicsScene *scene = ui->gView->scene();
 	scene->addPixmap(QPixmap::fromImage(*img));
 	
-	painter.end();
+	painter->end();
 	
 	polygon_set->push_back(new_polygon);
 	new_polygon.clear();

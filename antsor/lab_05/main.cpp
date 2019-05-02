@@ -3,6 +3,7 @@
 
 #include "mainwindow.h"
 #include "canvas.h"
+#include "painter.h"
 #include "polygon.h"
 
 
@@ -12,11 +13,12 @@ int main(int argc, char *argv[])
 	
 	QImage img(640, 640, QImage::Format_RGB32);
 	img.fill(QColor(255, 255, 255));
+	Painter painter;
 	
 	std::vector<Polygon> polygon_set;
 	
-	MainWindow w(&img, &polygon_set);
-	Canvas scene(&img, &polygon_set, &w);
+	MainWindow w(&img, &polygon_set, &painter);
+	Canvas scene(&img, &polygon_set, &painter, &w);
 	w.set_scene(&scene);
 	
 	w.show();

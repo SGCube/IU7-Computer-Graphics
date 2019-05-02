@@ -28,13 +28,15 @@ SOURCES += \
         mainwindow.cpp \
     point.cpp \
     polygon.cpp \
-    canvas.cpp
+    canvas.cpp \
+    painter.cpp
 
 HEADERS += \
         mainwindow.h \
     point.h \
     polygon.h \
-    canvas.h
+    canvas.h \
+    painter.h
 
 FORMS += \
         mainwindow.ui

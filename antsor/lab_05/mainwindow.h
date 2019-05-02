@@ -7,6 +7,7 @@
 
 #include "point.h"
 #include "polygon.h"
+#include "painter.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,7 +19,7 @@ class MainWindow : public QMainWindow
 	
 public:
 	explicit MainWindow(QImage *image, std::vector<Polygon> *polygons,
-						QWidget *parent = 0);
+						Painter *p, QWidget *parent = 0);
 	~MainWindow();
 	void set_scene(QGraphicsScene *scene);
 	void add_point(Point p);
@@ -38,16 +39,15 @@ private slots:
 private:
 	Ui::MainWindow *ui;
 	
-	QColor color_edge;
-	QColor color_fill;
-	QColor color_bg;
-	QPainter painter;
-	QPen pen;
+	Painter *painter;
+	QImage *img;
 	
 	std::vector<Polygon> *polygon_set;
 	Polygon new_polygon;
 	
-	QImage *img;
+	QColor color_edge;
+	QColor color_fill;
+	QColor color_bg;
 };
 
 #endif // MAINWINDOW_H

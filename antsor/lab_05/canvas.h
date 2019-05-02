@@ -6,15 +6,16 @@
 #include <QKeyEvent>
 #include <vector>
 
-#include "polygon.h"
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "painter.h"
+#include "polygon.h"
+
 
 class Canvas : public QGraphicsScene
 {
 public:
 	explicit Canvas(QImage *image, std::vector<Polygon> *polygons,
-					MainWindow *w, QWidget *parent = nullptr);
+					Painter *p, MainWindow *w, QWidget *parent = nullptr);
 	
 protected:
 	void keyPressEvent(QKeyEvent *event);
@@ -24,17 +25,15 @@ protected:
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	
 private:
-	QColor color_edge;
-	QPen pen;
-	QPainter painter;
+	MainWindow *window;
+	
+	QImage *img;
+	Painter *painter;
 	
 	std::vector<Polygon> *polygon_set;
 	Polygon new_polygon;
 	
 	bool parLine;
-	
-	QImage *img;
-	MainWindow *window;
 };
 
 #endif // CANVAS_H
