@@ -29,14 +29,18 @@ SOURCES += \
     point.cpp \
     polygon.cpp \
     canvas.cpp \
-    painter.cpp
+    painter.cpp \
+    fill.cpp \
+    edge.cpp
 
 HEADERS += \
         mainwindow.h \
     point.h \
     polygon.h \
     canvas.h \
-    painter.h
+    painter.h \
+    fill.h \
+    edge.h
 
 FORMS += \
         mainwindow.ui

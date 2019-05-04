@@ -1,9 +1,10 @@
 #ifndef POLYGON_H
 #define POLYGON_H
 
-#include <point.h>
 #include <vector>
 
+#include "point.h"
+#include "edge.h"
 
 class Polygon
 {
@@ -15,6 +16,9 @@ public:
 	int number_of_vertexes();
 	Point first_point();
 	Point last_point();
+	Point operator[](int i);
+	
+	static std::vector<Edge> set_to_edges(std::vector<Polygon> set);
 private:
 	std::vector<Point> vertexes;
 };

@@ -14,7 +14,7 @@
 class Canvas : public QGraphicsScene
 {
 public:
-	explicit Canvas(QImage *image, std::vector<Polygon> *polygons,
+	explicit Canvas(QImage *image, std::vector<Polygon> *polygons, Polygon *pl,
 					Painter *p, MainWindow *w, QWidget *parent = nullptr);
 	
 protected:
@@ -31,7 +31,7 @@ private:
 	Painter *painter;
 	
 	std::vector<Polygon> *polygon_set;
-	Polygon new_polygon;
+	Polygon *new_polygon;
 	
 	bool parLine;
 };

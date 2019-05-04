@@ -16,9 +16,10 @@ int main(int argc, char *argv[])
 	Painter painter;
 	
 	std::vector<Polygon> polygon_set;
+	Polygon cur_polygon;
 	
-	MainWindow w(&img, &polygon_set, &painter);
-	Canvas scene(&img, &polygon_set, &painter, &w);
+	MainWindow w(&img, &polygon_set, &cur_polygon, &painter);
+	Canvas scene(&img, &polygon_set, &cur_polygon, &painter, &w);
 	w.set_scene(&scene);
 	
 	w.show();

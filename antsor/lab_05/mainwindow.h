@@ -19,11 +19,12 @@ class MainWindow : public QMainWindow
 	
 public:
 	explicit MainWindow(QImage *image, std::vector<Polygon> *polygons,
-						Painter *p, QWidget *parent = 0);
+						Polygon *pl, Painter *p, QWidget *parent = 0);
 	~MainWindow();
 	void set_scene(QGraphicsScene *scene);
 	void add_point(Point p);
 	void end_polygon();
+	void lock_disable(bool d);
 	
 private slots:
 	void on_palEdgeBtn_released();
@@ -36,6 +37,10 @@ private slots:
 	
 	void on_lockButton_released();
 	
+	void on_clearButton_released();
+	
+	void on_fillButton_released();
+	
 private:
 	Ui::MainWindow *ui;
 	
@@ -43,7 +48,7 @@ private:
 	QImage *img;
 	
 	std::vector<Polygon> *polygon_set;
-	Polygon new_polygon;
+	Polygon *new_polygon;
 	
 	QColor color_edge;
 	QColor color_fill;

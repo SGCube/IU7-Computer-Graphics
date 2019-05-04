@@ -1,18 +1,19 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "fill.h"
 
 #include <QWidget>
 #include <QColorDialog>
 #include <QMessageBox>
 
 MainWindow::MainWindow(QImage *image, std::vector<Polygon> *polygons,
-					   Painter *p, QWidget *parent) :
+					   Polygon *pl, Painter *p, QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow),
 	painter(p),
 	img(image),
 	polygon_set(polygons),
-	new_polygon(),
+	new_polygon(pl),
 	color_edge(0, 0, 0),
 	color_fill(0, 0, 255),
 	color_bg(255, 255, 255)
@@ -57,10 +58,15 @@ void MainWindow::end_polygon()
 	ui->pointTable->insertRow(ui->pointTable->rowCount());
 	int row = ui->pointTable->rowCount() - 1;
 	QTableWidgetItem *xitem = nullptr, *yitem = nullptr;
-	xitem = new QTableWidgetItem("=========");
-	yitem = new QTableWidgetItem("=========");
+	xitem = new QTableWidgetItem("=======");
+	yitem = new QTableWidgetItem("=======");
 	ui->pointTable->setItem(row, 0, xitem);
 	ui->pointTable->setItem(row, 1, yitem);
+}
+
+void MainWindow::lock_disable(bool d)
+{
+	ui->lockButton->setDisabled(d);
 }
 
 void MainWindow::on_palEdgeBtn_released()
@@ -71,7 +77,7 @@ void MainWindow::on_palEdgeBtn_released()
 	QPixmap pxm(ui->colorEdge->rect().size());
 	pxm.fill(color_edge);
 	ui->colorEdge->setPixmap(pxm);
-	painter->set_color(color_edge);
+	painter->set_color_edge(color_edge);
 }
 
 void MainWindow::on_palFillBtn_released()
@@ -82,6 +88,7 @@ void MainWindow::on_palFillBtn_released()
 	QPixmap pxm(ui->colorFill->rect().size());
 	pxm.fill(color_fill);
 	ui->colorFill->setPixmap(pxm);
+	painter->set_color_fill(color_fill);
 }
 
 void MainWindow::on_palBgBtn_released()
@@ -92,6 +99,7 @@ void MainWindow::on_palBgBtn_released()
 	QPixmap pxm(ui->colorBg->rect().size());
 	pxm.fill(color_bg);
 	ui->colorBg->setPixmap(pxm);
+	painter->set_color_bg(color_bg);
 }
 
 void MainWindow::on_addButton_released()
@@ -118,13 +126,13 @@ void MainWindow::on_addButton_released()
 	add_point(new_point);
 	
 	painter->begin(img);
-	painter->set_pen();
+	painter->set_edge();
 	
-	if (new_polygon.number_of_vertexes() == 0)
+	if (new_polygon->number_of_vertexes() == 0)
 		painter->drawPoint(x, y);
 	else
 	{
-		Point plast = new_polygon.last_point();
+		Point plast = new_polygon->last_point();
 		painter->drawLine(plast.x(), plast.y(), x, y);
 	}
 	QGraphicsScene *scene = ui->gView->scene();
@@ -132,20 +140,26 @@ void MainWindow::on_addButton_released()
 	
 	painter->end();
 	
-	new_polygon.add_point(new_point);
-	if (new_polygon.number_of_vertexes() > 2)
+	new_polygon->add_point(new_point);
+	if (new_polygon->number_of_vertexes() > 2)
 		ui->lockButton->setDisabled(false);
 }
 
 void MainWindow::on_lockButton_released()
 {
+	if (new_polygon->number_of_vertexes() < 3)
+	{
+		ui->lockButton->setDisabled(false);
+		return;
+	}
+	
     end_polygon();
 	
 	painter->begin(img);
-	painter->set_pen();
+	painter->set_edge();
 	
-	Point pfirst = new_polygon.first_point();
-	Point plast = new_polygon.last_point();
+	Point pfirst = new_polygon->first_point();
+	Point plast = new_polygon->last_point();
 	painter->drawLine(plast.x(), plast.y(), pfirst.x(), pfirst.y());
 	
 	QGraphicsScene *scene = ui->gView->scene();
@@ -153,8 +167,60 @@ void MainWindow::on_lockButton_released()
 	
 	painter->end();
 	
-	polygon_set->push_back(new_polygon);
-	new_polygon.clear();
+	polygon_set->push_back(*new_polygon);
+	new_polygon->clear();
 	
 	ui->lockButton->setDisabled(true);
+}
+
+void MainWindow::on_clearButton_released()
+{
+    img->fill(color_bg);
+	QGraphicsScene *scene = ui->gView->scene();
+	scene->addPixmap(QPixmap::fromImage(*img));
+	polygon_set->clear();
+	new_polygon->clear();
+	ui->lockButton->setDisabled(true);
+	
+	int len = ui->pointTable->rowCount();
+	for (int i = 0; i < len; i++)
+		ui->pointTable->removeRow(0);
+}
+
+void MainWindow::on_fillButton_released()
+{
+	
+	Point lt_point = lt_corner(*polygon_set);
+	Point rd_point = rd_corner(*polygon_set);
+	int line_x = (rd_point.x() + lt_point.x()) / 2;
+	std::vector<Edge> edges = Polygon::set_to_edges(*polygon_set);
+	
+	ui->addButton->setDisabled(true);
+	ui->lockButton->setDisabled(true);
+	ui->clearButton->setDisabled(true);
+	ui->fillButton->setDisabled(true);
+	ui->xEdit->setDisabled(true);
+	ui->yEdit->setDisabled(true);
+	ui->palBgBtn->setDisabled(true);
+	ui->palEdgeBtn->setDisabled(true);
+	ui->palFillBtn->setDisabled(true);
+	ui->delayCheck->setDisabled(true);
+	ui->delaySpinBox->setDisabled(true);
+	
+	int delay = (ui->delayCheck->isChecked()) ? ui->delaySpinBox->value() : 0;
+	
+	fill(img, ColorSet(color_edge, color_fill, color_bg), edges,
+		 ui->gView->scene(), line_x, delay);
+	
+	ui->addButton->setDisabled(false);
+	ui->lockButton->setDisabled(false);
+	ui->clearButton->setDisabled(false);
+	ui->fillButton->setDisabled(false);
+	ui->xEdit->setDisabled(false);
+	ui->yEdit->setDisabled(false);
+	ui->palBgBtn->setDisabled(false);
+	ui->palEdgeBtn->setDisabled(false);
+	ui->palFillBtn->setDisabled(false);
+	ui->delayCheck->setDisabled(false);
+	ui->delaySpinBox->setDisabled(false);
 }
