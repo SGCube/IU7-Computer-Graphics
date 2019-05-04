@@ -42,6 +42,16 @@ void MainWindow::set_scene(QGraphicsScene *scene)
 	ui->gView->setScene(scene);
 }
 
+void MainWindow::cur_coord(Point p)
+{
+	QString str = "Текущие координаты: (";
+	str.append(QString::number(p.x()));
+	str.append(", ");
+	str.append(QString::number(p.y()));
+	str.append(")");
+	ui->coord->setText(str);
+}
+
 void MainWindow::add_point(Point p)
 {
 	ui->pointTable->insertRow(ui->pointTable->rowCount());
@@ -195,6 +205,8 @@ void MainWindow::on_fillButton_released()
 	ui->fillButton->setDisabled(true);
 	ui->xEdit->setDisabled(true);
 	ui->yEdit->setDisabled(true);
+	ui->xsEdit->setDisabled(true);
+	ui->ysEdit->setDisabled(true);
 	ui->palBgBtn->setDisabled(true);
 	ui->palEdgeBtn->setDisabled(true);
 	ui->palFillBtn->setDisabled(true);
@@ -229,6 +241,8 @@ void MainWindow::on_fillButton_released()
 	ui->fillButton->setDisabled(false);
 	ui->xEdit->setDisabled(false);
 	ui->yEdit->setDisabled(false);
+	ui->xsEdit->setDisabled(false);
+	ui->ysEdit->setDisabled(false);
 	ui->palBgBtn->setDisabled(false);
 	ui->palEdgeBtn->setDisabled(false);
 	ui->palFillBtn->setDisabled(false);

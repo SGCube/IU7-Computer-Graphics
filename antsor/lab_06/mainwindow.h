@@ -25,6 +25,7 @@ public:
 	void add_point(Point p);
 	void end_polygon();
 	void lock_disable(bool d);
+	void cur_coord(Point p);
 	
 private slots:
 	void on_palEdgeBtn_released();

@@ -107,6 +107,12 @@ void Canvas::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	int x = event->scenePos().x();
+	int y = event->scenePos().y();
+	
+	if (window)
+		window->cur_coord(Point(x, y));
+	
 	if (new_polygon->number_of_vertexes() == 0)
 		return;
 	
@@ -115,9 +121,6 @@ void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	painter->set_edge();
 	
 	Point plast = new_polygon->last_point();
-	
-	int x = event->scenePos().x();
-	int y = event->scenePos().y();
 	int new_x = x, new_y = y;
 	if (parLine)
 	{
