@@ -10,9 +10,9 @@ void draw_library(int x, int y, int rad, QColor *c, QGraphicsScene *scene);
 
 void draw_kanon(int x, int y, int rad, QColor *c, QGraphicsScene *scene);
 
-void draw_param(int x, int y, float r, QColor *c, QGraphicsScene *scene);
+void draw_param(int x, int y, int r, QColor *c, QGraphicsScene *scene);
 
-void draw_bres(int xx, int yy, float r, QColor *c, QGraphicsScene *scene);
+void draw_bres(int xx, int yy, int r, QColor *c, QGraphicsScene *scene);
 
 void draw_mid(int xx, int yy, int r, QColor *c, QGraphicsScene *scene);
 

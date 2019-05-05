@@ -48,17 +48,14 @@ void draw_kanon(int x, int y, int r, QColor *c, QGraphicsScene *scene)
     float yy;
     float xx;
 
-    for (xx = -a; xx <= a; xx++)
+    for (xx = 0, yy = r; xx <= a + 1; xx++)
     {
         yy = sqrt(qPow(r, 2) - qPow(xx, 2));
-        scene->addRect(round(xx) + x, -(round(yy) + y), 1, 1, pen);
-        scene->addRect(round(xx) + x, round(yy) - y, 1, 1, pen);
-        scene->addRect(round(yy) + x, round(xx) - y, 1, 1, pen);
-        scene->addRect(x - round(yy), round(xx) - y, 1, 1, pen);
+        color_pix(x, y, round(xx), round(yy), pen, scene);
     }
 }
 
-void draw_param(int x, int y, float r, QColor *c, QGraphicsScene *scene)
+void draw_param(int x, int y, int r, QColor *c, QGraphicsScene *scene)
 {
     QPen pen;
     pen.setColor(*c);
@@ -66,17 +63,17 @@ void draw_param(int x, int y, float r, QColor *c, QGraphicsScene *scene)
 
     float xx;
     float yy;
-    float t = 1 / r;
+    float t = PI * r / 2;
 
-    for (float tt = 0; tt < 2 * PI; tt += t)
+    for (float tt = 0; tt <= t; tt++)
     {
-        xx = x + round(r * cos(tt));
-        yy = round(r * sin(tt)) - y;
-        scene->addRect(xx, yy, 1, 1, pen);
+        xx = x + r * cos(tt/r);
+        yy = r * sin(tt/r) - y;
+        color_pix(x, y, round(xx), round(yy), pen, scene);
     }
 }
 
-void draw_bres(int xx, int yy, float r, QColor *c, QGraphicsScene *scene)
+void draw_bres(int xx, int yy, int r, QColor *c, QGraphicsScene *scene)
 {
     QPen pen;
     pen.setColor(*c);
@@ -88,7 +85,7 @@ void draw_bres(int xx, int yy, float r, QColor *c, QGraphicsScene *scene)
     int d = 2 - 2 * r;
     int di, si;
 
-    while (y > 0)
+    while (y >= 0)
     {
         scene->addRect(x + xx, y - yy, 1, 1, pen);
         scene->addRect(-x + xx, y - yy, 1, 1, pen);
@@ -97,7 +94,7 @@ void draw_bres(int xx, int yy, float r, QColor *c, QGraphicsScene *scene)
         if (d < 0)
         {
             di = 2 * (d + y) - 1;
-            if (di < 0)
+            if (di <= 0)
             {
                 x += 1;
                 d += 2 * x + 1;
@@ -153,29 +150,20 @@ void draw_mid(int xx, int yy, int r, QColor *c, QGraphicsScene *scene)
 
     int x = 0;
     int y = r;
-
     int d = 1 - r;
-    int p = 3;
-    int q = -2 * r + 5;
-
     color_pix(xx, yy, x, y, pen, scene);
-
     while (y > x)
     {
         if (d < 0)
         {
-            d += p;
-            p += 2;
-            q += 2;
             x++;
+            d += 2 * x + 1;
         }
         else
         {
-            d += q;
-            p += 2;
-            q += 4;
             x++;
             y--;
+            d += 2 * (x - y) + 1;
         }
         color_pix(xx, yy, x, y, pen, scene);
     }
@@ -184,7 +172,7 @@ void draw_mid(int xx, int yy, int r, QColor *c, QGraphicsScene *scene)
 void draw_cir_spectr(int x, int y, int s_r, int e_r, int k, QColor *c, QGraphicsScene *scene, int alg)
 {
     double step = (e_r - s_r) / k;
-    double r = s_r;
+    int r = s_r;
 
     for (int i = 0; i < k; i++)
     {
@@ -198,6 +186,6 @@ void draw_cir_spectr(int x, int y, int s_r, int e_r, int k, QColor *c, QGraphics
             draw_mid(x, y, r, c, scene);
         if (alg == 4)
             draw_library(x, y, r, c, scene);
-        r += step;
+        r += round(step);
     }
 }

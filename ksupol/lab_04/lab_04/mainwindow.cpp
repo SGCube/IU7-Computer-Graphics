@@ -251,7 +251,11 @@ void MainWindow::on_el_build_sp_clicked()
     int e_a = end_a.toInt();
     int s_b = st_b.toInt();
     int k = kol.toInt();
-
+    if (s_a > e_a)
+    {
+        QMessageBox::critical(this, "Ошибка", "Начальная полуось a больше конечной!");
+        return;
+    }
     int alg = ui->el_alg->currentIndex();
     int col = ui->el_col->currentIndex();
     int bgc_col = ui->el_bgc->isChecked();
