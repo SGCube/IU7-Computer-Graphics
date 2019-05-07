@@ -1,4 +1,4 @@
-#include "draw_circle.h"
+﻿#include "draw_circle.h"
 #include <QColor>
 #include <QPen>
 #include <QtMath>
@@ -51,7 +51,7 @@ void draw_kanon(int x, int y, int r, QColor *c, QGraphicsScene *scene)
     for (xx = 0, yy = r; xx <= a + 1; xx++)
     {
         yy = sqrt(qPow(r, 2) - qPow(xx, 2));
-        color_pix(x, y, round(xx), round(yy), pen, scene);
+        color_pix_cir(x, y, round(xx), round(yy), pen, scene);
     }
 }
 
@@ -69,7 +69,7 @@ void draw_param(int x, int y, int r, QColor *c, QGraphicsScene *scene)
     {
         xx = x + r * cos(tt/r);
         yy = r * sin(tt/r) - y;
-        color_pix(x, y, round(xx), round(yy), pen, scene);
+        color_pix_cir(x, y, round(xx), round(yy), pen, scene);
     }
 }
 
@@ -96,13 +96,13 @@ void draw_bres(int xx, int yy, int r, QColor *c, QGraphicsScene *scene)
             di = 2 * (d + y) - 1;
             if (di <= 0)
             {
-                x += 1;
+                x ++;
                 d += 2 * x + 1;
             }
             else
             {
-                x += 1;
-                y -= 1;
+                x ++;
+                y --;
                 d += 2 * (x - y + 1);
             }
         }
@@ -111,26 +111,26 @@ void draw_bres(int xx, int yy, int r, QColor *c, QGraphicsScene *scene)
             si = 2 * (d - x) - 1;
             if (si <= 0)
             {
-                x += 1;
-                y -= 1;
+                x ++;
+                y --;
                 d += 2 * (x - y + 1);
             }
             else
             {
-                y -= 1;
+                y --;
                 d += 1 - 2 * y;
             }
         }
         else
         {
-            x += 1;
-            y -= 1;
+            x ++;
+            y --;
             d += 2 * (x - y + 1);
         }
     }
 }
 
-void color_pix(int x0, int y0, int x, int y, QPen pen, QGraphicsScene *scene)
+void color_pix_cir(int x0, int y0, int x, int y, QPen pen, QGraphicsScene *scene)
 {
     scene->addRect(x + x0, y - y0, 1, 1, pen);
     scene->addRect(y + x0, x - y0, 1, 1, pen);
@@ -151,7 +151,9 @@ void draw_mid(int xx, int yy, int r, QColor *c, QGraphicsScene *scene)
     int x = 0;
     int y = r;
     int d = 1 - r;
-    color_pix(xx, yy, x, y, pen, scene);
+
+    color_pix_cir(xx, yy, x, y, pen, scene);
+
     while (y > x)
     {
         if (d < 0)
@@ -165,7 +167,7 @@ void draw_mid(int xx, int yy, int r, QColor *c, QGraphicsScene *scene)
             y--;
             d += 2 * (x - y) + 1;
         }
-        color_pix(xx, yy, x, y, pen, scene);
+        color_pix_cir(xx, yy, x, y, pen, scene);
     }
 }
 
