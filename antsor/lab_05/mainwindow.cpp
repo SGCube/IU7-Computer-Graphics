@@ -17,7 +17,7 @@ MainWindow::MainWindow(QImage *image, std::vector<Polygon> *polygons,
 	color_edge(0, 0, 0),
 	color_fill(0, 0, 255),
 	color_bg(255, 255, 255)
-{
+{	
 	ui->setupUi(this);
 	ui->gView->setMouseTracking(true);
 	

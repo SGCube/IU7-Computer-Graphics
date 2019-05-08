@@ -1,5 +1,7 @@
 #include "painter.h"
 
+#include <math.h>
+
 Painter::Painter() :
 	QPainter(),
 	pen(QColor(0, 0, 0)),
@@ -57,4 +59,28 @@ bool Painter::is_fill(QColor color)
 bool Painter::is_edge(QColor color)
 {
 	return color_edge == color;
+}
+
+void Painter::draw_line(Point p1, Point p2)
+{
+	if (p1 == p2)
+	{
+		drawPoint(p1.x(), p1.y());
+		return;
+	}
+	double xlen = p2.x() - p1.x(), ylen = p2.y() - p1.y();
+	double len;
+	if (fabs(xlen) > fabs(ylen))
+		len =fabs(xlen);
+	else
+		len = fabs(ylen);
+	double dx = xlen / len, dy = ylen / len;
+	
+	double x = p1.x(), y = p1.y();
+	for (int i = 1; i <= dx + len; i++)
+	{
+		drawPoint(round(x), round(y));
+		x += dx;
+		y += dy;
+	}
 }

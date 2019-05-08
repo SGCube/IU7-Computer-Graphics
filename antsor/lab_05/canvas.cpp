@@ -1,5 +1,3 @@
-#include <QDebug>
-
 #include "canvas.h"
 
 Canvas::Canvas(QImage *image, std::vector<Polygon> *polygons, Polygon *pl,
@@ -63,7 +61,7 @@ void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 					new_x = plast.x();
 			}
 		}
-		painter->drawLine(plast.x(), plast.y(), new_x, new_y);
+		painter->draw_line(Point(plast.x(), plast.y()), Point(new_x, new_y));
 	}
 	addPixmap(QPixmap::fromImage(*img));
 	
@@ -90,7 +88,8 @@ void Canvas::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 	painter->begin(img);
 	painter->set_edge();
 	
-	painter->drawLine(plast.x(), plast.y(), pfirst.x(), pfirst.y());
+	painter->draw_line(Point(plast.x(), plast.y()),
+					   Point(pfirst.x(), pfirst.y()));
 	addPixmap(QPixmap::fromImage(*img));
 	
 	painter->end();
@@ -137,7 +136,7 @@ void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 				new_x = plast.x();
 		}
 	}
-	painter->drawLine(plast.x(), plast.y(), new_x, new_y);
+	painter->draw_line(Point(plast.x(), plast.y()), Point(new_x, new_y));
 	addPixmap(QPixmap::fromImage(tmp_img));
 	
 	painter->end();

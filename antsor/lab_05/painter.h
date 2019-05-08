@@ -2,6 +2,7 @@
 #define PAINTER_H
 
 #include <QPainter>
+#include "point.h"
 
 class Painter : public QPainter
 {
@@ -18,6 +19,8 @@ public:
 	bool is_bg(QColor color);
 	bool is_fill(QColor color);
 	bool is_edge(QColor color);
+	
+	void draw_line(Point p1, Point p2);
 	
 private:
 	QPen pen;
