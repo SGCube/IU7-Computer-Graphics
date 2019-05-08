@@ -266,6 +266,7 @@ void MainWindow::on_drawConeEdit_released()
 	db = b * da / a;
 	
 	
+	
 	QPainter painter(&img);
 	QPen pen(color);
 	painter.setPen(pen);
