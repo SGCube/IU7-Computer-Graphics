@@ -63,12 +63,13 @@ void draw_param(int x, int y, int r, QColor *c, QGraphicsScene *scene)
 
     float xx;
     float yy;
-    float t = PI * r / 2;
+    float t = PI / 2;
+    float d = 1 / (double)r;
 
-    for (float tt = 0; tt <= t; tt++)
+    for (float tt = 0; tt <= t; tt += d)
     {
-        xx = x + r * cos(tt/r);
-        yy = r * sin(tt/r) - y;
+        xx = r * cos(tt);
+        yy = r * sin(tt);
         color_pix_cir(x, y, round(xx), round(yy), pen, scene);
     }
 }
@@ -150,7 +151,10 @@ void draw_mid(int xx, int yy, int r, QColor *c, QGraphicsScene *scene)
 
     int x = 0;
     int y = r;
-    int d = 1 - r;
+
+    int dx = 0;
+    int dy = -2 * y;
+    int d = 1 - r; // d = 5/4 - r;
 
     color_pix_cir(xx, yy, x, y, pen, scene);
 
@@ -159,13 +163,16 @@ void draw_mid(int xx, int yy, int r, QColor *c, QGraphicsScene *scene)
         if (d < 0)
         {
             x++;
-            d += 2 * x + 1;
+            dx += 2;
+            d += dx + 1; // d += 2 * x + 1;
         }
         else
         {
             x++;
             y--;
-            d += 2 * (x - y) + 1;
+            dx += 2;
+            dy += 2;
+            d += dx + dy + 1; // d += 2 * (x - y) + 1;
         }
         color_pix_cir(xx, yy, x, y, pen, scene);
     }

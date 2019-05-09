@@ -112,9 +112,9 @@ void draw_el_bres(int xx, int yy, int a, int b, QColor *c, QGraphicsScene *scene
             si = 2 * (d - b2 * x) - b2;
             if (si < 0)
             {
-                x++;
-                d += b2 * (2 * x + 1);
             }
+            x++;
+            d += b2 * (2 * x + 1);
             y--;
             d -= a2 * (2 * y - 1);
         }
@@ -139,21 +139,30 @@ void draw_el_mid(int xx, int yy, int a, int b, QColor *c, QGraphicsScene *scene)
     int a2 = a * a;
     int b2 = b * b;
 
+    int a22 = 2 * a2;
+    int b22 = 2 * b2;
+
+    int dx = 0;
+    int dy = -a22 * y;
+
     float p = b2 - a2 * b + 0.25 * a2;
 
-    while (2 * b2 * x < 2 * a2 * y)
+    while (b22 * x < a22 * y)
     {
         color_pixel(xx, yy, x, y, pen, scene);
         if (p < 0)
         {
             x++;
-            p += 2 * b2 * x + b2;
+            dx += b22;
+            p += dx + b2; // p += b22 * x + b2;
         }
         else
         {
             x++;
             y--;
-            p += 2 * b2 * x - 2 * a2 * y + b2;
+            dx += b22;
+            dy += a22;
+            p += dx + dy + b2; // p += b22 * x - a22 * y + b2;
         }
     }
 
@@ -164,84 +173,43 @@ void draw_el_mid(int xx, int yy, int a, int b, QColor *c, QGraphicsScene *scene)
         if (p > 0)
         {
             y--;
-            p += -2 * a2 * y + a2;
+            dy += a22;
+            p += dy + a2; // p += a22 * y + a2;
         }
         else
         {
             x++;
             y--;
-            p += -2 * a2 * y + 2 * b2 * x + a2;
+            dx += b22;
+            dy += a22;
+            p += dy + dx + a2; // p += b22 * x - a22 * y + a2;
         }
     }
-
-    /*
-    int ra2 = a * a;
-    int rb2 = b * b;
-    int 2y2 = 2 * rb2;
-    int 2x2 = 2 * ra2;
-
-    int rdel2 = round(ra2 / sqrt(ra2 + rb2));
-
-    int x = 0;
-    int y = b;
-
-    int df = 0;
-    int f = round(rb2 - ra2 * y + 0.25 * ra2 + 0.5);
-
-    int delta = -r2x2 * y;
-    for (x = 0; x <= rdel2; x += 1) {
-        color_pixel(xx, yy, x, y, pen, scene);
-        if (f >= 0)
-        {
-            y --;
-            delta += r2x2;
-            f += delta;
-        }
-        df += r2y2; ;
-        f += df + rb2;
-    }
-
-    delta = r2y2 * x;
-    f += round(-rb2 * (x + 0.75) - ra2 * (y - 0.75));
-    df = -r2x2 * y;
-
-    for (; y >= 0; y -= 1)
-    {
-       color_pixel(xx, yy, x, y, pen, scene);
-        if (f < 0)
-        {
-            x++;
-            delta += r2y2;
-            f += delta;
-        }
-        df += r2x2;
-        f += df + ra2;
-    }
-    */
 }
 
 void draw_el_spectr(int x, int y, int s_a, int e_a, int s_b, int k, QColor *c, QGraphicsScene *scene, int alg)
 {
-    double step_a = (e_a - s_a) / k;
-    double koef = e_a / s_a;
-    double step_b = (koef * s_b - s_b) / k;
+    double step_a = double(e_a - s_a) / k;
+    double step_b = double(s_b * step_a) / s_a;
 
-    int a = s_a;
-    int b = s_b;
+    double a = s_a;
+    double b = s_b;
 
     for (int i = 0; i < k; i++)
     {
+        int aa = round(a);
+        int bb = round(b);
         if (alg == 0)
-            draw_el_kanon(x, y, a, b, c, scene);
+            draw_el_kanon(x, y, aa, bb, c, scene);
         if (alg == 1)
-            draw_el_param(x, y, a, b, c, scene);
+            draw_el_param(x, y, aa, bb, c, scene);
         if (alg == 2)
-            draw_el_bres(x, y, a, b, c, scene);
+            draw_el_bres(x, y, aa, bb, c, scene);
         if (alg == 3)
-            draw_el_mid(x, y, a, b, c, scene);
+            draw_el_mid(x, y, aa, bb, c, scene);
         if (alg == 4)
-            draw_el_library(x, y, a, b, c, scene);
-        a += round(step_a);
-        b += round(step_b);
+            draw_el_library(x, y, aa, bb, c, scene);
+        a += step_a;
+        b += step_b;
     }
 }
