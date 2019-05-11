@@ -1,7 +1,7 @@
 #include <QApplication>
+#include <QThread>
 #include <QTime>
 #include <cmath>
-
 #include "fill.h"
 
 ColorSet::ColorSet(QColor cedge, QColor cfill, QColor cbg) :
@@ -58,6 +58,9 @@ void fill(QImage *img, ColorSet color_set, std::vector<Edge> edges,
 	if (!img || edges.size() == 0)
 		return;
 	
+	QColor pixel_color = color_set.color_edge;
+	QColor draw_color = color_set.color_edge;
+	
 	for (size_t i = 0; i < edges.size(); i++)
 		if (!edges[i].is_horizontal())
 		{
@@ -84,24 +87,24 @@ void fill(QImage *img, ColorSet color_set, std::vector<Edge> edges,
 					start_x = line_x;
 					end_x = edge_x;
 				}
+				
 				for (int x = round(start_x); x < end_x; x++)
 				{
-					QColor color = img->pixelColor(x, y);
-					QColor color_draw = color_set.color_edge;
-					if (color == color_set.color_fill)
-						color_draw = color_set.color_bg;
-					else if (color == color_set.color_bg)
-						color_draw = color_set.color_fill;
-					if (color != color_set.color_edge)
-						img->setPixelColor(x, y, color_draw);
+					pixel_color = img->pixelColor(x, y);
+					draw_color = color_set.color_edge;
+					if (pixel_color == color_set.color_fill)
+						draw_color = color_set.color_bg;
+					else if (pixel_color == color_set.color_bg)
+						draw_color = color_set.color_fill;
+					img->setPixelColor(x, y, draw_color);
 				}
 				
 				if (delay > 0)
 				{
+					QTime dieTime = QTime::currentTime().addMSecs(delay);
+					while(QTime::currentTime() < dieTime)
+						QCoreApplication::processEvents();
 					scene->addPixmap(QPixmap::fromImage(*img));
-					QTime end = QTime::currentTime().addMSecs(delay);
-					while (QTime::currentTime() < end)
-						QApplication::processEvents(QEventLoop::AllEvents, 1);
 				}
 			}
 		}
