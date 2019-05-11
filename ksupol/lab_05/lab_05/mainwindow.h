@@ -1,10 +1,11 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "paint.h"
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QColor>
+
+#include "paint.h"
 
 namespace Ui {
 class MainWindow;
@@ -13,28 +14,37 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    int amount = 0;
-    struct point points[100];
+    int check_b = 0;
+
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QImage *image, Paint *p, QWidget *parent = 0);
     ~MainWindow();
 
-private slots:
-    void on_add_poin_clicked();
-    void insert_into_table(QString x, QString y);
+    void add_scene(QGraphicsScene *scene);
+    void set_color(QColor *c, int col);
 
-    void on_lock_clicked();
+private slots:
+    void on_add_point_clicked();
+    void insert_into_table(QString x, QString y);
 
     void on_clear_clicked();
 
-    void on_clear_table_clicked();
+    void on_lock_clicked();
 
-    void clear_array();
+    void on_clear_table_clicked();
 
 private:
     Ui::MainWindow *ui;
-    QGraphicsScene *scene;
-    QColor *c;
+
+    Paint *paint;
+    QImage *img;
+
+    QVector<QPoint> polygon;
+    std::vector<QPolygon> *polygons;
+    QPolygon *pol;
+    QPen pen;
+    QColor *col;
+
 };
 
 #endif // MAINWINDOW_H

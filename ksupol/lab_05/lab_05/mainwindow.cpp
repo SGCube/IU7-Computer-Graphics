@@ -1,36 +1,36 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "check.h"
-#include "paint.h"
 #include <QGraphicsScene>
 #include <QColorDialog>
 #include <QColor>
 #include <QDebug>
 #include <QMessageBox>
 #include <QString>
+#include <QPainter>
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QImage *image, Paint *p, QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    paint(p),
+    img(image)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Лабораторная работа №5");
+
+    ui->graphics->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphics->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphics->setMouseTracking(true);
+
     const QStringList a = {"X", "Y"};
-    this->setWindowTitle("Лабораторная работа №1");
-
-    scene = new QGraphicsScene(this);
-    ui->graphics->setScene(scene);
-
-    ui->table->setColumnCount(2); // Указываем число колонок
-    ui->table->setShowGrid(true); // Включаем сетку
-    // Устанавливаем заголовки колонок
+    ui->table->setColumnCount(2);
+    ui->table->setShowGrid(true);
     ui->table->setHorizontalHeaderLabels(a);
     ui->table->horizontalHeader()->resizeSection(0, 80);
     ui->table->horizontalHeader()->resizeSection(1, 80);
     ui->table->setEditTriggers(QAbstractItemView :: NoEditTriggers);
     ui->table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphics->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphics->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphics->setMouseTracking(true);
+    pen.setWidth(1);
 }
 
 MainWindow::~MainWindow()
@@ -38,7 +38,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_add_poin_clicked()
+void MainWindow::add_scene(QGraphicsScene *scene)
+{
+    ui->graphics->setScene(scene);
+}
+
+void MainWindow::on_add_point_clicked()
 {
     QString line_x = ui->cor_x->text();
     QString line_y = ui->cor_y->text();
@@ -62,65 +67,117 @@ void MainWindow::on_add_poin_clicked()
     insert_into_table(line_x, line_y);
     int x = line_x.toInt();
     int y = line_y.toInt();
-    points[amount].x = x;
-    points[amount].y = y;
-    amount++;
     int b = ui->col_b->currentIndex();
-    set_color(c, b);
-    if (amount > 1)
-        paint(amount, points, scene, c);
+    if (polygon.size() == 1)
+        check_b = b;
+    else
+    {
+        if (b != check_b)
+        {
+            QMessageBox::critical(this, "Ошибка", "Вы пока не можете менять цвет границы!");
+            b = check_b;
+            ui->col_b->setCurrentIndex(b);
+        }
+    }
+
+    set_color(col, b);
+    pen.setColor(*col);
+    QPoint a;
+    a.setX(x);
+    a.setY(y);
+    polygon.push_back(a);
+    paint->begin(img);
+    paint->setPen(pen);
+    if (polygon.size() > 1)
+    {
+        int index = polygon.size() - 2;
+        QPoint last = polygon.value(index);
+        paint->drawLine(last.x(), last.y(), x, y);
+    }
+    QGraphicsScene *scene = ui->graphics->scene();
+    scene->addPixmap(QPixmap::fromImage(*img));
+
+    paint->end();
+
 }
 
 void MainWindow::insert_into_table(QString x, QString y)
 {
-    ui->table->insertRow(amount);
-    QTableWidgetItem *item = new QTableWidgetItem();
-    item->setText(x);
-    ui->table->setItem(amount,0,item);
-    QTableWidgetItem *item2 = new QTableWidgetItem();
-    item2->setText(y);
-    ui->table->setItem(amount,1,item2);
+    int row = ui->table->rowCount();
+    ui->table->insertRow(row);
+    int row1 = ui->table->rowCount() - 1;
+    QTableWidgetItem *xx = new QTableWidgetItem();
+    ui->table->setItem(row1, 0, xx);
+    xx->setText(x);
+    QTableWidgetItem *yy = new QTableWidgetItem();
+    ui->table->setItem(row1, 1, yy);
+    yy->setText(y);
+
 }
 
-void MainWindow::on_lock_clicked()
+void MainWindow::set_color(QColor *c, int col)
 {
-    points[amount].x = points[0].x;
-    points[amount].y = points[0].y;
-    QString x = QString::number(points[0].x);
-    QString y = QString::number(points[0].y);
-    insert_into_table(x, y);
-    amount++;
+    if (col == 0)
+        c->setRgb(0, 0, 0);
+    else if (col == 1)
+        c->setRgb(255, 0, 0);
+    else if (col == 2)
+        c->setRgb(255, 191, 0);
+    else if (col == 3)
+        c->setRgb(251, 255, 28);
+    else if (col == 4)
+        c->setRgb(34, 255, 0);
+    else if (col == 5)
+        c->setRgb(0, 255, 230);
+    else if (col == 6)
+        c->setRgb(34, 0, 255);
+    else
+        c->setRgb(221, 0, 255);
 }
 
 void MainWindow::on_clear_clicked()
 {
+    QGraphicsScene *scene = ui->graphics->scene();
     scene->clear();
-    while (amount >= 0)
+}
+
+void MainWindow::on_lock_clicked()
+{
+    if (polygon.size() < 3)
     {
-        ui->table->removeRow(amount);
-        amount--;
+        QMessageBox::critical(this, "Ошибка", "Недостаточно точек, чтобы замкнуть фигуру!");
+        return;
     }
-    clear_array();
-    amount = 0;
+    int x = polygon.value(0).x();
+    int y = polygon.value(0).y();
+    insert_into_table(QString::number(x), QString::number(y));
+    QPoint a;
+    a.setX(x);
+    a.setY(y);
+    polygon.push_back(a);
+    paint->begin(img);
+    paint->setPen(pen);
+
+    int index = polygon.size() - 2;
+    QPoint last = polygon.value(index);
+    paint->drawLine(last.x(), last.y(), x, y);
+
+    QGraphicsScene *scene = ui->graphics->scene();
+    scene->addPixmap(QPixmap::fromImage(*img));
+
+    paint->end();
 }
 
 void MainWindow::on_clear_table_clicked()
 {
+    int row = ui->table->rowCount();
+    do
+    {
+        ui->table->removeRow(row - 1);
+        row--;
+    }
+    while (row > 0);
+    QGraphicsScene *scene = ui->graphics->scene();
     scene->clear();
-    while (amount >= 0)
-    {
-        ui->table->removeRow(amount);
-        amount--;
-    }
-    clear_array();
-    amount = 0;
-}
-
-void MainWindow::clear_array()
-{
-    for (int i = 0; i < amount; i++)
-    {
-        points[i].x = 0;
-        points[i].y = 0;
-    }
+    polygon.clear();
 }

@@ -28,14 +28,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     check.cpp \
-    paint.cpp \
-    mouse.cpp
+    draw_ar.cpp \
+    paint.cpp
 
 HEADERS += \
         mainwindow.h \
     check.h \
-    paint.h \
-    mouse.h
+    draw_ar.h \
+    paint.h
 
 FORMS += \
         mainwindow.ui
