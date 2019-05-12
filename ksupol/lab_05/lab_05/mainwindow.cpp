@@ -9,11 +9,14 @@
 #include <QString>
 #include <QPainter>
 
-MainWindow::MainWindow(QImage *image, Paint *p, QWidget *parent) :
+MainWindow::MainWindow(QImage *image, QVector<QVector<QPoint>> *polygons, QVector<QPoint> *pol,
+                       Paint *p, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    paint(p),
-    img(image)
+    img(image),
+    polygons_kit(polygons),
+    polygon(pol),
+    paint(p)
 {
     ui->setupUi(this);
     this->setWindowTitle("Лабораторная работа №5");
@@ -68,7 +71,7 @@ void MainWindow::on_add_point_clicked()
     int x = line_x.toInt();
     int y = line_y.toInt();
     int b = ui->col_b->currentIndex();
-    if (polygon.size() == 1)
+    if (polygon->size() == 1)
         check_b = b;
     else
     {
@@ -82,13 +85,13 @@ void MainWindow::on_add_point_clicked()
     QPoint a;
     a.setX(x);
     a.setY(y);
-    polygon.push_back(a);
+    polygon->push_back(a);
     paint->begin(img);
     paint->color(b);
-    if (polygon.size() > 1)
+    if (polygon->size() > 1)
     {
-        int index = polygon.size() - 2;
-        QPoint last = polygon.value(index);
+        int index = polygon->size() - 2;
+        QPoint last = polygon->value(index);
         paint->drawLine(last.x(), last.y(), x, y);
     }
     QGraphicsScene *scene = ui->graphics->scene();
@@ -120,30 +123,30 @@ void MainWindow::on_clear_clicked()
 
 void MainWindow::on_lock_clicked()
 {
-    if (polygon.size() < 3)
+    if (polygon->size() < 3)
     {
         QMessageBox::critical(this, "Ошибка", "Недостаточно точек, чтобы замкнуть фигуру!");
         return;
     }
-    int x = polygon.value(0).x();
-    int y = polygon.value(0).y();
+    int x = polygon->value(0).x();
+    int y = polygon->value(0).y();
     insert_into_table(QString::number(x), QString::number(y));
 
     paint->begin(img);
     paint->setPen(pen);
-    int index = polygon.size() - 2;
-    QPoint last = polygon.value(index);
+    int index = polygon->size() - 1;
+    QPoint last = polygon->value(index);
     paint->drawLine(last.x(), last.y(), x, y);
 
     QGraphicsScene *scene = ui->graphics->scene();
     scene->addPixmap(QPixmap::fromImage(*img));
+
     paint->end();
 
     insert_into_table("X", "Y");
 
-    polygons->push_back(polygon);
-    polygon.clear();
-
+    polygons_kit->push_back(*polygon);
+    polygon->clear();
 }
 
 void MainWindow::on_clear_table_clicked()
@@ -157,5 +160,65 @@ void MainWindow::on_clear_table_clicked()
     while (row > 0);
     QGraphicsScene *scene = ui->graphics->scene();
     scene->clear();
-    polygon.clear();
+    polygon->clear();
+    polygons_kit->clear();
+}
+
+void MainWindow::on_fill_clicked()
+{
+    if (polygons_kit->size() == 0)
+    {
+        QMessageBox::critical(this, "Ошибка", "Нет фигуры!");
+        return;
+    }
+    if (polygon->size() != 0)
+    {
+        QMessageBox::critical(this, "Ошибка", "Необходимо замкнуть фигуру!");
+        return;
+    }
+    int f = ui->col_f->currentIndex();
+    int b = ui->col_b->currentIndex();
+    QVector<QPoint> first = polygons_kit->value(0);
+    int xmin = first.value(0).x();
+    int xmax = first.value(0).x();
+    int ymin = first.value(0).y();
+    int ymax = first.value(0).y();
+    for (int i = 1; i < first.size(); i++)
+    {
+        if (first.value(i).x() < xmin)
+            xmin = first.value(i).x();
+        if (first.value(i).x() > xmax)
+            xmax = first.value(i).x();
+        if (first.value(i).y() < ymin)
+            ymin = first.value(i).y();
+        if (first.value(i).y() > ymax)
+            ymax = first.value(i).y();
+    }
+    QColor border;
+    QColor fill;
+    QColor ground = Qt::white;
+    set_color(&border, b);
+    set_color(&fill, f);
+    qDebug() << border << fill;
+
+    bool flag = false;
+    for (int y = ymax; y >= ymin; y--)
+    {
+        for (int x = xmin; x <= xmax; x++)
+        {
+            if (img->pixelColor(x, y) == border)
+            {
+                if (flag == false)
+                    flag = true;
+                else
+                    flag = false;
+            }
+            if (flag == true)
+                img->setPixelColor(x, y, fill);
+            else
+                img->setPixelColor(x, y, ground);
+        }
+    }
+    QGraphicsScene *scene = ui->graphics->scene();
+    scene->addPixmap(QPixmap::fromImage(*img));
 }
