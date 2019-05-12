@@ -9,7 +9,7 @@ class Draw_ar : public QGraphicsScene
 public:
     explicit Draw_ar(QImage *image, Paint *p,
                      MainWindow *w, QWidget *parent = nullptr);
-private:
+protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
 private:
@@ -17,6 +17,9 @@ private:
 
     QImage *img;
     Paint *paint;
+
+    QColor *col;
+    QPen pen;
 };
 
 #endif // DRAW_AR_H

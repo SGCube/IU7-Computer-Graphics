@@ -1,4 +1,5 @@
 ﻿#include "draw_ar.h"
+#include "check.h"
 
 #include <QGraphicsView>
 #include <QGraphicsSceneMouseEvent>
@@ -17,6 +18,15 @@ Draw_ar::Draw_ar(QImage *image, Paint *p, MainWindow *w, QWidget *parent):
 
 void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    qDebug() << "t";
+    /*
     int x = event->scenePos().x();
-    qDebug() << x;
+    int y = event->scenePos().y();
+    paint->begin(img);
+    paint->color(0);
+    paint->drawLine(0, 0, x, y);
+    addPixmap(QPixmap::fromImage(*img));
+
+    paint->end();
+    */
 }

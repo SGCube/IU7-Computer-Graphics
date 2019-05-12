@@ -79,15 +79,12 @@ void MainWindow::on_add_point_clicked()
             ui->col_b->setCurrentIndex(b);
         }
     }
-
-    set_color(col, b);
-    pen.setColor(*col);
     QPoint a;
     a.setX(x);
     a.setY(y);
     polygon.push_back(a);
     paint->begin(img);
-    paint->setPen(pen);
+    paint->color(b);
     if (polygon.size() > 1)
     {
         int index = polygon.size() - 2;
@@ -115,26 +112,6 @@ void MainWindow::insert_into_table(QString x, QString y)
 
 }
 
-void MainWindow::set_color(QColor *c, int col)
-{
-    if (col == 0)
-        c->setRgb(0, 0, 0);
-    else if (col == 1)
-        c->setRgb(255, 0, 0);
-    else if (col == 2)
-        c->setRgb(255, 191, 0);
-    else if (col == 3)
-        c->setRgb(251, 255, 28);
-    else if (col == 4)
-        c->setRgb(34, 255, 0);
-    else if (col == 5)
-        c->setRgb(0, 255, 230);
-    else if (col == 6)
-        c->setRgb(34, 0, 255);
-    else
-        c->setRgb(221, 0, 255);
-}
-
 void MainWindow::on_clear_clicked()
 {
     QGraphicsScene *scene = ui->graphics->scene();
@@ -151,21 +128,22 @@ void MainWindow::on_lock_clicked()
     int x = polygon.value(0).x();
     int y = polygon.value(0).y();
     insert_into_table(QString::number(x), QString::number(y));
-    QPoint a;
-    a.setX(x);
-    a.setY(y);
-    polygon.push_back(a);
+
     paint->begin(img);
     paint->setPen(pen);
-
     int index = polygon.size() - 2;
     QPoint last = polygon.value(index);
     paint->drawLine(last.x(), last.y(), x, y);
 
     QGraphicsScene *scene = ui->graphics->scene();
     scene->addPixmap(QPixmap::fromImage(*img));
-
     paint->end();
+
+    insert_into_table("X", "Y");
+
+    polygons->push_back(polygon);
+    polygon.clear();
+
 }
 
 void MainWindow::on_clear_table_clicked()

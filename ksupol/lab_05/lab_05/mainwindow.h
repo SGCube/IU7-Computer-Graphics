@@ -21,7 +21,6 @@ public:
     ~MainWindow();
 
     void add_scene(QGraphicsScene *scene);
-    void set_color(QColor *c, int col);
 
 private slots:
     void on_add_point_clicked();
@@ -40,8 +39,7 @@ private:
     QImage *img;
 
     QVector<QPoint> polygon;
-    std::vector<QPolygon> *polygons;
-    QPolygon *pol;
+    QVector<QVector<QPoint>> *polygons;
     QPen pen;
     QColor *col;
 
