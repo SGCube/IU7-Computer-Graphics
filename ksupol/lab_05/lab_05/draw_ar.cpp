@@ -32,10 +32,8 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
         int x = polygon->value(0).x();
         int y = polygon->value(0).y();
         window->insert_into_table(QString::number(x), QString::number(y));
-        //int b = window->col_b->currentIndex();
         paint->begin(img);
-        //paint->color(b);
-        paint->setPen(pen);
+        paint->set_pen();
         int index = polygon->size() - 1;
         QPoint last = polygon->value(index);
         paint->drawLine(last.x(), last.y(), x, y);
@@ -55,7 +53,7 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
     window->insert_into_table(QString::number(x), QString::number(y));
 
     paint->begin(img);
-    //paint->color(b);
+    paint->set_pen();
     if (polygon->size() > 0)
     {
         QPoint last = polygon->back();
@@ -98,11 +96,10 @@ void Draw_ar::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QImage img_2(*img);
     int x = event->scenePos().x();
     int y = event->scenePos().y();
-    //qDebug() << x << y;
     paint->begin(&img_2);
+    paint->set_pen();
     int index = polygon->size() - 1;
     QPoint last = polygon->value(index);
-    qDebug() << last.x() << last.y();
     if (!hor_vert)
         paint->drawLine(last.x(), last.y(), x, y);
     else

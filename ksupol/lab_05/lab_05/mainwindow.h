@@ -38,6 +38,8 @@ private slots:
 
     void on_fill_clicked();
 
+    void on_col_b_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
 
@@ -46,8 +48,6 @@ private:
 
     QVector<QPoint> *polygon;
     QVector<QVector<QPoint>> *polygons_kit;
-    QPen pen;
-    QColor *col;
 };
 
 #endif // MAINWINDOW_H

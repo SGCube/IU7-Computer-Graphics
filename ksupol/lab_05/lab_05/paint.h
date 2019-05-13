@@ -8,9 +8,10 @@ class Paint : public QPainter
 public:
     Paint();
     void color(int b);
+    void set_pen();
 private:
     QPen pen;
-    QColor *col;
+    QColor col;
 };
 
 #endif // PAINT_H

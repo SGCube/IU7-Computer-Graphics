@@ -13,10 +13,10 @@ MainWindow::MainWindow(QImage *image, QVector<QVector<QPoint>> *polygons, QVecto
                        Paint *p, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    paint(p),
     img(image),
-    polygons_kit(polygons),
     polygon(pol),
-    paint(p)
+    polygons_kit(polygons)
 {
     ui->setupUi(this);
     this->setWindowTitle("Лабораторная работа №5");
@@ -33,7 +33,6 @@ MainWindow::MainWindow(QImage *image, QVector<QVector<QPoint>> *polygons, QVecto
     ui->table->horizontalHeader()->resizeSection(1, 80);
     ui->table->setEditTriggers(QAbstractItemView :: NoEditTriggers);
     ui->table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    pen.setWidth(1);
 }
 
 MainWindow::~MainWindow()
@@ -87,7 +86,7 @@ void MainWindow::on_add_point_clicked()
     a.setY(y);
     polygon->push_back(a);
     paint->begin(img);
-    paint->color(b);
+    paint->set_pen();
     if (polygon->size() > 1)
     {
         int index = polygon->size() - 2;
@@ -144,7 +143,7 @@ void MainWindow::on_lock_clicked()
     insert_into_table(QString::number(x), QString::number(y));
 
     paint->begin(img);
-    paint->setPen(pen);
+    paint->set_pen();
     int index = polygon->size() - 1;
     QPoint last = polygon->value(index);
     paint->drawLine(last.x(), last.y(), x, y);
@@ -216,4 +215,9 @@ void MainWindow::on_fill_clicked()
     }
     QGraphicsScene *scene = ui->graphics->scene();
     scene->addPixmap(QPixmap::fromImage(*img));
+}
+
+void MainWindow::on_col_b_currentIndexChanged(int index)
+{
+    paint->color(index);
 }

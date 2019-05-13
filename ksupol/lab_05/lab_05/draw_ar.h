@@ -24,8 +24,6 @@ private:
     Paint *paint;
     QVector<QPoint> *polygon;
     QVector<QVector<QPoint>> *polygons_kit;
-    QColor *col;
-    QPen pen;
 };
 
 #endif // DRAW_AR_H
