@@ -117,8 +117,19 @@ void MainWindow::insert_into_table(QString x, QString y)
 
 void MainWindow::on_clear_clicked()
 {
+    int row = ui->table->rowCount();
+    do
+    {
+        ui->table->removeRow(row - 1);
+        row--;
+    }
+    while (row > 0);
+    img->fill(Qt::white);
     QGraphicsScene *scene = ui->graphics->scene();
     scene->clear();
+    scene->addPixmap(QPixmap::fromImage(*img));
+    polygon->clear();
+    polygons_kit->clear();
 }
 
 void MainWindow::on_lock_clicked()
@@ -147,21 +158,6 @@ void MainWindow::on_lock_clicked()
 
     polygons_kit->push_back(*polygon);
     polygon->clear();
-}
-
-void MainWindow::on_clear_table_clicked()
-{
-    int row = ui->table->rowCount();
-    do
-    {
-        ui->table->removeRow(row - 1);
-        row--;
-    }
-    while (row > 0);
-    QGraphicsScene *scene = ui->graphics->scene();
-    scene->clear();
-    polygon->clear();
-    polygons_kit->clear();
 }
 
 void MainWindow::on_fill_clicked()
@@ -199,7 +195,6 @@ void MainWindow::on_fill_clicked()
     QColor ground = Qt::white;
     set_color(&border, b);
     set_color(&fill, f);
-    qDebug() << border << fill;
 
     bool flag = false;
     for (int y = ymax; y >= ymin; y--)

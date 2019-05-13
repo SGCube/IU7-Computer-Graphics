@@ -36,8 +36,6 @@ private slots:
 
     void on_lock_clicked();
 
-    void on_clear_table_clicked();
-
     void on_fill_clicked();
 
 private:

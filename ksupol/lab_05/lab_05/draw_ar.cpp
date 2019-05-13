@@ -20,7 +20,7 @@ Draw_ar::Draw_ar(QImage *image, Paint *p, QVector<QVector<QPoint>> *polygons, QV
 {
     setSceneRect(0, 0, 860, 660);
     addPixmap(QPixmap::fromImage(*img));
-    int hor_vert = 0;
+    bool hor_vert = false;
 }
 
 void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -32,9 +32,9 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
         int x = polygon->value(0).x();
         int y = polygon->value(0).y();
         window->insert_into_table(QString::number(x), QString::number(y));
-        int b = window->col_b->currentIndex();
+        //int b = window->col_b->currentIndex();
         paint->begin(img);
-        paint->color(b);
+        //paint->color(b);
         paint->setPen(pen);
         int index = polygon->size() - 1;
         QPoint last = polygon->value(index);
@@ -54,27 +54,36 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
     int y = event->scenePos().y();
     window->insert_into_table(QString::number(x), QString::number(y));
 
-    QPoint a;
-    a.setX(x);
-    a.setY(y);
-    polygon->push_back(a);
     paint->begin(img);
     //paint->color(b);
-    if (polygon->size() > 1)
+    if (polygon->size() > 0)
     {
-        int index = polygon->size() - 2;
-        QPoint last = polygon->value(index);
-        if (hor_vert == 0)
+        QPoint last = polygon->back();
+        if (!hor_vert)
+        {
+            polygon->push_back(QPoint(x, y));
             paint->drawLine(last.x(), last.y(), x, y);
+        }
         else
         {
             int a_x = qAbs(last.x() - x);
             int a_y = qAbs(last.y() - y);
             if (a_x >= a_y)
+            {
+                polygon->push_back(QPoint(x, last.y()));
                 paint->drawLine(last.x(), last.y(), x, last.y());
+            }
             else
+            {
+                polygon->push_back(QPoint(last.x(), y));
                 paint->drawLine(last.x(), last.y(), last.x(), y);
+            }
         }
+    }
+    else
+    {
+        polygon->push_back(QPoint(x, y));
+        paint->drawPoint(x, y);
     }
     addPixmap(QPixmap::fromImage(*img));
 
@@ -89,10 +98,12 @@ void Draw_ar::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QImage img_2(*img);
     int x = event->scenePos().x();
     int y = event->scenePos().y();
+    //qDebug() << x << y;
     paint->begin(&img_2);
     int index = polygon->size() - 1;
     QPoint last = polygon->value(index);
-    if (hor_vert == 0)
+    qDebug() << last.x() << last.y();
+    if (!hor_vert)
         paint->drawLine(last.x(), last.y(), x, y);
     else
     {
@@ -110,11 +121,11 @@ void Draw_ar::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void Draw_ar::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Shift)
-        hor_vert = 1;
+        hor_vert = true;
 }
 
 void Draw_ar::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Shift)
-        hor_vert = 0;
+        hor_vert = false;
 }
