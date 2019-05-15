@@ -22,7 +22,7 @@ Point lt_corner(std::vector<Polygon> set);
 
 Point rd_corner(std::vector<Polygon> set);
 
-void fill(QImage *img, ColorSet color_set, QGraphicsScene *scene, Point seed,
+void fill(QImage *img, ColorSet color_set, QGraphicsScene *scene, Point span,
 		  int delay = 0);
 
 #endif // FILL_H

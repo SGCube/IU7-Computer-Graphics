@@ -26,6 +26,7 @@ public:
 	void end_polygon();
 	void lock_disable(bool d);
 	void cur_coord(Point p);
+	void buttons_setDisabled(bool d);
 	
 private slots:
 	void on_palEdgeBtn_released();

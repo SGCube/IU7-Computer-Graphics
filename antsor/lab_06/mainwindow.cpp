@@ -44,7 +44,7 @@ void MainWindow::set_scene(QGraphicsScene *scene)
 
 void MainWindow::cur_coord(Point p)
 {
-	QString str = "Текущие координаты: (";
+	QString str = "Текущие координаты:\n(";
 	str.append(QString::number(p.x()));
 	str.append(", ");
 	str.append(QString::number(p.y()));
@@ -77,6 +77,20 @@ void MainWindow::end_polygon()
 void MainWindow::lock_disable(bool d)
 {
 	ui->lockButton->setDisabled(d);
+}
+
+void MainWindow::buttons_setDisabled(bool d)
+{
+	ui->addButton->setDisabled(d);
+	ui->lockButton->setDisabled(d);
+	ui->clearButton->setDisabled(d);
+	ui->fillButton->setDisabled(d);
+	ui->xEdit->setDisabled(d);
+	ui->yEdit->setDisabled(d);
+	ui->palBgBtn->setDisabled(d);
+	ui->palEdgeBtn->setDisabled(d);
+	ui->palFillBtn->setDisabled(d);
+	ui->delaySpinBox->setDisabled(d);
 }
 
 void MainWindow::on_palEdgeBtn_released()
@@ -114,26 +128,14 @@ void MainWindow::on_palBgBtn_released()
 
 void MainWindow::on_addButton_released()
 {
-	bool correct = true;
-	QString xstr = ui->xEdit->text();
-	QString ystr = ui->yEdit->text();
-	int x = xstr.toInt(&correct);
-	if (!correct)
-	{
-		QMessageBox::critical(this, "Ошибка", "Некорректное значение x!");
-		return;
-	}
-	int y = ystr.toInt(&correct);
-	if (!correct)
-	{
-		QMessageBox::critical(this, "Ошибка", "Некорректное значение y!");
-		return;
-	}
-	ui->xEdit->clear();
-	ui->yEdit->clear();
+	int x = ui->xEdit->value();
+	int y = ui->yEdit->value();
 	
 	Point new_point(x, y);
 	add_point(new_point);
+	
+	ui->xEdit->clear();
+	ui->yEdit->clear();
 	
 	painter->begin(img);
 	painter->set_edge();
@@ -199,53 +201,11 @@ void MainWindow::on_clearButton_released()
 
 void MainWindow::on_fillButton_released()
 {
-	ui->addButton->setDisabled(true);
-	ui->lockButton->setDisabled(true);
-	ui->clearButton->setDisabled(true);
-	ui->fillButton->setDisabled(true);
-	ui->xEdit->setDisabled(true);
-	ui->yEdit->setDisabled(true);
-	ui->xsEdit->setDisabled(true);
-	ui->ysEdit->setDisabled(true);
-	ui->palBgBtn->setDisabled(true);
-	ui->palEdgeBtn->setDisabled(true);
-	ui->palFillBtn->setDisabled(true);
-	ui->delayCheck->setDisabled(true);
-	ui->delaySpinBox->setDisabled(true);
+	buttons_setDisabled(true);
 	
-	bool correct = true;
-	QString xstr = ui->xsEdit->text();
-	QString ystr = ui->ysEdit->text();
-	int x = xstr.toInt(&correct);
-	if (!correct)
-	{
-		QMessageBox::critical(this, "Ошибка", "Некорректное значение x!");
-		return;
-	}
-	int y = ystr.toInt(&correct);
-	if (!correct)
-	{
-		QMessageBox::critical(this, "Ошибка", "Некорректное значение y!");
-		return;
-	}
-	Point seed(x, y);
-	
-	int delay = (ui->delayCheck->isChecked()) ? ui->delaySpinBox->value() : 0;
-	
+	Point span(ui->xsEdit->value(), ui->ysEdit->value());
 	fill(img, ColorSet(color_edge, color_fill, color_bg),
-		 ui->gView->scene(), seed, delay);
+		 ui->gView->scene(), span, ui->delaySpinBox->value());
 	
-	ui->addButton->setDisabled(false);
-	ui->lockButton->setDisabled(false);
-	ui->clearButton->setDisabled(false);
-	ui->fillButton->setDisabled(false);
-	ui->xEdit->setDisabled(false);
-	ui->yEdit->setDisabled(false);
-	ui->xsEdit->setDisabled(false);
-	ui->ysEdit->setDisabled(false);
-	ui->palBgBtn->setDisabled(false);
-	ui->palEdgeBtn->setDisabled(false);
-	ui->palFillBtn->setDisabled(false);
-	ui->delayCheck->setDisabled(false);
-	ui->delaySpinBox->setDisabled(false);
+	buttons_setDisabled(false);
 }

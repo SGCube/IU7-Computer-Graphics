@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QTime>
 #include <cmath>
 #include <vector>
 
@@ -12,7 +13,7 @@ ColorSet::ColorSet(QColor cedge, QColor cfill, QColor cbg) :
 	
 }
 
-void search_seed(QImage *img, ColorSet color_set, std::vector<Point> *stack,
+void search_span(QImage *img, ColorSet color_set, std::vector<Point> *stack,
 				  int xleft, int xright, int ystr)
 {
 	bool flag = false;
@@ -51,14 +52,14 @@ void search_seed(QImage *img, ColorSet color_set, std::vector<Point> *stack,
 	}
 }
 
-void fill(QImage *img, ColorSet color_set, QGraphicsScene *scene, Point seed,
+void fill(QImage *img, ColorSet color_set, QGraphicsScene *scene, Point span,
 		  int delay)
 {
 	if (!img || !scene)
 		return;
 	
 	std::vector<Point> stack;
-	stack.push_back(seed);
+	stack.push_back(span);
 
 	while (!stack.empty())
 	{
@@ -67,7 +68,6 @@ void fill(QImage *img, ColorSet color_set, QGraphicsScene *scene, Point seed,
 		
 		int x = p.x(), y = p.y();
 		int xtmp = p.x();
-		bool flag = false;
 		
 		img->setPixelColor(x, y, color_set.color_fill);
 		
@@ -91,15 +91,19 @@ void fill(QImage *img, ColorSet color_set, QGraphicsScene *scene, Point seed,
 		int xright = x - 1;
 		
 		// поиск затравки на строке выше
-		search_seed(img, color_set, &stack, xleft, xright, y - 1);
+		search_span(img, color_set, &stack, xleft, xright, y - 1);
 
 		// поиск затравки на строке ниже
-		search_seed(img, color_set, &stack, xleft, xright, y + 1);
+		search_span(img, color_set, &stack, xleft, xright, y + 1);
 
 		if (delay > 0)
 		{
+			scene->clear();
 			scene->addPixmap(QPixmap::fromImage(*img));
-			QApplication::processEvents(QEventLoop::AllEvents, 1);
+			QTime dieTime = QTime::currentTime().addMSecs(delay);
+			while(QTime::currentTime() < dieTime)
+				QCoreApplication::processEvents(QEventLoop::AllEvents, delay);
+			
 		}
 	}
 
