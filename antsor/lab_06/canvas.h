@@ -1,31 +1,39 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
-#include <QGraphicsView>
-#include <QGraphicsSceneMouseEvent>
+#include <QWidget>
+#include <QMouseEvent>
 #include <QKeyEvent>
 #include <vector>
 
-#include "mainwindow.h"
 #include "painter.h"
 #include "polygon.h"
 
 
-class Canvas : public QGraphicsScene
+class Canvas : public QWidget
 {
+	Q_OBJECT
+	
 public:
-	explicit Canvas(QImage *image, std::vector<Polygon> *polygons, Polygon *pl,
-					Painter *p, MainWindow *w, QWidget *parent = nullptr);
+	explicit Canvas(QWidget *parent = nullptr);
+	void canvas_set(QImage *image, std::vector<Polygon> *polygons, Polygon *pl,
+					Painter *p);
+	
+	void add_point(Point p);
+	void lock_polygon();
+	void set_parline(bool s);
+	
+signals:
+	void addPoint(Point p);
+	void lockPolygon();
+	void curCoord(Point p);
 	
 protected:
-	void keyPressEvent(QKeyEvent *event);
-	void keyReleaseEvent(QKeyEvent *event);
-	void mousePressEvent(QGraphicsSceneMouseEvent *event);
-	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+	virtual void paintEvent(QPaintEvent *event);
+	virtual void mousePressEvent(QMouseEvent *event);
+	virtual void mouseMoveEvent(QMouseEvent *event);
 	
 private:
-	MainWindow *window;
-	
 	QImage *img;
 	Painter *painter;
 	

@@ -52,10 +52,10 @@ void search_span(QImage *img, ColorSet color_set, std::vector<Point> *stack,
 	}
 }
 
-void fill(QImage *img, ColorSet color_set, QGraphicsScene *scene, Point span,
+void fill(QImage *img, ColorSet color_set, Canvas *canvas, Point span,
 		  int delay)
 {
-	if (!img || !scene)
+	if (!img || !canvas)
 		return;
 	
 	std::vector<Point> stack;
@@ -98,15 +98,13 @@ void fill(QImage *img, ColorSet color_set, QGraphicsScene *scene, Point span,
 
 		if (delay > 0)
 		{
-			scene->clear();
-			scene->addPixmap(QPixmap::fromImage(*img));
+			canvas->repaint();
 			QTime dieTime = QTime::currentTime().addMSecs(delay);
 			while(QTime::currentTime() < dieTime)
 				QCoreApplication::processEvents(QEventLoop::AllEvents, delay);
-			
 		}
 	}
 
 	if (delay == 0)
-		scene->addPixmap(QPixmap::fromImage(*img));
+		canvas->repaint();
 }

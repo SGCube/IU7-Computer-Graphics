@@ -2,12 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QGraphicsScene>
-#include <QPainter>
+#include <QKeyEvent>
 
 #include "point.h"
 #include "polygon.h"
 #include "painter.h"
+#include "canvas.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,12 +21,15 @@ public:
 	explicit MainWindow(QImage *image, std::vector<Polygon> *polygons,
 						Polygon *pl, Painter *p, QWidget *parent = 0);
 	~MainWindow();
-	void set_scene(QGraphicsScene *scene);
+	
+public slots:
 	void add_point(Point p);
-	void end_polygon();
-	void lock_disable(bool d);
+	void lock_polygon();
 	void cur_coord(Point p);
-	void buttons_setDisabled(bool d);
+	
+protected:
+	virtual void keyPressEvent(QKeyEvent *event);
+	virtual void keyReleaseEvent(QKeyEvent *event);
 	
 private slots:
 	void on_palEdgeBtn_released();
@@ -55,6 +58,9 @@ private:
 	QColor color_edge;
 	QColor color_fill;
 	QColor color_bg;
+	
+	void lock_disable(bool d);
+	void buttons_setDisabled(bool d);
 };
 
 #endif // MAINWINDOW_H

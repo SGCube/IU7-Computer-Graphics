@@ -5,6 +5,8 @@
 #include <QWidget>
 #include <QColorDialog>
 #include <QMessageBox>
+#include <QLayout>
+#include <canvas.h>
 
 MainWindow::MainWindow(QImage *image, std::vector<Polygon> *polygons,
 					   Polygon *pl, Painter *p, QWidget *parent) :
@@ -19,7 +21,11 @@ MainWindow::MainWindow(QImage *image, std::vector<Polygon> *polygons,
 	color_bg(255, 255, 255)
 {
 	ui->setupUi(this);
-	ui->gView->setMouseTracking(true);
+	ui->canvas->canvas_set(image, polygons, pl, p);
+	
+	connect(ui->canvas, SIGNAL(addPoint(Point)), this, SLOT(add_point(Point)));
+	connect(ui->canvas, SIGNAL(curCoord(Point)), this, SLOT(cur_coord(Point)));
+	connect(ui->canvas, SIGNAL(lockPolygon()), this, SLOT(lock_polygon()));
 	
 	QPixmap pxm(ui->colorEdge->rect().size());
 	pxm.fill(color_edge);
@@ -37,9 +43,16 @@ MainWindow::~MainWindow()
 	delete ui;
 }
 
-void MainWindow::set_scene(QGraphicsScene *scene)
+void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-	ui->gView->setScene(scene);
+	if (event->key() == Qt::Key_Shift)
+		ui->canvas->set_parline(true);
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Shift)
+		ui->canvas->set_parline(false);
 }
 
 void MainWindow::cur_coord(Point p)
@@ -61,9 +74,12 @@ void MainWindow::add_point(Point p)
 	yitem = new QTableWidgetItem(QString::number(p.y()));
 	ui->pointTable->setItem(row, 0, xitem);
 	ui->pointTable->setItem(row, 1, yitem);
+	
+	if (new_polygon->number_of_vertexes() > 2)
+		lock_disable(false);
 }
 
-void MainWindow::end_polygon()
+void MainWindow::lock_polygon()
 {
 	ui->pointTable->insertRow(ui->pointTable->rowCount());
 	int row = ui->pointTable->rowCount() - 1;
@@ -72,6 +88,8 @@ void MainWindow::end_polygon()
 	yitem = new QTableWidgetItem("=======");
 	ui->pointTable->setItem(row, 0, xitem);
 	ui->pointTable->setItem(row, 1, yitem);
+	
+	lock_disable(true);
 }
 
 void MainWindow::lock_disable(bool d)
@@ -130,66 +148,25 @@ void MainWindow::on_addButton_released()
 {
 	int x = ui->xEdit->value();
 	int y = ui->yEdit->value();
-	
-	Point new_point(x, y);
-	add_point(new_point);
-	
 	ui->xEdit->clear();
 	ui->yEdit->clear();
 	
-	painter->begin(img);
-	painter->set_edge();
-	
-	if (new_polygon->number_of_vertexes() == 0)
-		painter->drawPoint(x, y);
-	else
-	{
-		Point plast = new_polygon->last_point();
-		painter->drawLine(plast.x(), plast.y(), x, y);
-	}
-	QGraphicsScene *scene = ui->gView->scene();
-	scene->addPixmap(QPixmap::fromImage(*img));
-	
-	painter->end();
-	
-	new_polygon->add_point(new_point);
-	if (new_polygon->number_of_vertexes() > 2)
-		ui->lockButton->setDisabled(false);
+	Point new_point(x, y);
+	add_point(new_point);
+	ui->canvas->add_point(new_point);
 }
 
 void MainWindow::on_lockButton_released()
 {
-	if (new_polygon->number_of_vertexes() < 3)
-	{
-		ui->lockButton->setDisabled(false);
-		return;
-	}
-	
-    end_polygon();
-	
-	painter->begin(img);
-	painter->set_edge();
-	
-	Point pfirst = new_polygon->first_point();
-	Point plast = new_polygon->last_point();
-	painter->drawLine(plast.x(), plast.y(), pfirst.x(), pfirst.y());
-	
-	QGraphicsScene *scene = ui->gView->scene();
-	scene->addPixmap(QPixmap::fromImage(*img));
-	
-	painter->end();
-	
-	polygon_set->push_back(*new_polygon);
-	new_polygon->clear();
-	
-	ui->lockButton->setDisabled(true);
+    lock_polygon();
+	ui->canvas->lock_polygon();
 }
 
 void MainWindow::on_clearButton_released()
 {
     img->fill(color_bg);
-	QGraphicsScene *scene = ui->gView->scene();
-	scene->addPixmap(QPixmap::fromImage(*img));
+	ui->canvas->repaint();
+	
 	polygon_set->clear();
 	new_polygon->clear();
 	ui->lockButton->setDisabled(true);
@@ -205,7 +182,7 @@ void MainWindow::on_fillButton_released()
 	
 	Point span(ui->xsEdit->value(), ui->ysEdit->value());
 	fill(img, ColorSet(color_edge, color_fill, color_bg),
-		 ui->gView->scene(), span, ui->delaySpinBox->value());
+		 ui->canvas, span, ui->delaySpinBox->value());
 	
 	buttons_setDisabled(false);
 }

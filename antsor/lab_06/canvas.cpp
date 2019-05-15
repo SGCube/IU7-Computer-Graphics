@@ -2,121 +2,123 @@
 
 #include "canvas.h"
 
-Canvas::Canvas(QImage *image, std::vector<Polygon> *polygons, Polygon *pl,
-			   Painter *p, MainWindow *w, QWidget *parent) :
-	QGraphicsScene(parent),
-	window(w),
-	img(image),
-	painter(p),
-	polygon_set(polygons),
-	new_polygon(pl),
+Canvas::Canvas(QWidget *parent) :
+	QWidget(parent),
+	img(nullptr),
+	painter(nullptr),
+	polygon_set(nullptr),
+	new_polygon(nullptr),
 	parLine(false)
 {
-	setSceneRect(0, 0, 640, 640);
-	addPixmap(QPixmap::fromImage(*img));
+	setMouseTracking(true);
 }
 
-void Canvas::keyPressEvent(QKeyEvent *event)
+void Canvas::canvas_set(QImage *image, std::vector<Polygon> *polygons,
+						Polygon *pl, Painter *p)
 {
-	if (event->key() == Qt::Key_Shift)
-		parLine = true;
+	img = image;
+	painter = p;
+	polygon_set = polygons;
+	new_polygon = pl;
+	repaint();
 }
 
-void Canvas::keyReleaseEvent(QKeyEvent *event)
+void Canvas::paintEvent(QPaintEvent *event)
 {
-	if (event->key() == Qt::Key_Shift)
-		parLine = false;
+	Q_UNUSED(event);
+	painter->begin(this);
+	painter->drawImage(0, 0, *img);
+	painter->end();
 }
 
-void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void Canvas::add_point(Point p)
 {
-	if (event->button() == Qt::RightButton)
-	{
-		if (new_polygon->number_of_vertexes() < 3)
-			return;
-		
-		Point pfirst = new_polygon->first_point();
-		Point plast = new_polygon->last_point();
-		
-		painter->begin(img);
-		painter->set_edge();
-		
-		painter->drawLine(plast.x(), plast.y(), pfirst.x(), pfirst.y());
-		addPixmap(QPixmap::fromImage(*img));
-		
-		painter->end();
-		
-		polygon_set->push_back(*new_polygon);
-		new_polygon->clear();
-		
-		if (window)
-		{
-			window->lock_disable(true);
-			window->end_polygon();
-		}
-		return;
-	}
-	
-	int x = event->scenePos().x();
-	int y = event->scenePos().y();
-	int new_x = x, new_y = y;
-	
 	painter->begin(img);
 	painter->set_edge();
 	
 	if (new_polygon->number_of_vertexes() == 0)
-		painter->drawPoint(x, y);
+		painter->drawPoint(p.x(), p.y());
 	else
 	{
 		Point plast = new_polygon->last_point();
-		if (parLine)
-		{
-			int xx = x - plast.x(), yy = plast.y() - y;
-			if (yy > xx)
-			{
-				if (yy > -xx)
-					new_x = plast.x();
-				else
-					new_y = plast.y();
-			}
-			else
-			{
-				if (yy > -xx)
-					new_y = plast.y();
-				else
-					new_x = plast.x();
-			}
-		}
-		painter->drawLine(plast.x(), plast.y(), new_x, new_y);
+		painter->drawLine(plast.x(), plast.y(), p.x(), p.y());
 	}
-	addPixmap(QPixmap::fromImage(*img));
-	
+	new_polygon->add_point(p);
 	painter->end();
-	
-	new_polygon->add_point(Point(new_x, new_y));
-	
-	if (window)
-	{
-		window->add_point(Point(new_x, new_y));
-		if (new_polygon->number_of_vertexes() > 2)
-			window->lock_disable(false);
-	}
+	repaint();
 }
 
-void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void Canvas::lock_polygon()
 {
-	int x = event->scenePos().x();
-	int y = event->scenePos().y();
+	painter->begin(img);
+	painter->set_edge();
 	
-	if (window)
-		window->cur_coord(Point(x, y));
+	Point pfirst = new_polygon->first_point();
+	Point plast = new_polygon->last_point();
+	painter->drawLine(plast.x(), plast.y(), pfirst.x(), pfirst.y());
+	
+	painter->end();
+	repaint();
+	
+	polygon_set->push_back(*new_polygon);
+	new_polygon->clear();
+}
+
+void Canvas::set_parline(bool s)
+{
+	parLine = s;
+}
+
+void Canvas::mousePressEvent(QMouseEvent *event)
+{
+	if (event->button() == Qt::RightButton)
+	{
+		if (new_polygon->number_of_vertexes() > 2)
+		{
+			emit lockPolygon();
+			lock_polygon();
+		}
+		return;
+	}
+	
+	int x = event->pos().x();
+	int y = event->pos().y();
+	int new_x = x, new_y = y;
+	
+	if (parLine && new_polygon->number_of_vertexes() > 0)
+	{
+		Point plast = new_polygon->last_point();
+		int xx = x - plast.x(), yy = plast.y() - y;
+		if (yy > xx)
+		{
+			if (yy > -xx)
+				new_x = plast.x();
+			else
+				new_y = plast.y();
+		}
+		else
+		{
+			if (yy > -xx)
+				new_y = plast.y();
+			else
+				new_x = plast.x();
+		}
+	}
+	
+	Point new_point(new_x, new_y);
+	emit addPoint(new_point);
+	add_point(new_point);
+}
+
+void Canvas::mouseMoveEvent(QMouseEvent *event)
+{
+	int x = event->pos().x();
+	int y = event->pos().y();
+	
+	emit curCoord(Point(x, y));
 	
 	if (new_polygon->number_of_vertexes() == 0)
 		return;
-	
-	QImage tmp_img(*img);
-	painter->begin(&tmp_img);
-	painter->set_edge();
 	
 	Point plast = new_polygon->last_point();
 	int new_x = x, new_y = y;
@@ -138,8 +140,15 @@ void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 				new_x = plast.x();
 		}
 	}
-	painter->drawLine(plast.x(), plast.y(), new_x, new_y);
-	addPixmap(QPixmap::fromImage(tmp_img));
 	
+	QImage tmp_img(*img);
+	painter->begin(&tmp_img);
+	painter->set_edge();
+	painter->drawLine(plast.x(), plast.y(), new_x, new_y);
 	painter->end();
+	
+	QImage *tmp_ptr = img;
+	img = &tmp_img;
+	repaint();
+	img = tmp_ptr;
 }
