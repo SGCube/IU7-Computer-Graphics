@@ -69,6 +69,21 @@ void MainWindow::lock_disable(bool d)
 	ui->lockButton->setDisabled(d);
 }
 
+void MainWindow::buttons_setDisabled(bool d)
+{
+	ui->addButton->setDisabled(d);
+	ui->lockButton->setDisabled(d);
+	ui->clearButton->setDisabled(d);
+	ui->fillButton->setDisabled(d);
+	ui->xEdit->setDisabled(d);
+	ui->yEdit->setDisabled(d);
+	ui->palBgBtn->setDisabled(d);
+	ui->palEdgeBtn->setDisabled(d);
+	ui->palFillBtn->setDisabled(d);
+	ui->delayCheck->setDisabled(d);
+	ui->delaySpinBox->setDisabled(d);
+}
+
 void MainWindow::on_palEdgeBtn_released()
 {
 	QColor newcolor = QColorDialog::getColor(color_edge, this);
@@ -189,38 +204,17 @@ void MainWindow::on_clearButton_released()
 
 void MainWindow::on_fillButton_released()
 {
+	buttons_setDisabled(true);
 	
-	Point lt_point = lt_corner(*polygon_set);
-	Point rd_point = rd_corner(*polygon_set);
-	int line_x = (rd_point.x() + lt_point.x()) / 2;
+	int line_x = divline_x(*polygon_set);
 	std::vector<Edge> edges = Polygon::set_to_edges(*polygon_set);
-	
-	ui->addButton->setDisabled(true);
-	ui->lockButton->setDisabled(true);
-	ui->clearButton->setDisabled(true);
-	ui->fillButton->setDisabled(true);
-	ui->xEdit->setDisabled(true);
-	ui->yEdit->setDisabled(true);
-	ui->palBgBtn->setDisabled(true);
-	ui->palEdgeBtn->setDisabled(true);
-	ui->palFillBtn->setDisabled(true);
-	ui->delayCheck->setDisabled(true);
-	ui->delaySpinBox->setDisabled(true);
-	
 	int delay = (ui->delayCheck->isChecked()) ? ui->delaySpinBox->value() : 0;
+	QGraphicsScene *scene = ui->gView->scene();
 	
-	fill(img, ColorSet(color_edge, color_fill, color_bg), edges,
-		 ui->gView->scene(), line_x, delay);
+	fill(img, ColorSet(color_edge, color_fill, color_bg), edges, scene,
+		 line_x, delay);
+	painter->draw_polygons(img, *polygon_set);
+	scene->addPixmap(QPixmap::fromImage(*img));
 	
-	ui->addButton->setDisabled(false);
-	ui->lockButton->setDisabled(false);
-	ui->clearButton->setDisabled(false);
-	ui->fillButton->setDisabled(false);
-	ui->xEdit->setDisabled(false);
-	ui->yEdit->setDisabled(false);
-	ui->palBgBtn->setDisabled(false);
-	ui->palEdgeBtn->setDisabled(false);
-	ui->palFillBtn->setDisabled(false);
-	ui->delayCheck->setDisabled(false);
-	ui->delaySpinBox->setDisabled(false);
+	buttons_setDisabled(false);
 }

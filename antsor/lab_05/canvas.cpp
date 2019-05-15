@@ -79,6 +79,8 @@ void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Canvas::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
+	Q_UNUSED(event);
+	
 	if (new_polygon->number_of_vertexes() < 3)
 		return;
 	

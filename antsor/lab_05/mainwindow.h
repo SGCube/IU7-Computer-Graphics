@@ -53,6 +53,8 @@ private:
 	QColor color_edge;
 	QColor color_fill;
 	QColor color_bg;
+	
+	void buttons_setDisabled(bool en);
 };
 
 #endif // MAINWINDOW_H

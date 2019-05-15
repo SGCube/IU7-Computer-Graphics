@@ -2,7 +2,9 @@
 #define PAINTER_H
 
 #include <QPainter>
+#include <vector>
 #include "point.h"
+#include "polygon.h"
 
 class Painter : public QPainter
 {
@@ -21,6 +23,7 @@ public:
 	bool is_edge(QColor color);
 	
 	void draw_line(Point p1, Point p2);
+	void draw_polygons(QImage *img, std::vector<Polygon> &set);
 	
 private:
 	QPen pen;

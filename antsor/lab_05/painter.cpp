@@ -69,7 +69,7 @@ void Painter::draw_line(Point p1, Point p2)
 		return;
 	}
 	double xlen = p2.x() - p1.x(), ylen = p2.y() - p1.y();
-	double len;
+	double len = 0;
 	if (fabs(xlen) > fabs(ylen))
 		len =fabs(xlen);
 	else
@@ -77,10 +77,24 @@ void Painter::draw_line(Point p1, Point p2)
 	double dx = xlen / len, dy = ylen / len;
 	
 	double x = p1.x(), y = p1.y();
-	for (int i = 1; i <= dx + len; i++)
+	for (int i = 1; i <= dx + len + 1; i++)
 	{
 		drawPoint(round(x), round(y));
 		x += dx;
 		y += dy;
 	}
+}
+
+void Painter::draw_polygons(QImage *img, std::vector<Polygon> &set)
+{
+	begin(img);
+	set_edge();
+	for (size_t i = 0; i < set.size(); i++)
+	{
+		int j = 1;
+		for (; j < set[i].number_of_vertexes(); j++)
+			draw_line(set[i][j - 1], set[i][j]);
+		draw_line(set[i][0], set[i][1]);
+	}
+	end();
 }

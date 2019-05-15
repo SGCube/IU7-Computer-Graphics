@@ -18,9 +18,11 @@ struct ColorSet
 	ColorSet(QColor, QColor, QColor);
 };
 
-Point lt_corner(std::vector<Polygon> set);
+Point lt_corner(std::vector<Polygon> &set);
 
-Point rd_corner(std::vector<Polygon> set);
+Point rd_corner(std::vector<Polygon> &set);
+
+int divline_x(std::vector<Polygon> &set);
 
 void fill(QImage *img, ColorSet color_set, std::vector<Edge> edges,
 		  QGraphicsScene *scene, int line_x, int delay = 0);

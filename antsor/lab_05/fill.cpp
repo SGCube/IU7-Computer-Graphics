@@ -1,5 +1,4 @@
 #include <QApplication>
-#include <QThread>
 #include <QTime>
 #include <cmath>
 #include "fill.h"
@@ -12,7 +11,7 @@ ColorSet::ColorSet(QColor cedge, QColor cfill, QColor cbg) :
 	
 }
 
-Point lt_corner(std::vector<Polygon> set)
+Point lt_corner(std::vector<Polygon> &set)
 {
 	if (set.size() == 0 || set[0].number_of_vertexes() == 0)
 		return Point();
@@ -32,7 +31,7 @@ Point lt_corner(std::vector<Polygon> set)
 	return Point(xmin, ymin);
 }
 
-Point rd_corner(std::vector<Polygon> set)
+Point rd_corner(std::vector<Polygon> &set)
 {
 	if (set.size() == 0 || set[0].number_of_vertexes() == 0)
 		return Point();
@@ -52,6 +51,32 @@ Point rd_corner(std::vector<Polygon> set)
 	return Point(xmax, ymax);
 }
 
+int divline_x(std::vector<Polygon> &set)
+{
+	if (set.size() == 0 || set[0].number_of_vertexes() == 0)
+		return -1;
+	
+	Point lt_point = lt_corner(set);
+	Point rd_point = rd_corner(set);
+	
+	int middle_x = (rd_point.x() + lt_point.x()) / 2;
+	int min_dist = middle_x - lt_point.x();
+	int cur_dist = 0;
+	int line_x = -1;
+	
+	for (size_t i = 0; i < set.size(); i++)
+		for (int j = 0; j < set[i].number_of_vertexes(); j++)
+		{
+			cur_dist = abs(set[i][j].x() - middle_x);
+			if (cur_dist < min_dist)
+			{
+				min_dist = cur_dist;
+				line_x = set[i][j].x();
+			}
+		}
+	return line_x;
+}
+
 void fill(QImage *img, ColorSet color_set, std::vector<Edge> edges,
 		  QGraphicsScene *scene, int line_x, int delay)
 {
@@ -62,6 +87,7 @@ void fill(QImage *img, ColorSet color_set, std::vector<Edge> edges,
 	QColor draw_color = color_set.color_edge;
 	
 	for (size_t i = 0; i < edges.size(); i++)
+	{
 		if (!edges[i].is_horizontal())
 		{
 			int top_y = edges[i].p1()->y();
@@ -91,23 +117,23 @@ void fill(QImage *img, ColorSet color_set, std::vector<Edge> edges,
 				for (int x = round(start_x); x < end_x; x++)
 				{
 					pixel_color = img->pixelColor(x, y);
-					draw_color = color_set.color_edge;
 					if (pixel_color == color_set.color_fill)
 						draw_color = color_set.color_bg;
-					else if (pixel_color == color_set.color_bg)
+					else
 						draw_color = color_set.color_fill;
 					img->setPixelColor(x, y, draw_color);
 				}
 				
 				if (delay > 0)
 				{
+					scene->addPixmap(QPixmap::fromImage(*img));
 					QTime dieTime = QTime::currentTime().addMSecs(delay);
 					while(QTime::currentTime() < dieTime)
-						QCoreApplication::processEvents();
-					scene->addPixmap(QPixmap::fromImage(*img));
+						QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 				}
 			}
 		}
+	}
 	
 	if (delay == 0)
 		scene->addPixmap(QPixmap::fromImage(*img));
