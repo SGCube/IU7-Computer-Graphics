@@ -184,10 +184,6 @@ void MainWindow::on_fill_clicked()
     set_color(&fill_color, f);
     QGraphicsScene *scene = ui->graphics->scene();
     filling(img, scene, polygons_kit, border_color, fill_color, bg_color);
-    /*
-    for (int i = 0; i < polygons_kit.value(0).size(); i++)
-        put_line(polygons_kit.value(0).x());
-        */
 }
 
 void MainWindow::on_col_b_currentIndexChanged(int index)
