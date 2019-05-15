@@ -27,6 +27,7 @@ signals:
 	void addPoint(Point p);
 	void lockPolygon();
 	void curCoord(Point p);
+	void setSpan(Point p);
 	
 protected:
 	virtual void paintEvent(QPaintEvent *event);

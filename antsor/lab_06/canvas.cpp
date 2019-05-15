@@ -71,6 +71,15 @@ void Canvas::set_parline(bool s)
 
 void Canvas::mousePressEvent(QMouseEvent *event)
 {
+	int x = event->pos().x();
+	int y = event->pos().y();
+	
+	if (event->button() == Qt::MiddleButton)
+	{
+		emit setSpan(Point(x, y));
+		return;
+	}
+	
 	if (event->button() == Qt::RightButton)
 	{
 		if (new_polygon->number_of_vertexes() > 2)
@@ -81,8 +90,6 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 		return;
 	}
 	
-	int x = event->pos().x();
-	int y = event->pos().y();
 	int new_x = x, new_y = y;
 	
 	if (parLine && new_polygon->number_of_vertexes() > 0)

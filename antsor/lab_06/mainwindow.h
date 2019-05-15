@@ -26,6 +26,7 @@ public slots:
 	void add_point(Point p);
 	void lock_polygon();
 	void cur_coord(Point p);
+	void set_span(Point p);
 	
 protected:
 	virtual void keyPressEvent(QKeyEvent *event);

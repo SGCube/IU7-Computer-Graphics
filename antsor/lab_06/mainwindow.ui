@@ -256,7 +256,7 @@
      <rect>
       <x>10</x>
       <y>660</y>
-      <width>641</width>
+      <width>761</width>
       <height>41</height>
      </rect>
     </property>
@@ -266,8 +266,8 @@
      </font>
     </property>
     <property name="text">
-     <string>Для рисования границ, параллельных границам окна, необходимо зажать клавишу
-Shift. Для замыкания - правая кнопка мыши.</string>
+     <string>Для рисования границ, параллельных границам окна, необходимо зажать клавишу Shift.
+Для замыкания - правая кнопка мыши. Средняя кнопка мыши - выставление затравочного пикселя.</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -626,9 +626,9 @@ Shift. Для замыкания - правая кнопка мыши.</string>
    <widget class="QLabel" name="hint_2">
     <property name="geometry">
      <rect>
-      <x>660</x>
+      <x>780</x>
       <y>660</y>
-      <width>341</width>
+      <width>231</width>
       <height>41</height>
      </rect>
     </property>

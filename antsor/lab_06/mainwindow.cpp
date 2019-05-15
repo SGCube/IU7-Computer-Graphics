@@ -26,6 +26,7 @@ MainWindow::MainWindow(QImage *image, std::vector<Polygon> *polygons,
 	connect(ui->canvas, SIGNAL(addPoint(Point)), this, SLOT(add_point(Point)));
 	connect(ui->canvas, SIGNAL(curCoord(Point)), this, SLOT(cur_coord(Point)));
 	connect(ui->canvas, SIGNAL(lockPolygon()), this, SLOT(lock_polygon()));
+	connect(ui->canvas, SIGNAL(setSpan(Point)), this, SLOT(set_span(Point)));
 	
 	QPixmap pxm(ui->colorEdge->rect().size());
 	pxm.fill(color_edge);
@@ -53,6 +54,12 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Shift)
 		ui->canvas->set_parline(false);
+}
+
+void MainWindow::set_span(Point p)
+{
+	ui->xsEdit->setValue(p.x());
+	ui->ysEdit->setValue(p.y());
 }
 
 void MainWindow::cur_coord(Point p)
@@ -180,7 +187,10 @@ void MainWindow::on_fillButton_released()
 {
 	buttons_setDisabled(true);
 	
-	Point span(ui->xsEdit->value(), ui->ysEdit->value());
+	int xs = ui->xsEdit->value();
+	int ys = ui->ysEdit->value();
+	
+	Point span(xs, ys);
 	fill(img, ColorSet(color_edge, color_fill, color_bg),
 		 ui->canvas, span, ui->delaySpinBox->value());
 	
