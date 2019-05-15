@@ -1,6 +1,7 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "check.h"
+#include "fill.h"
 #include <QGraphicsScene>
 #include <QColorDialog>
 #include <QColor>
@@ -8,6 +9,7 @@
 #include <QMessageBox>
 #include <QString>
 #include <QPainter>
+#include "math.h"
 
 MainWindow::MainWindow(QImage *image, QVector<QVector<QPoint>> *polygons, QVector<QPoint> *pol,
                        Paint *p, QWidget *parent) :
@@ -91,7 +93,8 @@ void MainWindow::on_add_point_clicked()
     {
         int index = polygon->size() - 2;
         QPoint last = polygon->value(index);
-        paint->drawLine(last.x(), last.y(), x, y);
+        paint->put_line(last.x(), last.y(), x, y);
+        //paint->drawLine(last.x(), last.y(), x, y);
     }
     QGraphicsScene *scene = ui->graphics->scene();
     scene->addPixmap(QPixmap::fromImage(*img));
@@ -146,7 +149,8 @@ void MainWindow::on_lock_clicked()
     paint->set_pen();
     int index = polygon->size() - 1;
     QPoint last = polygon->value(index);
-    paint->drawLine(last.x(), last.y(), x, y);
+    paint->put_line(last.x(), last.y(), x, y);
+    //paint->drawLine(last.x(), last.y(), x, y);
 
     QGraphicsScene *scene = ui->graphics->scene();
     scene->addPixmap(QPixmap::fromImage(*img));
@@ -173,48 +177,17 @@ void MainWindow::on_fill_clicked()
     }
     int f = ui->col_f->currentIndex();
     int b = ui->col_b->currentIndex();
-    QVector<QPoint> first = polygons_kit->value(0);
-    int xmin = first.value(0).x();
-    int xmax = first.value(0).x();
-    int ymin = first.value(0).y();
-    int ymax = first.value(0).y();
-    for (int i = 1; i < first.size(); i++)
-    {
-        if (first.value(i).x() < xmin)
-            xmin = first.value(i).x();
-        if (first.value(i).x() > xmax)
-            xmax = first.value(i).x();
-        if (first.value(i).y() < ymin)
-            ymin = first.value(i).y();
-        if (first.value(i).y() > ymax)
-            ymax = first.value(i).y();
-    }
-    QColor border;
-    QColor fill;
-    QColor ground = Qt::white;
-    set_color(&border, b);
-    set_color(&fill, f);
-
-    bool flag = false;
-    for (int y = ymax; y >= ymin; y--)
-    {
-        for (int x = xmin; x <= xmax; x++)
-        {
-            if (img->pixelColor(x, y) == border)
-            {
-                if (flag == false)
-                    flag = true;
-                else
-                    flag = false;
-            }
-            if (flag == true)
-                img->setPixelColor(x, y, fill);
-            else
-                img->setPixelColor(x, y, ground);
-        }
-    }
+    QColor border_color;
+    QColor fill_color;
+    QColor bg_color = Qt::white;
+    set_color(&border_color, b);
+    set_color(&fill_color, f);
     QGraphicsScene *scene = ui->graphics->scene();
-    scene->addPixmap(QPixmap::fromImage(*img));
+    filling(img, scene, polygons_kit, border_color, fill_color, bg_color);
+    /*
+    for (int i = 0; i < polygons_kit.value(0).size(); i++)
+        put_line(polygons_kit.value(0).x());
+        */
 }
 
 void MainWindow::on_col_b_currentIndexChanged(int index)

@@ -29,13 +29,15 @@ SOURCES += \
         mainwindow.cpp \
     check.cpp \
     draw_ar.cpp \
-    paint.cpp
+    paint.cpp \
+    fill.cpp
 
 HEADERS += \
         mainwindow.h \
     check.h \
     draw_ar.h \
-    paint.h
+    paint.h \
+    fill.h
 
 FORMS += \
         mainwindow.ui
