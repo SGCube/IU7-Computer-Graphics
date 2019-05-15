@@ -94,7 +94,6 @@ void MainWindow::on_add_point_clicked()
         int index = polygon->size() - 2;
         QPoint last = polygon->value(index);
         paint->put_line(last.x(), last.y(), x, y);
-        //paint->drawLine(last.x(), last.y(), x, y);
     }
     QGraphicsScene *scene = ui->graphics->scene();
     scene->addPixmap(QPixmap::fromImage(*img));
@@ -183,7 +182,9 @@ void MainWindow::on_fill_clicked()
     set_color(&border_color, b);
     set_color(&fill_color, f);
     QGraphicsScene *scene = ui->graphics->scene();
-    filling(img, scene, polygons_kit, border_color, fill_color, bg_color);
+    bool delay = ui->delay->isChecked();
+    border_handling(img, scene, polygons_kit, border_color);
+    filling(img, scene, polygons_kit, border_color, fill_color, bg_color, delay);
 }
 
 void MainWindow::on_col_b_currentIndexChanged(int index)
