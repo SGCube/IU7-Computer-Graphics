@@ -233,7 +233,7 @@
     <property name="geometry">
      <rect>
       <x>830</x>
-      <y>620</y>
+      <y>500</y>
       <width>184</width>
       <height>32</height>
      </rect>
@@ -247,37 +247,12 @@
      <string>Закрасить</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="delayCheck">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>570</y>
-      <width>111</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="layoutDirection">
-     <enum>Qt::LeftToRight</enum>
-    </property>
-    <property name="text">
-     <string>Закрасить
-с задержкой</string>
-    </property>
-    <property name="tristate">
-     <bool>false</bool>
-    </property>
-   </widget>
    <widget class="QSpinBox" name="delaySpinBox">
     <property name="geometry">
      <rect>
-      <x>950</x>
-      <y>580</y>
-      <width>71</width>
+      <x>932</x>
+      <y>469</y>
+      <width>51</width>
       <height>24</height>
      </rect>
     </property>
@@ -285,6 +260,12 @@
      <font>
       <pointsize>11</pointsize>
      </font>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+    <property name="value">
+     <number>10</number>
     </property>
    </widget>
    <widget class="QLabel" name="hint">
@@ -303,7 +284,7 @@
     </property>
     <property name="text">
      <string>Для рисования границ, параллельных границам окна, необходимо зажать клавишу
-Shift.</string>
+Shift. Для замыкания на холсте нажать правую кнопку мыши.</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -413,7 +394,7 @@ Shift.</string>
       <x>660</x>
       <y>80</y>
       <width>160</width>
-      <height>570</height>
+      <height>571</height>
      </rect>
     </property>
     <property name="font">
@@ -465,9 +446,9 @@ Shift.</string>
    <widget class="QPushButton" name="clearButton">
     <property name="geometry">
      <rect>
-      <x>660</x>
-      <y>660</y>
-      <width>354</width>
+      <x>830</x>
+      <y>540</y>
+      <width>184</width>
       <height>32</height>
      </rect>
     </property>
@@ -478,6 +459,64 @@ Shift.</string>
     </property>
     <property name="text">
      <string>Очистить</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>840</x>
+      <y>470</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Задержка: </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>990</x>
+      <y>470</y>
+      <width>31</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>мс</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="hint_2">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>660</y>
+      <width>641</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Размер холста: 640x640
+Система координат - экранная</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
   </widget>

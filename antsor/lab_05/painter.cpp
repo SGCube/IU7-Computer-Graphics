@@ -94,7 +94,7 @@ void Painter::draw_polygons(QImage *img, std::vector<Polygon> &set)
 		int j = 1;
 		for (; j < set[i].number_of_vertexes(); j++)
 			draw_line(set[i][j - 1], set[i][j]);
-		draw_line(set[i][0], set[i][1]);
+		draw_line(set[i][j - 1], set[i][0]);
 	}
 	end();
 }

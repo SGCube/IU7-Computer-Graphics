@@ -80,7 +80,6 @@ void MainWindow::buttons_setDisabled(bool d)
 	ui->palBgBtn->setDisabled(d);
 	ui->palEdgeBtn->setDisabled(d);
 	ui->palFillBtn->setDisabled(d);
-	ui->delayCheck->setDisabled(d);
 	ui->delaySpinBox->setDisabled(d);
 }
 
@@ -178,6 +177,7 @@ void MainWindow::on_lockButton_released()
 	painter->drawLine(plast.x(), plast.y(), pfirst.x(), pfirst.y());
 	
 	QGraphicsScene *scene = ui->gView->scene();
+	scene->clear();
 	scene->addPixmap(QPixmap::fromImage(*img));
 	
 	painter->end();
@@ -208,12 +208,13 @@ void MainWindow::on_fillButton_released()
 	
 	int line_x = divline_x(*polygon_set);
 	std::vector<Edge> edges = Polygon::set_to_edges(*polygon_set);
-	int delay = (ui->delayCheck->isChecked()) ? ui->delaySpinBox->value() : 0;
+	int delay = ui->delaySpinBox->value();
 	QGraphicsScene *scene = ui->gView->scene();
 	
 	fill(img, ColorSet(color_edge, color_fill, color_bg), edges, scene,
 		 line_x, delay);
 	painter->draw_polygons(img, *polygon_set);
+	scene->clear();
 	scene->addPixmap(QPixmap::fromImage(*img));
 	
 	buttons_setDisabled(false);

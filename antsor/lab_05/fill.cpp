@@ -1,5 +1,7 @@
 #include <QApplication>
 #include <QTime>
+#include <QDebug>
+
 #include <cmath>
 #include "fill.h"
 
@@ -126,10 +128,12 @@ void fill(QImage *img, ColorSet color_set, std::vector<Edge> edges,
 				
 				if (delay > 0)
 				{
+					scene->clear();
 					scene->addPixmap(QPixmap::fromImage(*img));
 					QTime dieTime = QTime::currentTime().addMSecs(delay);
 					while(QTime::currentTime() < dieTime)
-						QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+						QCoreApplication::processEvents(QEventLoop::AllEvents,
+														delay);
 				}
 			}
 		}
