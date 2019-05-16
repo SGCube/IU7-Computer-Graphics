@@ -2,6 +2,23 @@
 #include <QTime>
 #include <QApplication>
 #include <QDebug>
+#include <math.h>
+
+bool isPeak(QVector<QPoint> *polygon, int j)
+{
+	
+	int kl = (j - 1) % polygon->size();
+	if (kl < 0)
+		kl = polygon->size() - 1;
+	int kr = (j + 1) % polygon->size();
+	if (polygon->value(j).y() > polygon->value(kl).y() &&
+			polygon->value(j).y() > polygon->value(kr).y())
+		return true;
+	if (polygon->value(j).y() < polygon->value(kl).y() &&
+			polygon->value(j).y() < polygon->value(kr).y())
+		return true;
+	return false;
+}
 
 QPoint pointLeftTop(QVector <QVector<QPoint>> *polygons_kit)
 {
@@ -74,11 +91,14 @@ void border_handling(QImage *img, QGraphicsScene *scene, QVector <QVector<QPoint
 			
 			for (int y = pTop.y(); y < pBottom.y(); y++, x += dx)
 			{
-				img->setPixelColor(x, y, border_color);
+				int xx = round(x);
+				if (img->pixelColor(xx, y) == border_color)
+					img->setPixelColor(xx + 1, y, border_color);
+				else
+					img->setPixelColor(xx, y, border_color);
 			}
 		}
 	}
-
     scene->addPixmap(QPixmap::fromImage(*img));
 }
 
