@@ -90,11 +90,11 @@ void fill(QImage *img, ColorSet color_set, Canvas *canvas, Point span,
 		}
 		int xright = x - 1;
 		
-		// поиск затравки на строке выше
-		search_span(img, color_set, &stack, xleft, xright, y - 1);
-
 		// поиск затравки на строке ниже
 		search_span(img, color_set, &stack, xleft, xright, y + 1);
+
+		// поиск затравки на строке выше
+		search_span(img, color_set, &stack, xleft, xright, y - 1);
 
 		if (delay > 0)
 		{
