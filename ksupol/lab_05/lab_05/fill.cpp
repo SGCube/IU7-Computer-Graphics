@@ -2,53 +2,117 @@
 #include <QTime>
 #include <QApplication>
 #include <QDebug>
+#include <math.h>
+
+bool isPeak(QVector<QPoint> *polygon, int j)
+{
+	
+	int kl = (j - 1) % polygon->size();
+	if (kl < 0)
+		kl = polygon->size() - 1;
+	int kr = (j + 1) % polygon->size();
+	if (polygon->value(j).y() > polygon->value(kl).y() &&
+			polygon->value(j).y() > polygon->value(kr).y())
+		return true;
+	if (polygon->value(j).y() < polygon->value(kl).y() &&
+			polygon->value(j).y() < polygon->value(kr).y())
+		return true;
+	return false;
+}
+
+QPoint pointLeftTop(QVector <QVector<QPoint>> *polygons_kit)
+{
+	if (polygons_kit->size() == 0 && polygons_kit->value(0).size() == 0)
+		return QPoint(0, 0);
+	
+	int xmin = polygons_kit->value(0).value(0).x();
+	int ymin = polygons_kit->value(0).value(0).y();
+	for (int i = 0; i < polygons_kit->size(); i++)
+	{
+		QVector<QPoint> points = polygons_kit->value(i);
+		for (int j = 0; j < points.size(); j++)
+		{
+			for (int i = 1; i < points.size(); i++)
+			{
+				if (points.value(j).x() < xmin)
+					xmin = points.value(j).x();
+				if (points.value(j).y() < ymin)
+					ymin = points.value(j).y();
+			}
+		}
+	}
+	return QPoint(xmin, ymin);
+}
+
+QPoint pointRightBottom(QVector <QVector<QPoint>> *polygons_kit)
+{
+	if (polygons_kit->size() == 0 && polygons_kit->value(0).size() == 0)
+		return QPoint(0, 0);
+	
+	int xmax = polygons_kit->value(0).value(0).x();
+	int ymax = polygons_kit->value(0).value(0).y();
+	for (int i = 0; i < polygons_kit->size(); i++)
+	{
+		QVector<QPoint> points = polygons_kit->value(i);
+		for (int j = 0; j < points.size(); j++)
+		{
+			for (int i = 1; i < points.size(); i++)
+			{
+				if (points.value(j).x() > xmax)
+					xmax = points.value(j).x();
+				if (points.value(j).y() > ymax)
+					ymax = points.value(j).y();
+			}
+		}
+	}
+	return QPoint(xmax, ymax);
+}
+
 
 void border_handling(QImage *img, QGraphicsScene *scene, QVector <QVector<QPoint>> *polygons_kit,
                      QColor border_color)
 {
-    for (int i = 0; i < polygons_kit->size(); i++)
-    {
-        QVector<QPoint> point = polygons_kit->value(i);
-        for (int j = 1; j < point.size() - 1; j++)
-        {
-            if (point.value(j).y() < point.value(j-1).y() &&
-                    point.value(j).y() < point.value(j+1).y())
-                img->setPixelColor(point.value(j).x() + 1, point.value(j).y(), border_color);
-            if (point.value(j).y() > point.value(j-1).y() &&
-                    point.value(j).y() > point.value(j+1).y())
-                img->setPixelColor(point.value(j).x() + 1, point.value(j).y(), border_color);
-            if (point.value(j).y() == point.value(j-1).y())
-            {
-                int len = qAbs(point.value(j-1).x() - point.value(j).x());
-                if (len % 2 != 0)
-                    img->setPixelColor(point.value(j).x() + 1, point.value(j).y(), border_color);
-            }
-        }
-    }
+	img->fill(Qt::white);
+	for (int i = 0; i < polygons_kit->size(); i++)
+	{
+		QVector<QPoint> polygon = polygons_kit->value(i);
+		for (int j = 1; j < polygon.size() + 1; j++)
+		{
+			QPoint pTop = polygon.value(j % polygon.size());
+			QPoint pBottom = polygon.value(j - 1);
+			if (pBottom.y() < pTop.y())
+			{
+				pTop = polygon.value(j - 1);
+				pBottom = polygon.value(j % polygon.size());
+			}
+			
+			double x = pTop.x();
+			double dx = (double)(pTop.x() - pBottom.x())/(pTop.y() - pBottom.y());
+			
+			for (int y = pTop.y(); y < pBottom.y(); y++, x += dx)
+			{
+				int xx = round(x);
+				if (img->pixelColor(xx, y) == border_color)
+					img->setPixelColor(xx + 1, y, border_color);
+				else
+					img->setPixelColor(xx, y, border_color);
+			}
+		}
+	}
     scene->addPixmap(QPixmap::fromImage(*img));
 }
 
 void filling(QImage *img, QGraphicsScene *scene, QVector <QVector<QPoint>> *polygons_kit,
              QColor border_color, QColor fill_color, QColor bg_color, bool delay)
 {
-    QVector<QPoint> first = polygons_kit->value(0);
-    int xmin = first.value(0).x();
-    int xmax = first.value(0).x();
-    int ymin = first.value(0).y();
-    int ymax = first.value(0).y();
-    for (int i = 1; i < first.size(); i++)
-    {
-        if (first.value(i).x() < xmin)
-            xmin = first.value(i).x();
-        if (first.value(i).x() > xmax)
-            xmax = first.value(i).x();
-        if (first.value(i).y() < ymin)
-            ymin = first.value(i).y();
-        if (first.value(i).y() > ymax)
-            ymax = first.value(i).y();
-    }
+	QPoint ltPoint = pointLeftTop(polygons_kit);
+	QPoint rbPoint = pointRightBottom(polygons_kit);
+	
+	int ymax = rbPoint.y(), ymin = ltPoint.y();
+	int xmax = rbPoint.x(), xmin = ltPoint.x();
+	
     bool flag = false;
-    for (int y = ymax; y >= ymin; y--)
+    for (int y = ymin; y <= ymax; y++)
     {
         flag = false;
         for (int x = xmin; x <= xmax; x++)

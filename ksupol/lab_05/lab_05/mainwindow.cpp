@@ -185,6 +185,7 @@ void MainWindow::on_fill_clicked()
     bool delay = ui->delay->isChecked();
     border_handling(img, scene, polygons_kit, border_color);
     filling(img, scene, polygons_kit, border_color, fill_color, bg_color, delay);
+	paint->drawPolygons(img, scene, polygons_kit, border_color);
 }
 
 void MainWindow::on_col_b_currentIndexChanged(int index)
