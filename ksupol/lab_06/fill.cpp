@@ -5,9 +5,9 @@
 void find_new_pixel(QImage *img, QGraphicsScene *scene, QColor border_color,
                     QColor fill_color, QColor bg_color, QVector <QPoint> *stack, int y, int x_right, int x_left)
 {
-    bool f;
+    bool f = false;
     int x = x_left;
-    int xn = x;
+    int xn;
     while (x <= x_right)
     {
         f = false;
@@ -39,7 +39,7 @@ void find_new_pixel(QImage *img, QGraphicsScene *scene, QColor border_color,
 }
 
 void filling(QImage *img, QGraphicsScene *scene,
-             QColor border_color, QColor fill_color, QColor bg_color, int x, int y)
+             QColor border_color, QColor fill_color, QColor bg_color, int x, int y, bool delay)
 {
     QVector <QPoint> stack;
     stack.push_back(QPoint(x, y));

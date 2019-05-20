@@ -286,7 +286,7 @@ p, li { white-space: pre-wrap; }
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBox">
+      <widget class="QCheckBox" name="delay">
        <property name="font">
         <font>
          <pointsize>10</pointsize>

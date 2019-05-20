@@ -181,9 +181,10 @@ void MainWindow::on_fill_clicked()
     set_color(&border_color, b);
     set_color(&fill_color, f);
     QGraphicsScene *scene = ui->graphics->scene();
+    bool delay = ui->delay->isChecked();
     int x = 100;
     int y = 100;
-    filling(img, scene, border_color, fill_color, bg_color, x, y);
+    filling(img, scene, border_color, fill_color, bg_color, x, y, delay);
 }
 
 void MainWindow::on_col_b_currentIndexChanged(int index)

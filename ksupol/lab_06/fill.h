@@ -11,7 +11,7 @@
 
 
 void filling(QImage *img, QGraphicsScene *scene,
-             QColor border_color, QColor fill_color, QColor bg_color, int x, int y);
+             QColor border_color, QColor fill_color, QColor bg_color, int x, int y, bool delay);
 
 void find_new_pixel(QImage *img, QGraphicsScene *scene, QColor border_color,
                     QColor fill_color, QColor bg_color, int x, int y, int x_right, int x_left);
