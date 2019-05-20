@@ -1,4 +1,6 @@
 ﻿#include "fill.h"
+#include <QTime>
+#include <QApplication>
 
 void find_new_pixel(QImage *img, QGraphicsScene *scene, QColor border_color,
                     QColor fill_color, QColor bg_color, QVector <QPoint> *stack, int y, int x_right, int x_left)
@@ -68,6 +70,15 @@ void filling(QImage *img, QGraphicsScene *scene,
                        bg_color, &stack, y + 1, x_right, x_left);
         find_new_pixel(img, scene, border_color, fill_color,
                        bg_color, &stack, y - 1, x_right, x_left);
+        if (delay)
+        {
+            scene->clear();
+            scene->addPixmap(QPixmap::fromImage(*img));
+            QTime dieTime = QTime::currentTime().addMSecs(delay);
+            while(QTime::currentTime() < dieTime)
+                QCoreApplication::processEvents(QEventLoop::AllEvents,
+                                                delay);
+        }
     }
     scene->addPixmap(QPixmap::fromImage(*img));
 }
