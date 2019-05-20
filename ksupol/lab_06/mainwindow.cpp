@@ -94,7 +94,6 @@ void MainWindow::on_add_point_clicked()
         int index = polygon->size() - 2;
         QPoint last = polygon->value(index);
         paint->put_line(last.x(), last.y(), x, y);
-        //paint->drawLine(last.x(), last.y(), x, y);
     }
     QGraphicsScene *scene = ui->graphics->scene();
     scene->addPixmap(QPixmap::fromImage(*img));
@@ -150,7 +149,6 @@ void MainWindow::on_lock_clicked()
     int index = polygon->size() - 1;
     QPoint last = polygon->value(index);
     paint->put_line(last.x(), last.y(), x, y);
-    //paint->drawLine(last.x(), last.y(), x, y);
 
     QGraphicsScene *scene = ui->graphics->scene();
     scene->addPixmap(QPixmap::fromImage(*img));
@@ -183,10 +181,19 @@ void MainWindow::on_fill_clicked()
     set_color(&border_color, b);
     set_color(&fill_color, f);
     QGraphicsScene *scene = ui->graphics->scene();
-    //filling(img, scene, polygons_kit, border_color, fill_color, bg_color);
+    int x = 100;
+    int y = 100;
+    filling(img, scene, border_color, fill_color, bg_color, x, y);
 }
 
 void MainWindow::on_col_b_currentIndexChanged(int index)
 {
     paint->color(index);
+}
+
+void MainWindow::insert_pixel(int xx, int yy)
+{
+    x = xx;
+    y = yy;
+    ui->pixel->setPlainText("("+QString::number(xx)+";"+QString::number(yy)+")");
 }

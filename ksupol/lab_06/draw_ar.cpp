@@ -27,7 +27,14 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::RightButton)
     {
-        if (polygon->size() < 3)
+        if (polygon->size() == 0 && polygons_kit->size() != 0)
+        {
+            int x = event->scenePos().x();
+            int y = event->scenePos().y();
+            window->insert_pixel(x, y);
+            return;
+        }
+        if (polygon->size() < 3 && polygons_kit->size() == 0)
             return;
         int x = polygon->value(0).x();
         int y = polygon->value(0).y();

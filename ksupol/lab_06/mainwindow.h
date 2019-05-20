@@ -28,6 +28,7 @@ public:
 
     void add_scene(QGraphicsScene *scene);
     void insert_into_table(QString x, QString y);
+    void insert_pixel(int xx, int yy);
 
 private slots:
     void on_add_point_clicked();
@@ -48,5 +49,6 @@ private:
 
     QVector<QPoint> *polygon;
     QVector<QVector<QPoint>> *polygons_kit;
+    int x = 0, y = 0;
 };
 #endif // MAINWINDOW_H
