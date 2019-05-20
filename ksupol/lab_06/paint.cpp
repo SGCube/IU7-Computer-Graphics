@@ -38,8 +38,3 @@ void Paint::put_line(int sX, int sY, int eX, int eY)
         y += sy;
     }
 }
-
-void put_point(int x, int y)
-{
-
-}

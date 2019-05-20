@@ -5,7 +5,7 @@
 void find_new_pixel(QImage *img, QGraphicsScene *scene, QColor border_color,
                     QColor fill_color, QColor bg_color, QVector <QPoint> *stack, int y, int x_right, int x_left)
 {
-    bool f = false;
+    bool f;
     int x = x_left;
     int xn;
     while (x <= x_right)
@@ -80,5 +80,4 @@ void filling(QImage *img, QGraphicsScene *scene,
                                                 delay);
         }
     }
-    scene->addPixmap(QPixmap::fromImage(*img));
 }
