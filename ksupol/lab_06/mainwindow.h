@@ -49,6 +49,5 @@ private:
 
     QVector<QPoint> *polygon;
     QVector<QVector<QPoint>> *polygons_kit;
-    int x = 0, y = 0;
 };
 #endif // MAINWINDOW_H

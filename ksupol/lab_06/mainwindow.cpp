@@ -182,8 +182,8 @@ void MainWindow::on_fill_clicked()
     set_color(&fill_color, f);
     QGraphicsScene *scene = ui->graphics->scene();
     bool delay = ui->delay->isChecked();
-    int x = 100;
-    int y = 100;
+    int x = ui->xx->text().toInt();
+    int y = ui->yy->text().toInt();
     filling(img, scene, border_color, fill_color, bg_color, x, y, delay);
 }
 
@@ -194,7 +194,6 @@ void MainWindow::on_col_b_currentIndexChanged(int index)
 
 void MainWindow::insert_pixel(int xx, int yy)
 {
-    x = xx;
-    y = yy;
-    ui->pixel->setPlainText("("+QString::number(xx)+";"+QString::number(yy)+")");
+    ui->xx->setText(QString::number(xx));
+    ui->yy->setText(QString::number(yy));
 }

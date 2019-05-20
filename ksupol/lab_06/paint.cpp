@@ -31,7 +31,7 @@ void Paint::put_line(int sX, int sY, int eX, int eY)
     float sy = dy/l;
     float x = sX;
     float y = sY;
-    for (int i = 1; i <= l + sx; i++)
+    for (int i = 1; i <= l + 1; i++)
     {
         drawPoint(QPoint(round(x), round(y)));
         x += sx;

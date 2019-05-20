@@ -80,4 +80,5 @@ void filling(QImage *img, QGraphicsScene *scene,
                                                 delay);
         }
     }
+    scene->addPixmap(QPixmap::fromImage(*img));
 }
