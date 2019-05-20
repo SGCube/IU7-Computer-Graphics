@@ -45,9 +45,8 @@ void search_span(QImage *img, ColorSet color_set, std::vector<Point> *stack,
 		}
 
 		xtmp = x;
-		while ((img->pixelColor(x, y) == color_set.color_edge ||
-			   img->pixelColor(x, y) == color_set.color_fill) && 
-			   x < xright)
+		while (x < xright && (img->pixelColor(x, y) == color_set.color_edge ||
+			   img->pixelColor(x, y) == color_set.color_fill))
 			x++;
 		
 		if (x == xtmp)
@@ -76,8 +75,7 @@ void fill(QImage *img, ColorSet color_set, Canvas *canvas, Point span,
 		
 		// заполнение слева от затравки
 		x--;
-		while (img->pixelColor(x, y) != color_set.color_edge &&
-			   x >= 0)
+		while (x >= 0 && img->pixelColor(x, y) != color_set.color_edge)
 		{
 			img->setPixelColor(x, y, color_set.color_fill);
 			x--;
@@ -87,8 +85,7 @@ void fill(QImage *img, ColorSet color_set, Canvas *canvas, Point span,
 		// заполнение справа от затравки
 		x = xtmp;
 		x++;
-		while (img->pixelColor(x, y) != color_set.color_edge &&
-			   x < img->width())
+		while (x < img->width() && img->pixelColor(x, y) != color_set.color_edge)
 		{
 			img->setPixelColor(x, y, color_set.color_fill);
 			x++;
