@@ -4,22 +4,6 @@
 #include <QDebug>
 #include <math.h>
 
-bool isPeak(QVector<QPoint> *polygon, int j)
-{
-	
-	int kl = (j - 1) % polygon->size();
-	if (kl < 0)
-		kl = polygon->size() - 1;
-	int kr = (j + 1) % polygon->size();
-	if (polygon->value(j).y() > polygon->value(kl).y() &&
-			polygon->value(j).y() > polygon->value(kr).y())
-		return true;
-	if (polygon->value(j).y() < polygon->value(kl).y() &&
-			polygon->value(j).y() < polygon->value(kr).y())
-		return true;
-	return false;
-}
-
 QPoint pointLeftTop(QVector <QVector<QPoint>> *polygons_kit)
 {
 	if (polygons_kit->size() == 0 && polygons_kit->value(0).size() == 0)
