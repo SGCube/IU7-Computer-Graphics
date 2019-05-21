@@ -173,18 +173,22 @@ void MainWindow::on_fill_clicked()
         QMessageBox::critical(this, "Ошибка", "Необходимо замкнуть фигуру!");
         return;
     }
+    if (ui->xx->text() == NULL || ui->yy->text() == NULL)
+    {
+        QMessageBox::critical(this, "Ошибка", "Необходимо ввести затравочный пиксель!");
+        return;
+    }
     int f = ui->col_f->currentIndex();
     int b = ui->col_b->currentIndex();
     QColor border_color;
     QColor fill_color;
-    QColor bg_color = Qt::white;
     set_color(&border_color, b);
     set_color(&fill_color, f);
     QGraphicsScene *scene = ui->graphics->scene();
     bool delay = ui->delay->isChecked();
     int x = ui->xx->text().toInt();
     int y = ui->yy->text().toInt();
-    filling(img, scene, border_color, fill_color, bg_color, x, y, delay);
+    filling(img, scene, border_color, fill_color, x, y, delay);
 }
 
 void MainWindow::on_col_b_currentIndexChanged(int index)

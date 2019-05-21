@@ -2,8 +2,8 @@
 #include <QTime>
 #include <QApplication>
 
-void find_new_pixel(QImage *img, QGraphicsScene *scene, QColor border_color,
-                    QColor fill_color, QColor bg_color, QVector <QPoint> *stack, int y, int x_right, int x_left)
+void find_new_pixel(QImage *img, QColor border_color,
+                    QColor fill_color, QVector <QPoint> *stack, int y, int x_right, int x_left)
 {
     bool f;
     int x = x_left;
@@ -39,7 +39,7 @@ void find_new_pixel(QImage *img, QGraphicsScene *scene, QColor border_color,
 }
 
 void filling(QImage *img, QGraphicsScene *scene,
-             QColor border_color, QColor fill_color, QColor bg_color, int x, int y, bool delay)
+             QColor border_color, QColor fill_color, int x, int y, bool delay)
 {
     QVector <QPoint> stack;
     stack.push_back(QPoint(x, y));
@@ -66,18 +66,17 @@ void filling(QImage *img, QGraphicsScene *scene,
             x--;
         }
         int x_left = x + 1;
-        find_new_pixel(img, scene, border_color, fill_color,
-                       bg_color, &stack, y + 1, x_right, x_left);
-        find_new_pixel(img, scene, border_color, fill_color,
-                       bg_color, &stack, y - 1, x_right, x_left);
+        find_new_pixel(img, border_color, fill_color, &stack, y + 1, x_right, x_left);
+        find_new_pixel(img, border_color, fill_color, &stack, y - 1, x_right, x_left);
         if (delay)
         {
+            int del = 10;
             scene->clear();
             scene->addPixmap(QPixmap::fromImage(*img));
-            QTime dieTime = QTime::currentTime().addMSecs(delay);
+            QTime dieTime = QTime::currentTime().addMSecs(del);
             while(QTime::currentTime() < dieTime)
                 QCoreApplication::processEvents(QEventLoop::AllEvents,
-                                                delay);
+                                                del);
         }
     }
     scene->addPixmap(QPixmap::fromImage(*img));
