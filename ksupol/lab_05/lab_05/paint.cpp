@@ -39,26 +39,3 @@ void Paint::put_line(int sX, int sY, int eX, int eY)
         y += sy;
     }
 }
-
-void Paint::drawPolygons(QImage *img, QGraphicsScene *scene, QVector <QVector<QPoint>> *polygons_kit,
-						 QColor border_color)
-{
-	pen.setColor(border_color);
-	setPen(pen);
-	begin(img);
-	for (int i = 0; i < polygons_kit->size(); i++)
-	{
-		QVector<QPoint> polygon = polygons_kit->value(i);
-		for (int j = 1; j < polygon.size(); j++)
-		{
-			QPoint p1 = polygon.value(j - 1);
-			QPoint p2 = polygon.value(j);
-			put_line(p1.x(), p1.y(), p2.x(), p2.y());
-		}	
-		QPoint p1 = polygon.value(polygon.size() - 1);
-		QPoint p2 = polygon.value(0);
-		put_line(p1.x(), p1.y(), p2.x(), p2.y());		
-	}
-	scene->addPixmap(QPixmap::fromImage(*img));
-	end();
-}

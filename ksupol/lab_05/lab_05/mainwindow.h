@@ -28,6 +28,7 @@ public:
 
     void add_scene(QGraphicsScene *scene);
     void insert_into_table(QString x, QString y);
+    void drawPolygons(QImage *img, QGraphicsScene *scene, QVector <QVector<QPoint>> *polygons_kit);
 
 private slots:
     void on_add_point_clicked();

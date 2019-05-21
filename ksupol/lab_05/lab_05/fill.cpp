@@ -115,14 +115,14 @@ void filling(QImage *img, QGraphicsScene *scene, QVector <QVector<QPoint>> *poly
         }
         if (delay)
         {
+            int del = 10;
             scene->clear();
             scene->addPixmap(QPixmap::fromImage(*img));
-            QTime dieTime = QTime::currentTime().addMSecs(delay);
+            QTime dieTime = QTime::currentTime().addMSecs(del);
             while(QTime::currentTime() < dieTime)
                 QCoreApplication::processEvents(QEventLoop::AllEvents,
-                                                delay);
+                                                del);
         }
-
     }
     scene->addPixmap(QPixmap::fromImage(*img));
 }

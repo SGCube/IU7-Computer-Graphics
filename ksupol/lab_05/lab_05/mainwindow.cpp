@@ -149,7 +149,6 @@ void MainWindow::on_lock_clicked()
     int index = polygon->size() - 1;
     QPoint last = polygon->value(index);
     paint->put_line(last.x(), last.y(), x, y);
-    //paint->drawLine(last.x(), last.y(), x, y);
 
     QGraphicsScene *scene = ui->graphics->scene();
     scene->addPixmap(QPixmap::fromImage(*img));
@@ -185,10 +184,31 @@ void MainWindow::on_fill_clicked()
     bool delay = ui->delay->isChecked();
     border_handling(img, scene, polygons_kit, border_color);
     filling(img, scene, polygons_kit, border_color, fill_color, bg_color, delay);
-	paint->drawPolygons(img, scene, polygons_kit, border_color);
+    drawPolygons(img, scene, polygons_kit);
 }
 
 void MainWindow::on_col_b_currentIndexChanged(int index)
 {
     paint->color(index);
+}
+
+void MainWindow::drawPolygons(QImage *img, QGraphicsScene *scene, QVector <QVector<QPoint>> *polygons_kit)
+{
+    paint->begin(img);
+    paint->set_pen();
+    for (int i = 0; i < polygons_kit->size(); i++)
+    {
+        QVector<QPoint> polygon = polygons_kit->value(i);
+        for (int j = 1; j < polygon.size(); j++)
+        {
+            QPoint p1 = polygon.value(j - 1);
+            QPoint p2 = polygon.value(j);
+            paint->put_line(p1.x(), p1.y(), p2.x(), p2.y());
+        }
+        QPoint p1 = polygon.value(polygon.size() - 1);
+        QPoint p2 = polygon.value(0);
+        paint->put_line(p1.x(), p1.y(), p2.x(), p2.y());
+    }
+    scene->addPixmap(QPixmap::fromImage(*img));
+    paint->end();
 }
