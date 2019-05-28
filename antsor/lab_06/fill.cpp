@@ -13,7 +13,7 @@ ColorSet::ColorSet(QColor cedge, QColor cfill, QColor cbg) :
 	
 }
 
-void search_span(QImage *img, ColorSet color_set, std::vector<Point> *stack,
+void search_span(QImage *img, ColorSet color_set, std::list<Point> *stack,
 				  int xleft, int xright, int ystr)
 {
 	if (ystr < 0 || ystr >= img->height())
@@ -25,8 +25,8 @@ void search_span(QImage *img, ColorSet color_set, std::vector<Point> *stack,
 	while (x <= xright)
 	{
 		flag = false;
-		while (img->pixelColor(x, y) != color_set.color_edge && 
-			   img->pixelColor(x, y) != color_set.color_fill && x <= xright)
+		while (x <= xright && img->pixelColor(x, y) != color_set.color_edge && 
+			   img->pixelColor(x, y) != color_set.color_fill)
 		{
 			if (!flag)
 				flag = true;
@@ -60,7 +60,7 @@ void fill(QImage *img, ColorSet color_set, Canvas *canvas, Point span,
 	if (!img || !canvas)
 		return;
 	
-	std::vector<Point> stack;
+	std::list<Point> stack;
 	stack.push_back(span);
 
 	while (!stack.empty())
