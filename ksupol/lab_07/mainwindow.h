@@ -20,14 +20,14 @@ class MainWindow : public QMainWindow
     QComboBox *col_f;
 
 public:
-    explicit MainWindow(QImage *image, QVector<QLine> *segments,
+    explicit MainWindow(QImage *image, QVector<QLine> *segments, QVector<int> *cutter,
                         Paint *p,
                         QWidget *parent = nullptr);
     ~MainWindow();
     bool line_or_clipper = true;
     int h;
     int w;
-
+    bool set_clipper = false;
     void add_scene(QGraphicsScene *scene);
     void insert_into_table(QString x, QString y);
 
@@ -40,6 +40,9 @@ private slots:
     void on_line_clicked();
     void on_clipperColor_currentIndexChanged(int index);
     void on_setClipper_clicked();
+    void on_pushButton_3_clicked();
+    void lineCodes(QLine line, char *t1, char *t2);
+    void put_line(QPoint r1, QPoint r2);
 
 private:
     Ui::MainWindow *ui;
@@ -47,5 +50,6 @@ private:
     Paint *paint;
     QImage *img;
     QVector<QLine> *lines;
+    QVector<int> *clipper;
 };
 #endif // MAINWINDOW_H

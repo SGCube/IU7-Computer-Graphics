@@ -10,9 +10,8 @@ class Draw_ar : public QGraphicsScene
     int startX = 0, startY = 0;
     int amount = 0;
     bool hor_vert;
-    bool set_clipper = false;
 public:
-    explicit Draw_ar(QImage *image, Paint *p, QVector<QLine> *segments,
+    explicit Draw_ar(QImage *image, Paint *p, QVector<QLine> *segments, QVector<int> *cutter,
                      MainWindow *w, QWidget *parent = nullptr);
 
 
@@ -27,7 +26,6 @@ private:
     QImage *img;
     Paint *paint;
     QVector<QLine> *lines;
+    QVector<int> *clipper;
 };
-;
-
 #endif // DRAW_AR_H

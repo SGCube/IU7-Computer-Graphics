@@ -12,9 +12,10 @@ int main(int argc, char *argv[])
     img.fill(QColor(255, 255, 255));
     Paint paint;
     QVector<QLine> lines;
+    QVector<int> clipper;
 
-    MainWindow w(&img, &lines, &paint);
-    Draw_ar scene(&img, &paint, &lines, &w);
+    MainWindow w(&img, &lines, &clipper, &paint);
+    Draw_ar scene(&img, &paint, &lines, &clipper, &w);
     w.add_scene(&scene);
 
     w.show();
