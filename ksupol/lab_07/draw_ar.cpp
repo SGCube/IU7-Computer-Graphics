@@ -71,6 +71,7 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         if (window->set_clipper == false)
         {
+            window->text->append("Координаты отсекателя:");
             paint->begin(img);
             paint->set_pen();
             int x = event->scenePos().x();
@@ -79,6 +80,7 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
             int w = window->w;
             if (h % 2 != 0 && w % 2 != 0)
             {
+                set_text(x - w/2 + 1, x + w/2, y + h/2 + 1, y - h/2);
                 paint->put_line(x - w/2 + 1, y - h/2, x + w/2, y - h/2);
                 paint->put_line(x - w/2 + 1, y + h/2, x + w/2, y + h/2);
                 paint->put_line(x - w/2, y + h/2 + 1, x - w/2, y - h/2);
@@ -90,6 +92,7 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
             }
             else if (h % 2 != 0 && w % 2 == 0)
             {
+                set_text(x + w/2, x - w/2, y + h/2 + 1, y - h/2);
                 paint->put_line(x - w/2, y - h/2, x + w/2, y - h/2);
                 paint->put_line(x - w/2, y + h/2, x + w/2, y + h/2);
                 paint->put_line(x - w/2, y + h/2 + 1, x - w/2, y - h/2);
@@ -101,6 +104,7 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
             }
             else if (h % 2 == 0 && w % 2 != 0)
             {
+                set_text(x + w/2, x - w/2 + 1, y + h/2, y - h/2);
                 paint->put_line(x - w/2 + 1, y - h/2, x + w/2, y - h/2);
                 paint->put_line(x - w/2 + 1, y + h/2, x + w/2, y + h/2);
                 paint->put_line(x - w/2, y + h/2, x - w/2, y - h/2);
@@ -112,6 +116,7 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
             }
             else
             {
+                set_text(x + w/2, x - w/2, y + h/2, y - h/2);
                 paint->put_line(x - w/2, y - h/2, x + w/2, y - h/2);
                 paint->put_line(x - w/2, y + h/2, x + w/2, y + h/2);
                 paint->put_line(x - w/2, y + h/2, x - w/2, y - h/2);
@@ -208,4 +213,12 @@ void Draw_ar::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Shift)
         hor_vert = false;
+}
+
+void Draw_ar::set_text(int x_right, int x_left, int y_top, int y_bottom)
+{
+    window->text->append("X л = " + QString::number(x_left));
+    window->text->append("X пр = " + QString::number(x_right));
+    window->text->append("Y в = " + QString::number(y_top));
+    window->text->append("Y н = " + QString::number(y_bottom));
 }

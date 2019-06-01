@@ -20,6 +20,7 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
+    void set_text(int x_right, int x_left, int y_top, int y_bottom);
 private:
     MainWindow *window;
 

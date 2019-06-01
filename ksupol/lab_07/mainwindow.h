@@ -8,6 +8,7 @@
 #include <QVector>
 #include <QComboBox>
 #include <QRadioButton>
+#include <QTextBrowser>
 
 namespace Ui {
 class MainWindow;
@@ -30,6 +31,7 @@ public:
     bool set_clipper = false;
     void add_scene(QGraphicsScene *scene);
     void insert_into_table(QString x, QString y);
+    QTextBrowser *text;
 
 private slots:
 
@@ -40,9 +42,9 @@ private slots:
     void on_line_clicked();
     void on_clipperColor_currentIndexChanged(int index);
     void on_setClipper_clicked();
-    void on_pushButton_3_clicked();
-    void lineCodes(QLine line, char *t1, char *t2);
-    void put_line(QPoint r1, QPoint r2);
+    void on_clip_clicked();
+    void lineCodes(QLine line, unsigned char *t1, unsigned char *t2, int *s1, int *s2);
+    void put_line(QPoint r1, QPoint r2, bool pr);
 
 private:
     Ui::MainWindow *ui;

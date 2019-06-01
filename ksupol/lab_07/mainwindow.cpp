@@ -30,6 +30,7 @@ MainWindow::MainWindow(QImage *image, QVector<QLine> *segments, QVector<int> *cu
     ui->table->horizontalHeader()->resizeSection(1, 90);
     ui->table->setEditTriggers(QAbstractItemView :: NoEditTriggers);
     ui->table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    text = ui->text;
 }
 
 MainWindow::~MainWindow()
@@ -160,7 +161,7 @@ void MainWindow::on_setClipper_clicked()
     }
 }
 
-void MainWindow::on_pushButton_3_clicked()
+void MainWindow::on_clip_clicked()
 {
     img->fill(Qt::white);
     QGraphicsScene *scene = ui->graphics->scene();
@@ -170,37 +171,135 @@ void MainWindow::on_pushButton_3_clicked()
     {
         QLine line = lines->value(i);
         QPoint r1, r2, q;
-        char t1 = 0, t2 = 0;
-        lineCodes(line, &t1, &t2);
+        QPoint cr;
+        int j = 0;
+        unsigned char t1 = 0x0, t2 = 0x0;
+        int s1 = 0, s2 = 0;
+        lineCodes(line, &t1, &t2, &s1, &s2);
         bool pr = true;
         float m = qPow(10, 30);
-        if ((t1 == 0) && (t2 == 0))
+        if ((s1 == 0) && (s2 == 0))
         {
             r1 = line.p1();
             r2 = line.p2();
-            put_line(r1, r2);
+            put_line(r1, r2, pr);
+            continue;
         }
-        else
+        char pl = t1 & t2;
+        if (pl != 0)
         {
-            char pl = t1 & t2;
+            r1 = line.p1();
+            r2 = line.p2();
             pr = false;
-            if (t1 == 0)
-            {
-                r1 = line.p1();
-                q = line.p2();
-                int j = 2;
-                if (line.x1 == line.x2)
-                {
-                    if ()
-                }
-            }
-
+            put_line(r1, r2, pr);
+            continue;
         }
-    }
+        if (s1 == 0)
+        {
+            r1 = line.p1();
+            q = line.p2();
+            j = 2;
+            goto p15;
+        }
+        p12:
+        j++;
+        if (j > 2)
+            goto p31;
+        if (j == 1)
+            q = line.p1();
+        else
+            q = line.p2();
+        p15:
+        if (line.x2() == line.x1())
+            goto p23;
+        m = (line.y2() - line.y1())/(line.x2() - line.x1());
+        if (q.x() > clipper->value(0))
+            goto p20;
+        cr.y() == m * (clipper->value(0) - q.x()) + q.y();
+        if (cr.y() >= clipper->value(3) && cr.y() <= clipper->value(2))
+        {
+            if (j == 1)
+            {
+                r1.x() == clipper->value(0);
+                r1.y() == cr.y();
+                goto p12;
+            }
+            else if (j == 2)
+            {
+                r2.x() == clipper->value(0);
+                r2.y() == cr.y();
+                goto p12;
+            }
+        }
+        p20:
+        if (q.x() < clipper->value(0))
+            goto p23;
+        cr.y() = m * (clipper->value(1) - q.x()) + q.y();
+        if (cr.y() >= clipper->value(3) && cr.y() <= clipper->value(2))
+        {
+            if (j == 1)
+            {
+                r1.x() == clipper->value(1);
+                goto p12;
+            }
+            else if (j == 2)
+            {
+                r2.x() == clipper->value(1);
+                goto p12;
+            }
+        }
+        p23:
+        if (m == 0)
+            goto p12;
+        if (q.y() < clipper->value(2))
+            goto p27;
+        cr.x() = (clipper->value(2) - q.y())/m + q.x();
+        if (cr.x() >= clipper->value(0) && cr.x() <= clipper->value(1))
+        {
+            if (j == 1)
+            {
+                r1.x() = cr.x();
+                r1.y() = clipper->value(2);
+                goto p12;
+            }
+            else if (j == 2)
+            {
+                r2.x() = cr.x();
+                r2.y() = clipper->value(2);
+                goto p12;
+            }
+        }
+        p27:
+        if (q.x() > clipper->value(3))
+            goto p30;
+        cr.x() = (clipper->value(3) - q.y())/m + q.x();
+        if (cr.x() >= clipper->value(0) && cr.x() <= clipper->value(1))
+        {
+            if (j == 1)
+            {
+                r1.x() = cr.x();
+                r1.y() = clipper->value(2);
+                goto p12;
+            }
+            else if (j == 2)
+            {
+                r2.x() = cr.x();
+                r2.y() = clipper->value(2);
+                goto p12;
+            }
+        }
+        p30:
+        pr = false;
+        p31:
+        put_line(r1, r2, pr);
+
+
 }
 
-void MainWindow::put_line(QPoint r1, QPoint r2)
+void MainWindow::put_line(QPoint r1, QPoint r2, bool pr)
 {
+    if (pr == false)
+        return;
     paint->begin(img);
     paint->set_pen();
     paint->put_line(r1.x(), r1.y(), r2.x(), r2.y());
@@ -209,23 +308,48 @@ void MainWindow::put_line(QPoint r1, QPoint r2)
     paint->end();
 }
 
-void MainWindow::lineCodes(QLine line, char *t1, char *t2)
+void MainWindow::lineCodes(QLine line, unsigned char *t1, unsigned char *t2,
+                           int *s1, int *s2)
 {
     if (line.x1() < clipper->value(0))
+    {
         *t1 |= 1;
+        *s1 += 1;
+    }
     if (line.x1() > clipper->value(1))
+    {
         *t1 |= 2;
+        *s1 += 1;
+    }
     if (line.y1() > clipper->value(2))
+    {
         *t1 |= 4;
+        *s1 += 1;
+    }
     if (line.y1() < clipper->value(3))
+    {
         *t1 |= 8;
+        *s1 += 1;
+    }
 
     if (line.x2() < clipper->value(0))
+    {
         *t2 |= 1;
+        *s2 += 1;
+    }
     if (line.x2() > clipper->value(1))
+    {
         *t2 |= 2;
+        *s2 += 1;
+    }
     if (line.y2() > clipper->value(2))
+    {
         *t2 |= 4;
+        *s2 += 1;
+    }
     if (line.y2() < clipper->value(3))
+    {
         *t2 |= 8;
+        *s2 += 1;
+    }
 }
