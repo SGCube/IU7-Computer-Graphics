@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <qmath.h>
 
-MainWindow::MainWindow(QImage *image, QVector<QLine> *segments, QVector<int> *cutter,
+MainWindow::MainWindow(QImage *image, QVector<QLine> *segments, QVector<QPoint> *cutter,
                        Paint *p, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -23,14 +23,21 @@ MainWindow::MainWindow(QImage *image, QVector<QLine> *segments, QVector<int> *cu
     ui->graphics->setMouseTracking(true);
 
     const QStringList a = {"X", "Y"};
-    ui->table->setColumnCount(2);
-    ui->table->setShowGrid(true);
-    ui->table->setHorizontalHeaderLabels(a);
-    ui->table->horizontalHeader()->resizeSection(0, 90);
-    ui->table->horizontalHeader()->resizeSection(1, 90);
-    ui->table->setEditTriggers(QAbstractItemView :: NoEditTriggers);
-    ui->table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    text = ui->text;
+    ui->table_lines->setColumnCount(2);
+    ui->table_lines->setShowGrid(true);
+    ui->table_lines->setHorizontalHeaderLabels(a);
+    ui->table_lines->horizontalHeader()->resizeSection(0, 90);
+    ui->table_lines->horizontalHeader()->resizeSection(1, 90);
+    ui->table_lines->setEditTriggers(QAbstractItemView :: NoEditTriggers);
+    ui->table_lines->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    ui->table_clipper->setColumnCount(2);
+    ui->table_clipper->setShowGrid(true);
+    ui->table_clipper->setHorizontalHeaderLabels(a);
+    ui->table_clipper->horizontalHeader()->resizeSection(0, 90);
+    ui->table_clipper->horizontalHeader()->resizeSection(1, 90);
+    ui->table_clipper->setEditTriggers(QAbstractItemView :: NoEditTriggers);
+    ui->table_clipper->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 MainWindow::~MainWindow()
@@ -42,17 +49,30 @@ void MainWindow::add_scene(QGraphicsScene *scene)
 {
     ui->graphics->setScene(scene);
 }
-
-void MainWindow::insert_into_table(QString x, QString y)
+/*
+void MainWindow::insert_into_table_lines(QString x, QString y)
 {
-    int row = ui->table->rowCount();
-    ui->table->insertRow(row);
-    int row1 = ui->table->rowCount() - 1;
+    int row = ui->table_lines->rowCount();
+    ui->table_lines->insertRow(row);
+    int row1 = ui->table_lines->rowCount() - 1;
     QTableWidgetItem *xx = new QTableWidgetItem();
-    ui->table->setItem(row1, 0, xx);
+    ui->table_lines->setItem(row1, 0, xx);
     xx->setText(x);
     QTableWidgetItem *yy = new QTableWidgetItem();
-    ui->table->setItem(row1, 1, yy);
+    ui->table_lines->setItem(row1, 1, yy);
+    yy->setText(y);
+}
+
+void MainWindow::insert_into_table_clipper(QString x, QString y)
+{
+    int row = ui->table_clipper->rowCount();
+    ui->table_clipper->insertRow(row);
+    int row1 = ui->table_clipper->rowCount() - 1;
+    QTableWidgetItem *xx = new QTableWidgetItem();
+    ui->table_clipper->setItem(row1, 0, xx);
+    xx->setText(x);
+    QTableWidgetItem *yy = new QTableWidgetItem();
+    ui->table_clipper->setItem(row1, 1, yy);
     yy->setText(y);
 
 }
@@ -97,9 +117,9 @@ void MainWindow::on_inputLine_clicked()
         QMessageBox::critical(this, "Ошибка", "Введите корректную координату Y конца отрезка!");
         return;
     }
-    insert_into_table(sx, sy);
-    insert_into_table(ex, ey);
-    insert_into_table("X", "Y");
+    insert_into_table_lines(sx, sy);
+    insert_into_table_lines(ex, ey);
+    insert_into_table_lines("X", "Y");
     int Sx = sx.toInt();
     int Sy = sy.toInt();
     int Ex = ex.toInt();
@@ -114,12 +134,20 @@ void MainWindow::on_inputLine_clicked()
     paint->end();
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_clear_clicked()
 {
-    int row = ui->table->rowCount();
+    int row = ui->table_lines->rowCount();
     do
     {
-        ui->table->removeRow(row - 1);
+        ui->table_lines->removeRow(row - 1);
+        row--;
+    }
+    while (row > 0);
+
+    row = ui->table_clipper->rowCount();
+    do
+    {
+        ui->table_clipper->removeRow(row - 1);
         row--;
     }
     while (row > 0);
@@ -151,12 +179,4 @@ void MainWindow::on_line_clicked()
 {
     line_or_clipper = true;
 }
-
-void MainWindow::on_setClipper_clicked()
-{
-    if (!line_or_clipper)
-    {
-        w = ui->width->text().toInt();
-        h = ui->height->text().toInt();
-    }
-}
+*/

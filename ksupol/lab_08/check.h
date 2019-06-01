@@ -1,6 +1,6 @@
 ﻿#ifndef CHECK_H
 #define CHECK_H
-include <QString>
+#include <QString>
 
 int checkPoint(QString a);
 
