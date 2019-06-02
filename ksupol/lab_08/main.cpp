@@ -1,6 +1,8 @@
 ﻿#include "mainwindow.h"
+#include "paint.h"
 #include "draw_ar.h"
 #include <QApplication>
+#include <QGraphicsScene>
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +17,8 @@ int main(int argc, char *argv[])
     MainWindow w(&img, &lines, &clipper, &paint);
     Draw_ar scene(&img, &paint, &lines, &clipper, &w);
     w.add_scene(&scene);
+
+    w.show();
 
     return a.exec();
 }

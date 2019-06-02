@@ -49,7 +49,7 @@ void MainWindow::add_scene(QGraphicsScene *scene)
 {
     ui->graphics->setScene(scene);
 }
-/*
+
 void MainWindow::insert_into_table_lines(QString x, QString y)
 {
     int row = ui->table_lines->rowCount();
@@ -74,7 +74,6 @@ void MainWindow::insert_into_table_clipper(QString x, QString y)
     QTableWidgetItem *yy = new QTableWidgetItem();
     ui->table_clipper->setItem(row1, 1, yy);
     yy->setText(y);
-
 }
 
 void MainWindow::on_inputLine_clicked()
@@ -143,14 +142,6 @@ void MainWindow::on_clear_clicked()
         row--;
     }
     while (row > 0);
-
-    row = ui->table_clipper->rowCount();
-    do
-    {
-        ui->table_clipper->removeRow(row - 1);
-        row--;
-    }
-    while (row > 0);
     img->fill(Qt::white);
     QGraphicsScene *scene = ui->graphics->scene();
     scene->clear();
@@ -179,4 +170,44 @@ void MainWindow::on_line_clicked()
 {
     line_or_clipper = true;
 }
-*/
+
+void MainWindow::on_inputClipper_clicked()
+{
+    QString clipX = ui->clipX->text();
+    QString clipY = ui->clipY->text();
+
+    if (clipX == NULL || clipY == NULL)
+    {
+        QMessageBox::critical(this, "Ошибка", "Введите координаты точки!");
+        return;
+    }
+    int check = checkPoint(clipX);
+    if (check != 0)
+    {
+        QMessageBox::critical(this, "Ошибка", "Введите корректную координату X!");
+        return;
+    }
+    check = checkPoint(clipY);
+    if (check != 0)
+    {
+        QMessageBox::critical(this, "Ошибка", "Введите корректную координату Y!");
+        return;
+    }
+    insert_into_table_clipper(clipX, clipY);
+    int x = clipX.toInt();
+    int y = clipY.toInt();
+    QPoint a;
+    a.setX(x);
+    a.setY(y);
+    clipper->push_back(a);
+    paint->begin(img);
+    paint->set_pen();
+    if (clipper->size() > 1)
+    {
+        QPoint last = clipper->back();
+        paint->put_line(x, y, last.x(), last.y());
+    }
+    QGraphicsScene *scene = ui->graphics->scene();
+    scene->addPixmap(QPixmap::fromImage(*img));
+    paint->end();
+}

@@ -26,22 +26,23 @@ public:
                         QWidget *parent = nullptr);
     ~MainWindow();
     bool line_or_clipper = true;
+    int h;
+    int w;
     bool set_clipper = false;
     void add_scene(QGraphicsScene *scene);
-    /*
     void insert_into_table_lines(QString x, QString y);
     void insert_into_table_clipper(QString x, QString y);
-    */
 
 private slots:
-    /*
+
     void on_inputLine_clicked();
     void on_clear_clicked();
     void on_lineColor_currentIndexChanged(int index);
     void on_clipper_clicked();
     void on_line_clicked();
     void on_clipperColor_currentIndexChanged(int index);
-    */
+
+    void on_inputClipper_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -1,5 +1,6 @@
 ﻿#ifndef PAINT_H
 #define PAINT_H
+
 #include <QPainter>
 #include "math.h"
 

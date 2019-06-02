@@ -1,5 +1,5 @@
 ﻿#include "check.h"
-#include <QString>
+
 int checkPoint(QString a)
 {
     if (a[0] != '-' && (a[0] > '9' || a[0] < '0'))

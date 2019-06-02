@@ -16,12 +16,10 @@ public:
 
 
 protected:
-    /*
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
-    */
 private:
     MainWindow *window;
 
@@ -30,5 +28,4 @@ private:
     QVector<QLine> *lines;
     QVector<QPoint> *clipper;
 };
-
 #endif // DRAW_AR_H
