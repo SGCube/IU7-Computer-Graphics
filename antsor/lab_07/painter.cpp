@@ -26,6 +26,24 @@ void Painter::setColorCutted(QColor color)
 	colorCutted = color;
 }
 
+void Painter::drawLineSeg(int x1, int y1, int x2, int y2)
+{
+	setLine();
+	drawLine(x1, y1, x2, y2);
+}
+
+void Painter::drawCutter(int x1, int y1, int x2, int y2)
+{
+	setCutter();
+	drawRect(x1, y1, x2 - x1, y2 - y1);
+}
+
+void Painter::drawCutted(int x1, int y1, int x2, int y2)
+{
+	setCutted();
+	drawLine(x1, y1, x2, y2);
+}
+
 void Painter::setLine()
 {
 	pen.setColor(colorLine);

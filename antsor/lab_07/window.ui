@@ -436,7 +436,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton">
+   <widget class="QRadioButton" name="toLineRadio">
     <property name="geometry">
      <rect>
       <x>780</x>
@@ -453,8 +453,11 @@
     <property name="text">
      <string>Вводить отрезки</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton_2">
+   <widget class="QRadioButton" name="toCutterRadio">
     <property name="geometry">
      <rect>
       <x>780</x>

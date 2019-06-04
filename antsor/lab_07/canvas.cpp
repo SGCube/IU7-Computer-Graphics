@@ -7,8 +7,9 @@ Canvas::Canvas(QWidget *parent) :
 	img(nullptr),
 	painter(nullptr),
 	startPoint(0, 0),
-	parLine(false),
-	isSegDrawing(false)
+	ortDraw(false),
+	isDrawing(false),
+	isCutterToDraw(false)
 {
 	setMouseTracking(true);
 }
@@ -29,14 +30,14 @@ void Canvas::setCanvas(QImage *image, Painter *p)
 
 void Canvas::setParLine(bool state)
 {
-	parLine = state;
+	ortDraw = state;
 }
 
 void Canvas::mousePressEvent(QMouseEvent *event)
 {
-	if (event->button() == Qt::RightButton && isSegDrawing)
+	if (event->button() == Qt::RightButton && isDrawing)
 	{
-		isSegDrawing = false;
+		isDrawing = false;
 		repaint();
 		emit breakSegDraw();
 		return;
@@ -50,9 +51,9 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 	if (startPoint == Point(x, y))
 		return;
 	
-	if (isSegDrawing)
+	if (isDrawing)
 	{
-		if (parLine)
+		if (ortDraw)
 		{
 			int xx = x - startPoint.x(), yy = startPoint.y() - y;
 			if (yy > xx)
@@ -72,18 +73,20 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 		}
 		
 		painter->begin(img);
-		painter->setLine();
-		painter->drawLine(startPoint.x(), startPoint.y(), x, y);
+		if (isCutterToDraw)
+			painter->drawCutter(startPoint.x(), startPoint.y(), x, y);
+		else
+			painter->drawLineSeg(startPoint.x(), startPoint.y(), x, y);
 		painter->end();
 		repaint();
 		
-		isSegDrawing = false;
+		isDrawing = false;
 		emit endSegDraw(Point(x, y));
 	}
 	else
 	{
 		startPoint = Point(x, y);
-		isSegDrawing = true;
+		isDrawing = true;
 		emit startSegDraw(startPoint);
 	}
 }
@@ -95,10 +98,10 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
 	
 	emit curCoord(Point(x, y));
 	
-	if (!isSegDrawing)
+	if (!isDrawing)
 		return;
 	
-	if (parLine)
+	if (ortDraw)
 	{
 		int xx = x - startPoint.x(), yy = startPoint.y() - y;
 		if (yy > xx)
@@ -119,12 +122,24 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
 	
 	QImage tmpImg(*img);
 	painter->begin(&tmpImg);
-	painter->setLine();
-	painter->drawLine(startPoint.x(), startPoint.y(), x, y);
+	if (isCutterToDraw)
+		painter->drawCutter(startPoint.x(), startPoint.y(), x, y);
+	else
+		painter->drawLineSeg(startPoint.x(), startPoint.y(), x, y);
 	painter->end();
 	
 	QImage* tmpPtr = img;
 	img = &tmpImg;
 	repaint();
 	img = tmpPtr;
+}
+
+void Canvas::setOrtDraw(bool state)
+{
+	ortDraw = state;
+}
+
+void Canvas::setDrawMode(bool isCutter)
+{
+	isCutterToDraw = isCutter;
 }

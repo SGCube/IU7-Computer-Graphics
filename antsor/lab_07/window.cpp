@@ -9,7 +9,8 @@ Window::Window(QWidget *parent) :
 	startPoint(0, 0),
 	colorLine(0, 0, 0),
 	colorCutter(0, 0, 255),
-	colorCutted(255, 0, 0)
+	colorCutted(255, 0, 0),
+	drawCutter(false)
 {
 	ui->setupUi(this);
 	ui->canvas->setCanvas(&img, &painter);
@@ -23,6 +24,9 @@ Window::Window(QWidget *parent) :
 			this, SLOT(getEndPoint(Point)));
 	connect(ui->canvas, SIGNAL(curCoord(Point)),
 			this, SLOT(getCurCoord(Point)));
+	
+	connect(this, SIGNAL(ortDrawMode(bool)), ui->canvas, SLOT(setOrtDraw(bool)));
+	connect(this, SIGNAL(isCutterToDraw(bool)), ui->canvas, SLOT(setDrawMode(bool)));
 	
 	QPixmap pxm(ui->colorLine->rect().size());
 	pxm.fill(colorLine);
@@ -41,13 +45,13 @@ Window::~Window()
 void Window::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Shift)
-		ui->canvas->setParLine(true);
+		ortDrawMode(true);
 }
 
 void Window::keyReleaseEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Shift)
-		ui->canvas->setParLine(false);
+		ortDrawMode(false);
 }
 
 QString Window::coordText(Point &p)
@@ -93,4 +97,18 @@ void Window::getCurCoord(Point coord)
 	str.append(QString::number(coord.y()));
 	str.append(")");
 	ui->coord->setText(str);
+}
+
+void Window::on_toLineRadio_clicked()
+{
+    drawCutter = false;
+	ui->toCutterRadio->setChecked(false);
+	emit isCutterToDraw(drawCutter);
+}
+
+void Window::on_toCutterRadio_clicked()
+{
+	drawCutter = true;
+	ui->toLineRadio->setChecked(false);
+	emit isCutterToDraw(drawCutter);
 }

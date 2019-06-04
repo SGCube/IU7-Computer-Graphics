@@ -37,13 +37,23 @@ private:
 	QColor colorCutter;
 	QColor colorCutted;
 	
+	bool drawCutter;
+	
 	QString coordText(Point& p);
+	
+signals:
+	void ortDrawMode(bool isOrt);
+	void isCutterToDraw(bool drawCutter);
 	
 public slots:
 	void getStartPoint(Point p);
 	void resetStartPoint();
 	void getEndPoint(Point p);
 	void getCurCoord(Point coord);
+	
+private slots:
+	void on_toLineRadio_clicked();
+	void on_toCutterRadio_clicked();
 };
 
 #endif // WINDOW_H
