@@ -25,10 +25,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        canvas.cpp \
         main.cpp \
+        painter.cpp \
+        point.cpp \
         window.cpp
 
 HEADERS += \
+        canvas.h \
+        lineseg.hpp \
+        painter.h \
+        point.h \
         window.h
 
 FORMS += \
