@@ -34,8 +34,10 @@ void Canvas::setParLine(bool state)
 
 void Canvas::mousePressEvent(QMouseEvent *event)
 {
-	if (event->button() == Qt::RightButton)
+	if (event->button() == Qt::RightButton && isSegDrawing)
 	{
+		isSegDrawing = false;
+		repaint();
 		emit breakSegDraw();
 		return;
 	}
@@ -44,6 +46,9 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 	
 	int x = event->pos().x();
 	int y = event->pos().y();
+	
+	if (startPoint == Point(x, y))
+		return;
 	
 	if (isSegDrawing)
 	{
@@ -70,6 +75,7 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 		painter->setLine();
 		painter->drawLine(startPoint.x(), startPoint.y(), x, y);
 		painter->end();
+		repaint();
 		
 		isSegDrawing = false;
 		emit endSegDraw(Point(x, y));
