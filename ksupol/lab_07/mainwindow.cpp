@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <math.h>
+#include <stdlib.h>
 
 MainWindow::MainWindow(QImage *image, QVector<QLine> *segments, QVector<int> *cutter,
                        Paint *p, QWidget *parent) :
@@ -161,6 +162,8 @@ void MainWindow::on_setClipper_clicked()
     }
 }
 
+
+/*
 void MainWindow::on_clip_clicked()
 {
     img->fill(Qt::white);
@@ -895,12 +898,73 @@ void MainWindow::a(int *j, QPoint r1, QPoint r2, QVector<int> *clipper, bool pr,
     }
     return;
 }
+*/
 
-
-void MainWindow::put_line(QPoint r1, QPoint r2, bool pr)
+void MainWindow::on_clip_clicked()
 {
-    if (pr == false)
-        return;
+    img->fill(Qt::white);
+    QGraphicsScene *scene = ui->graphics->scene();
+    scene->clear();
+    scene->addPixmap(QPixmap::fromImage(*img));
+    for (int i = 0; i < lines->size(); i++)
+    {
+        int *t1 = (int *)calloc(4, sizeof(int));
+        int *t2 = (int *)calloc(4, sizeof(int));
+        QLine line = lines->value(i);
+        QPoint q1 = line.p1();
+        QPoint q2 = line.p2();
+        QPoint p1 = q1;
+        QPoint p2 = q2;
+        lineCodes(line, t1, t2);
+
+        for (int k = 0; k < 4; k++)
+            qDebug() << t1[k] << t2[k];
+
+        int fl = 0;
+        float m;
+        if (p2.x() == p1.x())
+            fl = -1;
+        else
+        {
+            m = (p2.y() - p1.y())/(p2.x() - p1.x());
+            if (m == 0)
+                fl = 1;
+        }
+        for (int j = 0; j <= 3; j++)
+        {
+            if (fl == -1)
+                break;
+            else if (fl == 1)
+            {
+                put_line(p1, p2);
+                break;
+            }
+            if (t1[j] == t2[j])
+                continue;
+            if (t1[j] == 0)
+            {
+                QPoint t = p1;
+                p1 = p2;
+                p2 = t;
+            }
+            if (fl == -1)
+            {
+                put_line(QPoint(p1.x(), clipper->value(j)), p2);
+                break;
+            }
+            if (j > 2)
+                put_line(QPoint(p1.x(), round(m * (clipper->value(j) - p1.x()) + p1.y())), p2);
+            else
+                put_line(QPoint(round((clipper->value(j) - p1.y())/m + p1.x()), p1.y()), p2);
+            break;
+        }
+        free(t1);
+        free(t2);
+    }
+}
+
+void MainWindow::put_line(QPoint r1, QPoint r2)
+{
     paint->begin(img);
     paint->set_pen();
     paint->put_line(r1.x(), r1.y(), r2.x(), r2.y());
@@ -909,48 +973,23 @@ void MainWindow::put_line(QPoint r1, QPoint r2, bool pr)
     paint->end();
 }
 
-void MainWindow::lineCodes(QLine line, unsigned char *t1, unsigned char *t2,
-                           int *s1, int *s2)
+void MainWindow::lineCodes(QLine line, int *t1, int *t2)
 {
     if (line.x1() < clipper->value(0))
-    {
-        *t1 |= 1;
-        *s1 += 1;
-    }
+        t1[0] = 1;
     if (line.x1() > clipper->value(1))
-    {
-        *t1 |= 2;
-        *s1 += 1;
-    }
-    if (line.y1() > clipper->value(2))
-    {
-        *t1 |= 4;
-        *s1 += 1;
-    }
-    if (line.y1() < clipper->value(3))
-    {
-        *t1 |= 8;
-        *s1 += 1;
-    }
+        t1[1] = 1;
+    if (line.y1() < clipper->value(2))
+        t1[2] = 1;
+    if (line.y1() > clipper->value(3))
+        t1[3] = 1;
 
     if (line.x2() < clipper->value(0))
-    {
-        *t2 |= 1;
-        *s2 += 1;
-    }
+        t2[0] = 1;
     if (line.x2() > clipper->value(1))
-    {
-        *t2 |= 2;
-        *s2 += 1;
-    }
-    if (line.y2() > clipper->value(2))
-    {
-        *t2 |= 4;
-        *s2 += 1;
-    }
-    if (line.y2() < clipper->value(3))
-    {
-        *t2 |= 8;
-        *s2 += 1;
-    }
+        t2[1] = 1;
+    if (line.y2() < clipper->value(2))
+        t2[2] = 1;
+    if (line.y2() > clipper->value(3))
+        t2[3] = 1;
 }

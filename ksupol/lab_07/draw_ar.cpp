@@ -87,8 +87,8 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 paint->put_line(x + w/2, y + h/2 + 1, x + w/2, y - h/2);
                 clipper->push_back(x - w/2 + 1);
                 clipper->push_back(x + w/2);
-                clipper->push_back(y + h/2 + 1);
                 clipper->push_back(y - h/2);
+                clipper->push_back(y + h/2 + 1);
             }
             else if (h % 2 != 0 && w % 2 == 0)
             {
@@ -99,8 +99,8 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 paint->put_line(x + w/2, y + h/2 + 1, x + w/2, y - h/2);
                 clipper->push_back(x - w/2);
                 clipper->push_back(x + w/2);
-                clipper->push_back(y + h/2 + 1);
                 clipper->push_back(y - h/2);
+                clipper->push_back(y + h/2 + 1);
             }
             else if (h % 2 == 0 && w % 2 != 0)
             {
@@ -111,8 +111,8 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 paint->put_line(x + w/2, y + h/2, x + w/2, y - h/2);
                 clipper->push_back(x - w/2 + 1);
                 clipper->push_back(x + w/2);
-                clipper->push_back(y + h/2);
                 clipper->push_back(y - h/2);
+                clipper->push_back(y + h/2);
             }
             else
             {
@@ -123,8 +123,8 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 paint->put_line(x + w/2, y + h/2, x + w/2, y - h/2);
                 clipper->push_back(x - w/2);
                 clipper->push_back(x + w/2);
-                clipper->push_back(y + h/2);
                 clipper->push_back(y - h/2);
+                clipper->push_back(y + h/2);
             }
             addPixmap(QPixmap::fromImage(*img));
             paint->end();

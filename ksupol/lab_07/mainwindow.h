@@ -43,9 +43,9 @@ private slots:
     void on_clipperColor_currentIndexChanged(int index);
     void on_setClipper_clicked();
     void on_clip_clicked();
-    void lineCodes(QLine line, unsigned char *t1, unsigned char *t2, int *s1, int *s2);
-    void put_line(QPoint r1, QPoint r2, bool pr);
-    void a(int *j, QPoint r1, QPoint r2, QVector<int> *clipper, bool pr, QPoint q, QLine line, float m);
+    void lineCodes(QLine line, int *t1, int *t2);
+    void put_line(QPoint r1, QPoint r2);
+    //void a(int *j, QPoint r1, QPoint r2, QVector<int> *clipper, bool pr, QPoint q, QLine line, float m);
 
 private:
     Ui::MainWindow *ui;
