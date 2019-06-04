@@ -21,7 +21,7 @@ MainWindow::MainWindow(QImage *image, QVector<QVector<QPoint>> *polygons, QVecto
     polygons_kit(polygons)
 {
     ui->setupUi(this);
-    this->setWindowTitle("Лабораторная работа №5");
+    this->setWindowTitle("Лабораторная работа №6");
 
     ui->graphics->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphics->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
