@@ -1,4 +1,19 @@
+# Compiled Object files
 *.o
-**/build*/**
-**/__pycache__/**
+
+# Executables
+*.exe
+
+# Autosave
 *.autosave
+
+# Qt Creator
+**/build*/**
+*.pro.user
+*.pro.user.*
+
+# Visual Studio / Visual Code
+**/.vscode/**
+**/.vs/**
+*.sln
+**/Debug/**
