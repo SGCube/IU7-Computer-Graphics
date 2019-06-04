@@ -7,23 +7,19 @@ class Painter : public QPainter
 {
 public:
 	Painter();
-	void set_color_edge(QColor color);
-	void set_color_fill(QColor color);
-	void set_color_bg(QColor color);
+	void setColorLine(QColor color);
+	void setColorCutter(QColor color);
+	void setColorCutted(QColor color);
 	
-	void set_fill();
-	void set_bg();
-	void set_edge();
-	
-	bool is_bg(QColor color);
-	bool is_fill(QColor color);
-	bool is_edge(QColor color);
+	void setLine();
+	void setCutter();
+	void setCutted();
 	
 private:
 	QPen pen;
-	QColor color_fill;
-	QColor color_bg;
-	QColor color_edge;
+	QColor colorLine;
+	QColor colorCutter;
+	QColor colorCutted;
 };
 
 #endif // PAINTER_H

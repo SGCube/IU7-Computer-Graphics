@@ -14,12 +14,13 @@ class Canvas : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit Canvas(QImage& image, Painter& p, QWidget *parent = nullptr);
-	void set_parline(bool state);
+	explicit Canvas(QWidget *parent = nullptr);
+	void setCanvas(QImage* image, Painter* p);
+	void setParLine(bool state);
 	
 private:
-	QImage& img;
-	Painter& painter;
+	QImage* img;
+	Painter* painter;
 	
 	Point startPoint;
 	bool parLine;

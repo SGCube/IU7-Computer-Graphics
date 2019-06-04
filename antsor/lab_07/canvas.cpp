@@ -2,10 +2,10 @@
 
 #include "canvas.h"
 
-Canvas::Canvas(QImage& image, Painter& p, QWidget *parent) :
+Canvas::Canvas(QWidget *parent) :
 	QWidget(parent),
-	img(image),
-	painter(p),
+	img(nullptr),
+	painter(nullptr),
 	startPoint(0, 0),
 	parLine(false),
 	isSegDrawing(false)
@@ -16,12 +16,18 @@ Canvas::Canvas(QImage& image, Painter& p, QWidget *parent) :
 void Canvas::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);
-	painter.begin(this);
-	painter.drawImage(0, 0, img);
-	painter.end();
+	painter->begin(this);
+	painter->drawImage(0, 0, *img);
+	painter->end();
 }
 
-void Canvas::set_parline(bool state)
+void Canvas::setCanvas(QImage *image, Painter *p)
+{
+	img = image;
+	painter = p;
+}
+
+void Canvas::setParLine(bool state)
 {
 	parLine = state;
 }
@@ -60,10 +66,10 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 			}
 		}
 		
-		painter.begin(&img);
-		painter.set_edge();
-		painter.drawLine(startPoint.x(), startPoint.y(), x, y);
-		painter.end();
+		painter->begin(img);
+		painter->setLine();
+		painter->drawLine(startPoint.x(), startPoint.y(), x, y);
+		painter->end();
 		
 		isSegDrawing = false;
 		emit endSegDraw(Point(x, y));
@@ -105,14 +111,14 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
 		}
 	}
 	
-	QImage tmpImg(img);
-	painter.begin(&tmpImg);
-	painter.set_edge();
-	painter.drawLine(startPoint.x(), startPoint.y(), x, y);
-	painter.end();
+	QImage tmpImg(*img);
+	painter->begin(&tmpImg);
+	painter->setLine();
+	painter->drawLine(startPoint.x(), startPoint.y(), x, y);
+	painter->end();
 	
-	QImage imgSaved = img;
-	img = tmpImg;
+	QImage* tmpPtr = img;
+	img = &tmpImg;
 	repaint();
-	img = imgSaved;
+	img = tmpPtr;
 }

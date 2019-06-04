@@ -3,58 +3,43 @@
 Painter::Painter() :
 	QPainter(),
 	pen(QColor(0, 0, 0)),
-	color_fill(0, 0, 255),
-	color_bg(255, 255, 255),
-	color_edge(0, 0, 0)
+	colorLine(0, 0, 0),
+	colorCutter(0, 0, 255),
+	colorCutted(255, 0, 0)
 {
 	
 }
 
-void Painter::set_color_edge(QColor color)
+void Painter::setColorLine(QColor color)
 {
 	pen.setColor(color);
-	color_edge = color;
+	colorLine = color;
 }
 
-void Painter::set_color_fill(QColor color)
+void Painter::setColorCutter(QColor color)
 {
-	color_fill = color;
+	colorCutter = color;
 }
 
-void Painter::set_color_bg(QColor color)
+void Painter::setColorCutted(QColor color)
 {
-	color_bg = color;
+	colorCutted = color;
 }
 
-void Painter::set_fill()
+void Painter::setLine()
 {
-	pen.setColor(color_fill);
+	pen.setColor(colorLine);
 	setPen(pen);
 }
 
-void Painter::set_bg()
+void Painter::setCutter()
 {
-	pen.setColor(color_bg);
+	pen.setColor(colorCutter);
 	setPen(pen);
 }
 
-void Painter::set_edge()
+void Painter::setCutted()
 {
-	pen.setColor(color_edge);
+	pen.setColor(colorCutted);
 	setPen(pen);
-}
-
-bool Painter::is_bg(QColor color)
-{
-	return color_bg == color;
-}
-
-bool Painter::is_fill(QColor color)
-{
-	return color_fill == color;
-}
-
-bool Painter::is_edge(QColor color)
-{
-	return color_edge == color;
 }

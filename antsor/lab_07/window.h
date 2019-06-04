@@ -2,6 +2,11 @@
 #define WINDOW_H
 
 #include <QMainWindow>
+#include <vector>
+
+#include "point.h"
+#include "lineseg.hpp"
+#include "canvas.h"
 
 namespace Ui {
 class Window;
@@ -17,6 +22,24 @@ public:
 	
 private:
 	Ui::Window *ui;
+	
+	QImage img;
+	Painter painter;
+	
+	std::vector<LineSeg> lineSegments;
+	Point startPoint;
+	
+	QColor colorLine;
+	QColor colorCutter;
+	QColor colorCutted;
+	
+	QString coordText(Point& p);
+	
+public slots:
+	void getStartPoint(Point p);
+	void resetStartPoint();
+	void getEndPoint(Point p);
+	void getCurCoord(Point coord);
 };
 
 #endif // WINDOW_H
