@@ -38,6 +38,18 @@ Window::~Window()
 	delete ui;
 }
 
+void Window::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Shift)
+		ui->canvas->setParLine(true);
+}
+
+void Window::keyReleaseEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Shift)
+		ui->canvas->setParLine(false);
+}
+
 QString Window::coordText(Point &p)
 {
 	QString str = "(";

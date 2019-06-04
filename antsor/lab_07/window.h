@@ -20,6 +20,10 @@ public:
 	explicit Window(QWidget *parent = nullptr);
 	~Window();
 	
+protected:
+	void keyPressEvent(QKeyEvent *event);
+	void keyReleaseEvent(QKeyEvent *event);
+	
 private:
 	Ui::Window *ui;
 	
