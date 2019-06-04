@@ -33,10 +33,6 @@ private:
 	std::vector<LineSeg> lineSegments;
 	Point startPoint;
 	
-	QColor colorLine;
-	QColor colorCutter;
-	QColor colorCutted;
-	
 	bool drawCutter;
 	
 	QString coordText(Point& p);
@@ -54,6 +50,13 @@ public slots:
 private slots:
 	void on_toLineRadio_clicked();
 	void on_toCutterRadio_clicked();
+	
+	void on_cutButton_clicked();
+	void on_clearButton_clicked();
+	
+	void on_palLineBtn_clicked();
+	void on_palCutterBtn_clicked();
+	void on_palCuttedBtn_clicked();
 };
 
 #endif // WINDOW_H

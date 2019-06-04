@@ -10,22 +10,6 @@ Painter::Painter() :
 	
 }
 
-void Painter::setColorLine(QColor color)
-{
-	pen.setColor(color);
-	colorLine = color;
-}
-
-void Painter::setColorCutter(QColor color)
-{
-	colorCutter = color;
-}
-
-void Painter::setColorCutted(QColor color)
-{
-	colorCutted = color;
-}
-
 void Painter::drawLineSeg(int x1, int y1, int x2, int y2)
 {
 	setLine();

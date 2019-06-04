@@ -1,3 +1,5 @@
+#include <QColorDialog>
+
 #include "window.h"
 #include "ui_window.h"
 
@@ -7,9 +9,6 @@ Window::Window(QWidget *parent) :
 	img(640, 640, QImage::Format_RGB32),
 	painter(),
 	startPoint(0, 0),
-	colorLine(0, 0, 0),
-	colorCutter(0, 0, 255),
-	colorCutted(255, 0, 0),
 	drawCutter(false)
 {
 	ui->setupUi(this);
@@ -29,11 +28,11 @@ Window::Window(QWidget *parent) :
 	connect(this, SIGNAL(isCutterToDraw(bool)), ui->canvas, SLOT(setDrawMode(bool)));
 	
 	QPixmap pxm(ui->colorLine->rect().size());
-	pxm.fill(colorLine);
+	pxm.fill(painter.getColorLine());
 	ui->colorLine->setPixmap(pxm);
-	pxm.fill(colorCutter);
+	pxm.fill(painter.getColorCutter());
 	ui->colorCutter->setPixmap(pxm);
-	pxm.fill(colorCutted);
+	pxm.fill(painter.getColorCutted());
 	ui->colorCutted->setPixmap(pxm);
 }
 
@@ -111,4 +110,59 @@ void Window::on_toCutterRadio_clicked()
 	drawCutter = true;
 	ui->toLineRadio->setChecked(false);
 	emit isCutterToDraw(drawCutter);
+}
+
+void Window::on_cutButton_clicked()
+{
+    
+}
+
+void Window::on_clearButton_clicked()
+{
+	img.fill(QColor(255, 255, 255));
+	ui->canvas->repaint();
+	
+	lineSegments.clear();
+	int len = ui->pointTable->rowCount();
+	for (int i = 0; i < len; i++)
+		ui->pointTable->removeRow(0);
+}
+
+void Window::on_palLineBtn_clicked()
+{
+	QColor oldcolor = painter.getColorLine();
+	QColor newcolor = QColorDialog::getColor(oldcolor, this);
+	if (newcolor.isValid())
+	{
+		QPixmap pxm(ui->colorLine->rect().size());
+		pxm.fill(newcolor);
+		ui->colorLine->setPixmap(pxm);
+		painter.setColorLine(newcolor);
+	}
+}
+
+void Window::on_palCutterBtn_clicked()
+{
+	QColor oldcolor = painter.getColorCutter();
+	QColor newcolor = QColorDialog::getColor(oldcolor, this);
+	if (newcolor.isValid())
+	{
+		QPixmap pxm(ui->colorCutter->rect().size());
+		pxm.fill(newcolor);
+		ui->colorCutter->setPixmap(pxm);
+		painter.setColorCutter(newcolor);
+	}
+}
+
+void Window::on_palCuttedBtn_clicked()
+{
+	QColor oldcolor = painter.getColorCutted();
+	QColor newcolor = QColorDialog::getColor(oldcolor, this);
+	if (newcolor.isValid())
+	{
+		QPixmap pxm(ui->colorCutted->rect().size());
+		pxm.fill(newcolor);
+		ui->colorCutted->setPixmap(pxm);
+		painter.setColorCutted(newcolor);
+	}
 }

@@ -165,7 +165,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="palEdgeBtn">
+   <widget class="QPushButton" name="palLineBtn">
     <property name="geometry">
      <rect>
       <x>840</x>
@@ -183,7 +183,7 @@
      <string>Палитра</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="palFillBtn">
+   <widget class="QPushButton" name="palCutterBtn">
     <property name="geometry">
      <rect>
       <x>840</x>
@@ -201,7 +201,7 @@
      <string>Палитра</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="palCutBtn">
+   <widget class="QPushButton" name="palCuttedBtn">
     <property name="geometry">
      <rect>
       <x>840</x>
