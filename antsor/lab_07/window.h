@@ -28,10 +28,14 @@ private:
 	Ui::Window *ui;
 	
 	QImage img;
+	QImage imgNoClipper;
 	Painter painter;
 	
 	std::vector<LineSeg> lineSegments;
 	Point startPoint;
+	
+	Point ltClipper;
+	Point rbClipper;
 	
 	bool drawCutter;
 	

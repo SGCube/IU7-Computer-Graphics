@@ -3,12 +3,17 @@
 #include "window.h"
 #include "ui_window.h"
 
+#include "clipper.h"
+
 Window::Window(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::Window),
 	img(640, 640, QImage::Format_RGB32),
+	imgNoClipper(img),
 	painter(),
 	startPoint(0, 0),
+	ltClipper(0, 0),
+	rbClipper(640, 640),
 	drawCutter(false)
 {
 	ui->setupUi(this);
@@ -65,12 +70,20 @@ QString Window::coordText(Point &p)
 
 void Window::getStartPoint(Point p)
 {
-	startPoint = p;
-	
-	int row = ui->pointTable->rowCount();
-	ui->pointTable->insertRow(row);
-	QTableWidgetItem *item = new QTableWidgetItem(coordText(p));
-	ui->pointTable->setItem(row, 0, item);
+	if (drawCutter)
+	{
+		ltClipper = p;
+		ui->ltxEdit->setValue(ltClipper.x());
+		ui->ltyEdit->setValue(ltClipper.y());
+	}
+	else
+	{
+		startPoint = p;
+		int row = ui->pointTable->rowCount();
+		ui->pointTable->insertRow(row);
+		QTableWidgetItem *item = new QTableWidgetItem(coordText(p));
+		ui->pointTable->setItem(row, 0, item);
+	}
 }
 
 void Window::resetStartPoint()
@@ -80,12 +93,31 @@ void Window::resetStartPoint()
 
 void Window::getEndPoint(Point p)
 {
-	Point endPoint = p;
-	lineSegments.push_back(LineSeg(startPoint, endPoint));
-	
-	int row = ui->pointTable->rowCount() - 1;
-	QTableWidgetItem *item = new QTableWidgetItem(coordText(p));
-	ui->pointTable->setItem(row, 1, item);
+	if (drawCutter)
+	{
+		rbClipper = p;
+		
+		if (ltClipper.x() > rbClipper.x())
+		{
+			Point tmp = ltClipper;
+			ltClipper = rbClipper;
+			rbClipper = tmp;
+		}
+		
+		ui->ltxEdit->setValue(ltClipper.x());
+		ui->ltyEdit->setValue(ltClipper.y());
+		ui->rbxEdit->setValue(rbClipper.x());
+		ui->rbyEdit->setValue(rbClipper.y());
+	}
+	else
+	{
+		Point endPoint = p;
+		lineSegments.push_back(LineSeg(startPoint, endPoint));
+		
+		int row = ui->pointTable->rowCount() - 1;
+		QTableWidgetItem *item = new QTableWidgetItem(coordText(p));
+		ui->pointTable->setItem(row, 1, item);
+	}
 }
 
 void Window::getCurCoord(Point coord)
@@ -114,7 +146,27 @@ void Window::on_toCutterRadio_clicked()
 
 void Window::on_cutButton_clicked()
 {
-    
+	ltClipper = Point(ui->ltxEdit->value(), ui->ltyEdit->value());
+	rbClipper = Point(ui->rbxEdit->value(), ui->rbyEdit->value());
+	
+	if (ltClipper.x() > rbClipper.x())
+	{
+		Point tmp = ltClipper;
+		ltClipper = rbClipper;
+		rbClipper = tmp;
+	}
+	
+	ui->ltxEdit->setValue(ltClipper.x());
+	ui->ltyEdit->setValue(ltClipper.y());
+	ui->rbxEdit->setValue(rbClipper.x());
+	ui->rbyEdit->setValue(rbClipper.y());
+	
+	Clipper clipper(ltClipper.x(), ltClipper.y(), rbClipper.x(), rbClipper.y());
+	
+	painter.begin(&img);
+	clipper.clip(lineSegments, painter);
+	painter.end();
+	repaint();
 }
 
 void Window::on_clearButton_clicked()

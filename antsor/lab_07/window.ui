@@ -496,7 +496,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QSpinBox" name="xsEdit_3">
+   <widget class="QSpinBox" name="rbxEdit">
     <property name="geometry">
      <rect>
       <x>877</x>
@@ -514,7 +514,7 @@
      <number>639</number>
     </property>
    </widget>
-   <widget class="QSpinBox" name="xsEdit_4">
+   <widget class="QSpinBox" name="rbyEdit">
     <property name="geometry">
      <rect>
       <x>877</x>
@@ -598,7 +598,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QSpinBox" name="xsEdit_5">
+   <widget class="QSpinBox" name="ltyEdit">
     <property name="geometry">
      <rect>
       <x>877</x>
@@ -616,7 +616,7 @@
      <number>639</number>
     </property>
    </widget>
-   <widget class="QSpinBox" name="xsEdit_6">
+   <widget class="QSpinBox" name="ltxEdit">
     <property name="geometry">
      <rect>
       <x>877</x>
