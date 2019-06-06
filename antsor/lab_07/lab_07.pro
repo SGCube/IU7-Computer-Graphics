@@ -26,6 +26,7 @@ CONFIG += c++11
 
 SOURCES += \
         canvas.cpp \
+        clipper.cpp \
         main.cpp \
         painter.cpp \
         point.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
 
 HEADERS += \
         canvas.h \
+        clipper.h \
         lineseg.hpp \
         painter.h \
         point.h \
