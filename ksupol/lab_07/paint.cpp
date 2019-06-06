@@ -22,6 +22,12 @@ void Paint::set_pen()
     setPen(pen);
 }
 
+void Paint::set_double_pen()
+{
+    pen.setWidth(3);
+    setPen(pen);
+}
+
 void Paint::put_line(int sX, int sY, int eX, int eY)
 {
     float dx = eX - sX;

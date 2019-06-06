@@ -25,9 +25,7 @@ public:
                         Paint *p,
                         QWidget *parent = nullptr);
     ~MainWindow();
-    bool line_or_clipper = true;
-    int h;
-    int w;
+    bool line = true;
     bool set_clipper = false;
     void add_scene(QGraphicsScene *scene);
     void insert_into_table(QString x, QString y);
@@ -36,16 +34,17 @@ public:
 private slots:
 
     void on_inputLine_clicked();
-    void on_pushButton_clicked();
+    void on_clear_clicked();
     void on_lineColor_currentIndexChanged(int index);
+    void on_clipperColor_currentIndexChanged(int index);
     void on_clipper_clicked();
     void on_line_clicked();
-    void on_clipperColor_currentIndexChanged(int index);
-    void on_setClipper_clicked();
     void on_clip_clicked();
     void lineCodes(QLine line, int *t1, int *t2);
     void put_line(QPoint r1, QPoint r2);
-    //void a(int *j, QPoint r1, QPoint r2, QVector<int> *clipper, bool pr, QPoint q, QLine line, float m);
+    int check_visibility(int *t1, int *t2);
+
+    void on_resultColor_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;

@@ -13,6 +13,7 @@ public:
     void put_line(int sX, int sY, int eX, int eY);
     void set_color(QColor *c, int col);
     void colorClipper(int b);
+    void set_double_pen();
 private:
     QPen pen;
     QColor col;

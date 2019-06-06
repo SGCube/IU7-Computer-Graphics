@@ -8,6 +8,8 @@ class Draw_ar : public QGraphicsScene
 {
 
     int startX = 0, startY = 0;
+    int x_left = -100;
+    int y_bottom = -100;
     int amount = 0;
     bool hor_vert;
 public:
@@ -20,7 +22,7 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
-    void set_text(int x_right, int x_left, int y_top, int y_bottom);
+    void set_text(int x_left, int x_right, int y_bottom, int y_top);
 private:
     MainWindow *window;
 

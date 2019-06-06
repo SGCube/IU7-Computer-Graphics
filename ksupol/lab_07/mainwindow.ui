@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1240</width>
-    <height>842</height>
+    <height>748</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QGraphicsView" name="graphics">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
+      <x>0</x>
+      <y>0</y>
       <width>800</width>
-      <height>800</height>
+      <height>700</height>
      </rect>
     </property>
     <property name="verticalScrollBarPolicy">
@@ -163,7 +163,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="clear">
        <property name="font">
         <font>
          <pointsize>10</pointsize>
@@ -235,58 +235,12 @@
     <property name="geometry">
      <rect>
       <x>820</x>
-      <y>370</y>
+      <y>360</y>
       <width>411</width>
-      <height>155</height>
+      <height>61</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
-       <item>
-        <widget class="QLabel" name="label_9">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>ШИРИНА ОТСЕКАТЕЛЯ</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_8">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>ВЫСОТА ОТСЕКАТЕЛЯ</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_6">
-       <item>
-        <widget class="QLineEdit" name="width">
-         <property name="text">
-          <string>100</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="height">
-         <property name="text">
-          <string>100</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
      <item>
       <widget class="QLabel" name="label_12">
        <property name="font">
@@ -348,25 +302,13 @@
        </item>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="setClipper">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>УСТАНОВИТЬ ОТСЕКАТЕЛЬ</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
    <widget class="QPushButton" name="clip">
     <property name="geometry">
      <rect>
       <x>820</x>
-      <y>780</y>
+      <y>680</y>
       <width>411</width>
       <height>28</height>
      </rect>
@@ -384,7 +326,7 @@
     <property name="geometry">
      <rect>
       <x>820</x>
-      <y>650</y>
+      <y>550</y>
       <width>411</width>
       <height>119</height>
      </rect>
@@ -517,8 +459,8 @@
    <widget class="QTextBrowser" name="text">
     <property name="geometry">
      <rect>
-      <x>825</x>
-      <y>530</y>
+      <x>820</x>
+      <y>430</y>
       <width>401</width>
       <height>111</height>
      </rect>

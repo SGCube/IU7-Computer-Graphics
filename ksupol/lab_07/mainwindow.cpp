@@ -115,7 +115,7 @@ void MainWindow::on_inputLine_clicked()
     paint->end();
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_clear_clicked()
 {
     int row = ui->table->rowCount();
     do
@@ -145,800 +145,62 @@ void MainWindow::on_clipperColor_currentIndexChanged(int index)
 
 void MainWindow::on_clipper_clicked()
 {
-    line_or_clipper = false;
+    line = false;
 }
 
 void MainWindow::on_line_clicked()
 {
-    line_or_clipper = true;
+    line = true;
 }
 
-void MainWindow::on_setClipper_clicked()
-{
-    if (!line_or_clipper)
-    {
-        w = ui->width->text().toInt();
-        h = ui->height->text().toInt();
-    }
-}
-
-
-/*
 void MainWindow::on_clip_clicked()
 {
+    if (lines->size() == 0)
+    {
+        QMessageBox::critical(this, "Ошибка", "Введите отрезки!");
+        return;
+    }
+    if (clipper->size() == 0)
+    {
+        QMessageBox::critical(this, "Ошибка", "Введите отсекатель!");
+        return;
+    }
+    /*
     img->fill(Qt::white);
     QGraphicsScene *scene = ui->graphics->scene();
     scene->clear();
     scene->addPixmap(QPixmap::fromImage(*img));
-    for (int i = 0; i < lines->size(); i++)
-    {
-        QLine line = lines->value(i);
-        QPoint r1, r2, q;
-        QPoint cr;
-        int j = 0;
-        unsigned char t1 = 0x0, t2 = 0x0;
-        int s1 = 0, s2 = 0;
-        lineCodes(line, &t1, &t2, &s1, &s2);
-        bool pr = true;
-        float m = pow(10, 30);
-        if ((s1 == 0) && (s2 == 0))
-        {
-            r1 = line.p1();
-            r2 = line.p2();
-            put_line(r1, r2, pr);
-            continue;
-        }
-        char pl = t1 & t2;
-        if (pl != 0)
-            continue;
-        if (s1 == 0)
-        {
-            r1 = line.p1();
-            q = line.p2();
-            j = 2;
-            if (line.x1() == line.x2())
-            {
-                if (m != 0)
-                {
-                    if (q.y() < clipper->value(3))
-                    {
-                        float x = (clipper->value(3) - q.y()) / m + q.x();
-                        if (clipper->value(0) <= x && x <= clipper->value(1))
-                        {
-                            if (j == 1)
-                            {
-                                r1 = QPoint(round(x), clipper->value(3));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                            else
-                            {
-                                r2 = QPoint(round(x), clipper->value(3));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                        }
-                        if (q.y() > clipper->value(2))
-                        {
-                            x = (clipper->value(2) - q.y())/m + q.x();
-                            if (clipper->value(0) <= x && x <= clipper->value(1))
-                            {
-                                if (j == 1)
-                                {
-                                    r1 = QPoint(round(x), clipper->value(2));
-                                    a(&j, r1, r2, clipper, pr, q, line, m);
-                                }
-                                else
-                                {
-                                    r2 = QPoint(round(x), clipper->value(2));
-                                    a(&j, r1, r2, clipper, pr, q, line, m);
-                                }
-                            }
-                            return;
-                        }
-                    }
-                    if (q.y() > clipper->value(2))
-                    {
-                        float x = (clipper->value(2) - q.y())/m + q.x();
-                        if (clipper->value(0) <= x && x <= clipper->value(1))
-                        {
-                            if (j == 1)
-                            {
-                                r1 = QPoint(round(x), clipper->value(2));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                            else
-                            {
-                                r2 = QPoint(round(x), clipper->value(2));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                        }
-                        return;
-                    }
-                }
-                return;
-            }
-            m = (line.y2() - line.y1())/(line.x2() - line.x1());
-            if (q.x() < clipper->value(0))
-            {
-                float y = m * (clipper->value(0) - q.x()) + q.y();
-                if (clipper->value(3) <= y && y <= clipper->value(2))
-                {
-                    if (j == 1)
-                    {
-                        r1 = QPoint(clipper->value(0), round(y));
-                        a(&j, r1, r2, clipper, pr, q, line, m);
-                    }
-                    else
-                    {
-                        r2 = QPoint(clipper->value(0), round(y));
-                        a(&j, r1, r2, clipper, pr, q, line, m);
-                    }
-                }
-                if (q.x() > clipper->value(1))
-                {
-                    float y = m * (clipper->value(1) - q.x()) + q.y();
-                    if (clipper->value(3) <= y && y <= clipper->value(2))
-                    {
-                        if (j == 1)
-                        {
-                            r1 = QPoint(clipper->value(1), round(y));
-                            a(&j, r1, r2, clipper, pr, q, line, m);
-                        }
-                        else
-                        {
-                            r2 = QPoint(clipper->value(1), round(y));
-                            a(&j, r1, r2, clipper, pr, q, line, m);
-                        }
-                    }
-                }
-                if (m != 0)
-                {
-                    if (q.y() < clipper->value(3))
-                    {
-                        float x = (clipper->value(3) - q.y()) / m + q.x();
-                        if (clipper->value(0) <= x && x <= clipper->value(1))
-                        {
-                            if (j == 1)
-                            {
-                                r1 = QPoint(round(x), clipper->value(3));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                            else
-                            {
-                                r2 = QPoint(round(x), clipper->value(3));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                        }
-                        if (q.y() > clipper->value(2))
-                        {
-                            x = (clipper->value(2) - q.y())/m + q.x();
-                            if (clipper->value(0) <= x && x <= clipper->value(1))
-                            {
-                                if (j == 1)
-                                {
-                                    r1 = QPoint(round(x), clipper->value(2));
-                                    a(&j, r1, r2, clipper, pr, q, line, m);
-                                }
-                                else
-                                {
-                                    r2 = QPoint(round(x), clipper->value(2));
-                                    a(&j, r1, r2, clipper, pr, q, line, m);
-                                }
-                            }
-                            return;
-                        }
-                    }
-                    if (q.y() > clipper->value(2))
-                    {
-                        float x = (clipper->value(2) - q.y())/m + q.x();
-                        if (clipper->value(0) <= x && x <= clipper->value(1))
-                        {
-                            if (j == 1)
-                            {
-                                r1 = QPoint(round(x), clipper->value(2));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                            else
-                            {
-                                r2 = QPoint(round(x), clipper->value(2));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                        }
-                        return;
-                    }
-                }
-                return;
-            }
-            if (q.x() > clipper->value(1))
-            {
-                float y = m * (clipper->value(1) - q.x()) + q.y();
-                if (clipper->value(3) <= y && y <= clipper->value(2))
-                {
-                    if (j == 1)
-                    {
-                        r1 = QPoint(clipper->value(1), round(y));
-                        a(&j, r1, r2, clipper, pr, q, line, m);
-                    }
-                    else
-                    {
-                        r2 = QPoint(clipper->value(1), round(y));
-                        a(&j, r1, r2, clipper, pr, q, line, m);
-                    }
-                }
-            }
-            if (m != 0)
-            {
-                if (q.y() < clipper->value(3))
-                {
-                    float x = (clipper->value(3) - q.y()) / m + q.x();
-                    if (clipper->value(0) <= x && x <= clipper->value(1))
-                    {
-                        if (j == 1)
-                        {
-                            r1 = QPoint(round(x), clipper->value(3));
-                            a(&j, r1, r2, clipper, pr, q, line, m);
-                        }
-                        else
-                        {
-                            r2 = QPoint(round(x), clipper->value(3));
-                            a(&j, r1, r2, clipper, pr, q, line, m);
-                        }
-                    }
-                    if (q.y() > clipper->value(2))
-                    {
-                        x = (clipper->value(2) - q.y())/m + q.x();
-                        if (clipper->value(0) <= x && x <= clipper->value(1))
-                        {
-                            if (j == 1)
-                            {
-                                r1 = QPoint(round(x), clipper->value(2));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                            else
-                            {
-                                r2 = QPoint(round(x), clipper->value(2));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                        }
-                        return;
-                    }
-                }
-                if (q.y() > clipper->value(2))
-                {
-                    float x = (clipper->value(2) - q.y())/m + q.x();
-                    if (clipper->value(0) <= x && x <= clipper->value(1))
-                    {
-                        if (j == 1)
-                        {
-                            r1 = QPoint(round(x), clipper->value(2));
-                            a(&j, r1, r2, clipper, pr, q, line, m);
-                        }
-                        else
-                        {
-                            r2 = QPoint(round(x), clipper->value(2));
-                            a(&j, r1, r2, clipper, pr, q, line, m);
-                        }
-                    }
-                    return;
-                }
-            }
-        }
-        if (s2 == 0)
-        {
-            r1 = line.p2();
-            q = line.p1();
-            j = 2;
-            if (line.x1() == line.x2())
-            {
-                if (m != 0)
-                {
-                    if (q.y() < clipper->value(3))
-                    {
-                        float x = (clipper->value(3) - q.y()) / m + q.x();
-                        if (clipper->value(0) <= x && x <= clipper->value(1))
-                        {
-                            if (j == 1)
-                            {
-                                r1 = QPoint(round(x), clipper->value(3));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                            else
-                            {
-                                r2 = QPoint(round(x), clipper->value(3));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                        }
-                        if (q.y() > clipper->value(2))
-                        {
-                            x = (clipper->value(2) - q.y())/m + q.x();
-                            if (clipper->value(0) <= x && x <= clipper->value(1))
-                            {
-                                if (j == 1)
-                                {
-                                    r1 = QPoint(round(x), clipper->value(2));
-                                    a(&j, r1, r2, clipper, pr, q, line, m);
-                                }
-                                else
-                                {
-                                    r2 = QPoint(round(x), clipper->value(2));
-                                    a(&j, r1, r2, clipper, pr, q, line, m);
-                                }
-                            }
-                            return;
-                        }
-                    }
-                    if (q.y() > clipper->value(2))
-                    {
-                        float x = (clipper->value(2) - q.y())/m + q.x();
-                        if (clipper->value(0) <= x && x <= clipper->value(1))
-                        {
-                            if (j == 1)
-                            {
-                                r1 = QPoint(round(x), clipper->value(2));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                            else
-                            {
-                                r2 = QPoint(round(x), clipper->value(2));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                        }
-                        return;
-                    }
-                }
-                return;
-            }
-            m = (line.y2() - line.y1())/(line.x2() - line.x1());
-            if (q.x() < clipper->value(0))
-            {
-                float y = m * (clipper->value(0) - q.x()) + q.y();
-                if (clipper->value(3) <= y && y <= clipper->value(2))
-                {
-                    if (j == 1)
-                    {
-                        r1 = QPoint(clipper->value(0), round(y));
-                        a(&j, r1, r2, clipper, pr, q, line, m);
-                    }
-                    else
-                    {
-                        r2 = QPoint(clipper->value(0), round(y));
-                        a(&j, r1, r2, clipper, pr, q, line, m);
-                    }
-                }
-                if (q.x() > clipper->value(1))
-                {
-                    float y = m * (clipper->value(1) - q.x()) + q.y();
-                    if (clipper->value(3) <= y && y <= clipper->value(2))
-                    {
-                        if (j == 1)
-                        {
-                            r1 = QPoint(clipper->value(1), round(y));
-                            a(&j, r1, r2, clipper, pr, q, line, m);
-                        }
-                        else
-                        {
-                            r2 = QPoint(clipper->value(1), round(y));
-                            a(&j, r1, r2, clipper, pr, q, line, m);
-                        }
-                    }
-                }
-                if (m != 0)
-                {
-                    if (q.y() < clipper->value(3))
-                    {
-                        float x = (clipper->value(3) - q.y()) / m + q.x();
-                        if (clipper->value(0) <= x && x <= clipper->value(1))
-                        {
-                            if (j == 1)
-                            {
-                                r1 = QPoint(round(x), clipper->value(3));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                            else
-                            {
-                                r2 = QPoint(round(x), clipper->value(3));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                        }
-                        if (q.y() > clipper->value(2))
-                        {
-                            x = (clipper->value(2) - q.y())/m + q.x();
-                            if (clipper->value(0) <= x && x <= clipper->value(1))
-                            {
-                                if (j == 1)
-                                {
-                                    r1 = QPoint(round(x), clipper->value(2));
-                                    a(&j, r1, r2, clipper, pr, q, line, m);
-                                }
-                                else
-                                {
-                                    r2 = QPoint(round(x), clipper->value(2));
-                                    a(&j, r1, r2, clipper, pr, q, line, m);
-                                }
-                            }
-                            return;
-                        }
-                    }
-                    if (q.y() > clipper->value(2))
-                    {
-                        float x = (clipper->value(2) - q.y())/m + q.x();
-                        if (clipper->value(0) <= x && x <= clipper->value(1))
-                        {
-                            if (j == 1)
-                            {
-                                r1 = QPoint(round(x), clipper->value(2));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                            else
-                            {
-                                r2 = QPoint(round(x), clipper->value(2));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                        }
-                        return;
-                    }
-                }
-                return;
-            }
-            if (q.x() > clipper->value(1))
-            {
-                float y = m * (clipper->value(1) - q.x()) + q.y();
-                if (clipper->value(3) <= y && y <= clipper->value(2))
-                {
-                    if (j == 1)
-                    {
-                        r1 = QPoint(clipper->value(1), round(y));
-                        a(&j, r1, r2, clipper, pr, q, line, m);
-                    }
-                    else
-                    {
-                        r2 = QPoint(clipper->value(1), round(y));
-                        a(&j, r1, r2, clipper, pr, q, line, m);
-                    }
-                }
-            }
-            if (m != 0)
-            {
-                if (q.y() < clipper->value(3))
-                {
-                    float x = (clipper->value(3) - q.y()) / m + q.x();
-                    if (clipper->value(0) <= x && x <= clipper->value(1))
-                    {
-                        if (j == 1)
-                        {
-                            r1 = QPoint(round(x), clipper->value(3));
-                            a(&j, r1, r2, clipper, pr, q, line, m);
-                        }
-                        else
-                        {
-                            r2 = QPoint(round(x), clipper->value(3));
-                            a(&j, r1, r2, clipper, pr, q, line, m);
-                        }
-                    }
-                    if (q.y() > clipper->value(2))
-                    {
-                        x = (clipper->value(2) - q.y())/m + q.x();
-                        if (clipper->value(0) <= x && x <= clipper->value(1))
-                        {
-                            if (j == 1)
-                            {
-                                r1 = QPoint(round(x), clipper->value(2));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                            else
-                            {
-                                r2 =QPoint(round(x), clipper->value(2));
-                                a(&j, r1, r2, clipper, pr, q, line, m);
-                            }
-                        }
-                        return;
-                    }
-                }
-                if (q.y() > clipper->value(2))
-                {
-                    float x = (clipper->value(2) - q.y())/m + q.x();
-                    if (clipper->value(0) <= x && x <= clipper->value(1))
-                    {
-                        if (j == 1)
-                        {
-                            r1 = QPoint(round(x), clipper->value(2));
-                            a(&j, r1, r2, clipper, pr, q, line, m);
-                        }
-                        else
-                        {
-                            r2 = QPoint(round(x), clipper->value(2));
-                            a(&j, r1, r2, clipper, pr, q, line, m);
-                        }
-                    }
-                    return;
-                }
-            }
-        }
-    j = 0;
-    a(&j, r1, r2, clipper, pr, q, line, m);
-
-}
-}
-
-void MainWindow::a(int *j, QPoint r1, QPoint r2, QVector<int> *clipper, bool pr, QPoint q, QLine line, float m)
-{
-    *j += 1;
-    if (*j > 2)
-    {
-        put_line(r1, r2, pr);//!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        return;
-    }
-    if (*j == 1)
-        q = line.p1();
-    else
-        q = line.p2();
-    if (line.x1() == line.x2())
-    {
-        if (m != 0)
-        {
-            if (q.y() < clipper->value(3))
-            {
-                float x = (clipper->value(3) - q.y()) / m + q.x();
-                if (clipper->value(0) <= x && x <= clipper->value(1))
-                {
-                    if (*j == 1)
-                    {
-                        r1 = QPoint(round(x), clipper->value(3));
-                        a(j, r1, r2, clipper, pr, q, line, m);
-                    }
-                    else if (*j == 2)
-                    {
-                        r2 = QPoint(round(x), clipper->value(3));
-                        a(j, r1, r2, clipper, pr, q, line, m);
-                    }
-                }
-                if (q.y() > clipper->value(2))
-                {
-                    x = (clipper->value(2) - q.y())/m + q.x();
-                    if (clipper->value(0) <= x && x <= clipper->value(1))
-                    {
-                        if (*j == 1)
-                        {
-                            r1 = QPoint(round(x), clipper->value(2));
-                            a(j, r1, r2, clipper, pr, q, line, m);
-                        }
-                        else if (*j == 2)
-                        {
-                            r2 = QPoint(round(x), clipper->value(2));
-                            a(j, r1, r2, clipper, pr, q, line, m);
-                        }
-                    }
-                    return;
-                }
-            }
-            if (q.y() > clipper->value(2))
-            {
-                float x = (clipper->value(2) - q.y())/m + q.x();
-                if (clipper->value(0) <= x && x <= clipper->value(1))
-                {
-                    if (*j == 1)
-                    {
-                        r1 = QPoint(round(x), clipper->value(2));
-                        a(j, r1, r2, clipper, pr, q, line, m);
-                    }
-                    else
-                    {
-                        r2 = QPoint(round(x), clipper->value(2));
-                        a(j, r1, r2, clipper, pr, q, line, m);
-                    }
-                }
-                return;
-            }
-        }
-        return;
-    }
-    m = (line.y2() - line.y1())/(line.x2() - line.x1());
-    if (q.x() < clipper->value(0))
-    {
-        float y = m * (clipper->value(0) - q.x()) + q.y();
-        if (clipper->value(3) <= y && y <= clipper->value(2))
-        {
-            if (*j == 1)
-            {
-                r1 = QPoint(clipper->value(0), round(y));
-                a(j, r1, r2, clipper, pr, q, line, m);
-            }
-            else
-            {
-                r2 = QPoint(clipper->value(0), round(y));
-                a(j, r1, r2, clipper, pr, q, line, m);
-            }
-        }
-        if (q.x() > clipper->value(1))
-        {
-            float y = m * (clipper->value(1) - q.x()) + q.y();
-            if (clipper->value(3) <= y && y <= clipper->value(2))
-            {
-                if (*j == 1)
-                {
-                    r1 = QPoint(clipper->value(1), round(y));
-                    a(j, r1, r2, clipper, pr, q, line, m);
-                }
-                else
-                {
-                    r2 = QPoint(clipper->value(1), round(y));
-                    a(j, r1, r2, clipper, pr, q, line, m);
-                }
-            }
-        }
-        if (m != 0)
-        {
-            if (q.y() < clipper->value(3))
-            {
-                float x = (clipper->value(3) - q.y()) / m + q.x();
-                if (clipper->value(0) <= x && x <= clipper->value(1))
-                {
-                    if (*j == 1)
-                    {
-                        r1 = QPoint(round(x), clipper->value(3));
-                        a(j, r1, r2, clipper, pr, q, line, m);
-                    }
-                    else
-                    {
-                        r2 = QPoint(round(x), clipper->value(3));
-                        a(j, r1, r2, clipper, pr, q, line, m);
-                    }
-                }
-                if (q.y() > clipper->value(2))
-                {
-                    x = (clipper->value(2) - q.y())/m + q.x();
-                    if (clipper->value(0) <= x && x <= clipper->value(1))
-                    {
-                        if (*j == 1)
-                        {
-                            r1 = QPoint(round(x), clipper->value(2));
-                            a(j, r1, r2, clipper, pr, q, line, m);
-                        }
-                        else
-                        {
-                            r2 = QPoint(round(x), clipper->value(2));
-                            a(j, r1, r2, clipper, pr, q, line, m);
-                        }
-                    }
-                    return;
-                }
-            }
-            if (q.y() > clipper->value(2))
-            {
-                float x = (clipper->value(2) - q.y())/m + q.x();
-                if (clipper->value(0) <= x && x <= clipper->value(1))
-                {
-                    if (*j == 1)
-                    {
-                        r1 = QPoint(round(x), clipper->value(2));
-                        a(j, r1, r2, clipper, pr, q, line, m);
-                    }
-                    else
-                    {
-                        r2 = QPoint(round(x), clipper->value(2));
-                        a(j, r1, r2, clipper, pr, q, line, m);
-                    }
-                }
-                return;
-            }
-        }
-        return;
-    }
-    if (q.x() > clipper->value(1))
-    {
-        float y = m * (clipper->value(1) - q.x()) + q.y();
-        if (clipper->value(3) <= y && y <= clipper->value(2))
-        {
-            if (*j == 1)
-            {
-                r1 = QPoint(clipper->value(1), round(y));
-                a(j, r1, r2, clipper, pr, q, line, m);
-            }
-            else
-            {
-                r2 = QPoint(clipper->value(1), round(y));
-                a(j, r1, r2, clipper, pr, q, line, m);
-            }
-        }
-    }
-    if (m != 0)
-    {
-        if (q.y() < clipper->value(3))
-        {
-            float x = (clipper->value(3) - q.y()) / m + q.x();
-            if (clipper->value(0) <= x && x <= clipper->value(1))
-            {
-                if (*j == 1)
-                {
-                    r1 = QPoint(round(x), clipper->value(3));
-                    a(j, r1, r2, clipper, pr, q, line, m);
-                }
-                else
-                {
-                    r2 = QPoint(round(x), clipper->value(3));
-                    a(j, r1, r2, clipper, pr, q, line, m);
-                }
-            }
-            if (q.y() > clipper->value(2))
-            {
-                x = (clipper->value(2) - q.y())/m + q.x();
-                if (clipper->value(0) <= x && x <= clipper->value(1))
-                {
-                    if (*j == 1)
-                    {
-                        r1 = QPoint(round(x), clipper->value(2));
-                        a(j, r1, r2, clipper, pr, q, line, m);
-                    }
-                    else
-                    {
-                        r2 = QPoint(round(x), clipper->value(2));
-                        a(j, r1, r2, clipper, pr, q, line, m);
-                    }
-                }
-                return;
-            }
-        }
-        if (q.y() > clipper->value(2))
-        {
-            float x = (clipper->value(2) - q.y())/m + q.x();
-            if (clipper->value(0) <= x && x <= clipper->value(1))
-            {
-                if (*j == 1)
-                {
-                    r1 = QPoint(round(x), clipper->value(2));
-                    a(j, r1, r2, clipper, pr, q, line, m);
-                }
-                else
-                {
-                    r2 = QPoint(round(x), clipper->value(2));
-                    a(j, r1, r2, clipper, pr, q, line, m);
-                }
-            }
-            return;
-        }
-    }
-    return;
-}
-*/
-
-void MainWindow::on_clip_clicked()
-{
-    img->fill(Qt::white);
-    QGraphicsScene *scene = ui->graphics->scene();
-    scene->clear();
-    scene->addPixmap(QPixmap::fromImage(*img));
+    */
+    paint->set_pen();
     for (int i = 0; i < lines->size(); i++)
     {
         int *t1 = (int *)calloc(4, sizeof(int));
         int *t2 = (int *)calloc(4, sizeof(int));
         QLine line = lines->value(i);
-        QPoint q1 = line.p1();
-        QPoint q2 = line.p2();
-        QPoint p1 = q1;
-        QPoint p2 = q2;
+        QPoint p1 = line.p1();
+        QPoint p2 = line.p2();
         lineCodes(line, t1, t2);
-
-        for (int k = 0; k < 4; k++)
-            qDebug() << t1[k] << t2[k];
+        int pr;
 
         int fl = 0;
-        float m;
+        float m = 1;
         if (p2.x() == p1.x())
             fl = -1;
         else
         {
-            m = (p2.y() - p1.y())/(p2.x() - p1.x());
+            m = float(p2.y() - p1.y())/(p2.x() - p1.x());
             if (m == 0)
                 fl = 1;
         }
         for (int j = 0; j <= 3; j++)
         {
-            if (fl == -1)
+            pr = check_visibility(t1, t2);
+            qDebug() << pr;
+
+            if (pr == -1)
                 break;
-            else if (fl == 1)
-            {
-                put_line(p1, p2);
+            else if (pr == 1)
                 break;
-            }
             if (t1[j] == t2[j])
                 continue;
             if (t1[j] == 0)
@@ -947,17 +209,28 @@ void MainWindow::on_clip_clicked()
                 p1 = p2;
                 p2 = t;
             }
-            if (fl == -1)
+            if (fl != -1)
             {
-                put_line(QPoint(p1.x(), clipper->value(j)), p2);
-                break;
+                if (j < 2)
+                {
+                    int tmp_y = int(m * (clipper->value(j) - p1.x()) + p1.y());
+                    p1.setY(tmp_y);
+
+                    int tmp_x = clipper->value(j);
+                    p1.setX(tmp_x);
+                    continue;
+                }
+                else
+                {
+                    int tmp_x = int((1/m) * (clipper->value(j) - p1.y()) + p1.x());
+                    p1.setX(tmp_x);
+                }
             }
-            if (j > 2)
-                put_line(QPoint(p1.x(), round(m * (clipper->value(j) - p1.x()) + p1.y())), p2);
-            else
-                put_line(QPoint(round((clipper->value(j) - p1.y())/m + p1.x()), p1.y()), p2);
-            break;
+            int tmp_y = clipper->value(j);
+            p1.setY(tmp_y);
         }
+        if (pr != -1)
+            put_line(p1, p2);
         free(t1);
         free(t2);
     }
@@ -966,7 +239,7 @@ void MainWindow::on_clip_clicked()
 void MainWindow::put_line(QPoint r1, QPoint r2)
 {
     paint->begin(img);
-    paint->set_pen();
+    paint->set_double_pen();
     paint->put_line(r1.x(), r1.y(), r2.x(), r2.y());
     QGraphicsScene *scene = ui->graphics->scene();
     scene->addPixmap(QPixmap::fromImage(*img));
@@ -992,4 +265,28 @@ void MainWindow::lineCodes(QLine line, int *t1, int *t2)
         t2[2] = 1;
     if (line.y2() > clipper->value(3))
         t2[3] = 1;
+}
+
+int MainWindow::check_visibility(int *t1, int *t2)
+{
+    int s1 = 0;
+    int s2 = 0;
+    int p = 0;
+    for (int i = 0; i < 4; i++)
+    {
+        s1 += t1[i];
+        s2 += t2[i];
+        if (t1[i] == 1 && t2[i] == 1)
+            p++;
+    }
+    if (s1 == 0 && s2 == 0)
+        return 1;
+    if (p != 0)
+        return -1;
+    return 0;
+}
+
+void MainWindow::on_resultColor_currentIndexChanged(int index)
+{
+    paint->color(index);
 }
