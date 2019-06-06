@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QImage img(860, 660, QImage::Format_RGB32);
+    QImage img(800, 850, QImage::Format_RGB32);
     img.fill(QColor(255, 255, 255));
     Paint paint;
     QVector<QLine> lines;

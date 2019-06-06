@@ -25,9 +25,7 @@ public:
                         Paint *p,
                         QWidget *parent = nullptr);
     ~MainWindow();
-    bool line_or_clipper = true;
-    int h;
-    int w;
+    bool line = true;
     bool set_clipper = false;
     void add_scene(QGraphicsScene *scene);
     void insert_into_table_lines(QString x, QString y);

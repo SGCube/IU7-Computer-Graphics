@@ -17,13 +17,13 @@ Draw_ar::Draw_ar(QImage *image, Paint *p, QVector<QLine> *segments, QVector<QPoi
     lines(segments),
     clipper(cutter)
 {
-    setSceneRect(0, 0, 860, 660);
+    setSceneRect(0, 0, 800, 850);
     addPixmap(QPixmap::fromImage(*img));
 }
 
 void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (window->line_or_clipper)
+    if (window->line)
     {
         if (amount == 0)
         {
@@ -85,7 +85,7 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 addPixmap(QPixmap::fromImage(*img));
                 paint->end();
                 window->insert_into_table_clipper("X", "Y");
-                clipper->clear();
+                window->set_clipper = true;
                 return;
             }
             int x = event->scenePos().x();
@@ -132,7 +132,7 @@ void Draw_ar::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Draw_ar::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (window->line_or_clipper)
+    if (window->line)
     {
         if (amount == 0)
             return;

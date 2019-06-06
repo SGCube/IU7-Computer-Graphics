@@ -16,7 +16,7 @@ MainWindow::MainWindow(QImage *image, QVector<QLine> *segments, QVector<QPoint> 
     clipper(cutter)
 {
     ui->setupUi(this);
-    this->setWindowTitle("Лабораторная работа №7");
+    this->setWindowTitle("Лабораторная работа №8");
 
     ui->graphics->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphics->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -142,6 +142,14 @@ void MainWindow::on_clear_clicked()
         row--;
     }
     while (row > 0);
+
+    row = ui->table_clipper->rowCount();
+    do
+    {
+        ui->table_clipper->removeRow(row - 1);
+        row--;
+    }
+    while (row > 0);
     img->fill(Qt::white);
     QGraphicsScene *scene = ui->graphics->scene();
     scene->clear();
@@ -163,12 +171,12 @@ void MainWindow::on_clipperColor_currentIndexChanged(int index)
 
 void MainWindow::on_clipper_clicked()
 {
-    line_or_clipper = false;
+    line = false;
 }
 
 void MainWindow::on_line_clicked()
 {
-    line_or_clipper = true;
+    line = true;
 }
 
 void MainWindow::on_inputClipper_clicked()
