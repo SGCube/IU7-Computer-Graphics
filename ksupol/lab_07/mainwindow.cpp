@@ -165,12 +165,6 @@ void MainWindow::on_clip_clicked()
         QMessageBox::critical(this, "Ошибка", "Введите отсекатель!");
         return;
     }
-    /*
-    img->fill(Qt::white);
-    QGraphicsScene *scene = ui->graphics->scene();
-    scene->clear();
-    scene->addPixmap(QPixmap::fromImage(*img));
-    */
     paint->set_pen();
     for (int i = 0; i < lines->size(); i++)
     {
@@ -192,7 +186,7 @@ void MainWindow::on_clip_clicked()
             if (m == 0)
                 fl = 1;
         }
-        for (int j = 0; j <= 3; j++)
+        for (int j = 0; j < 4; j++)
         {
             pr = check_visibility(t1, t2);
             qDebug() << pr;
@@ -208,6 +202,13 @@ void MainWindow::on_clip_clicked()
                 QPoint t = p1;
                 p1 = p2;
                 p2 = t;
+                int *temp = (int *)calloc(4, sizeof(int));
+                for (int k = 0; k < 4; k++)
+                {
+                    temp[k] = t1[k];
+                    t1[k] = t2[k];
+                    t2[k] = temp[k];
+                }
             }
             if (fl != -1)
             {
