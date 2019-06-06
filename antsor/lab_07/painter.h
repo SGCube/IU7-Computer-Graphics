@@ -8,26 +8,26 @@ class Painter : public QPainter
 public:
 	Painter();
 	void setColorLine(QColor color) { colorLine = color; }
-	void setColorCutter(QColor color) { colorCutter = color; }
-	void setColorCutted(QColor color) { colorCutted = color; }
+	void setColorClipper(QColor color) { colorClipper = color; }
+	void setColorClipped(QColor color) { colorClipped = color; }
 	
 	void drawLineSeg(int x1, int y1, int x2, int y2);
-	void drawCutter(int x1, int y1, int x2, int y2);
-	void drawCutted(int x1, int y1, int x2, int y2);
+	void drawClipper(int x1, int y1, int x2, int y2);
+	void drawClipped(int x1, int y1, int x2, int y2);
 	
 	QColor getColorLine() const { return colorLine; }
-	QColor getColorCutter() const { return colorCutter; }
-	QColor getColorCutted() const { return colorCutted; }
+	QColor getColorClipper() const { return colorClipper; }
+	QColor getColorClipped() const { return colorClipped; }
 	
 private:
 	QPen pen;
 	QColor colorLine;
-	QColor colorCutter;
-	QColor colorCutted;
+	QColor colorClipper;
+	QColor colorClipped;
 	
 	void setLine();
-	void setCutter();
-	void setCutted();
+	void setClipper();
+	void setClipped();
 };
 
 #endif // PAINTER_H

@@ -14,7 +14,7 @@ Window::Window(QWidget *parent) :
 	startPoint(0, 0),
 	ltClipper(0, 0),
 	rbClipper(640, 640),
-	drawCutter(false)
+	drawClipper(false)
 {
 	ui->setupUi(this);
 	ui->canvas->setCanvas(&img, &painter);
@@ -30,15 +30,15 @@ Window::Window(QWidget *parent) :
 			this, SLOT(getCurCoord(Point)));
 	
 	connect(this, SIGNAL(ortDrawMode(bool)), ui->canvas, SLOT(setOrtDraw(bool)));
-	connect(this, SIGNAL(isCutterToDraw(bool)), ui->canvas, SLOT(setDrawMode(bool)));
+	connect(this, SIGNAL(isClipperToDraw(bool)), ui->canvas, SLOT(setDrawMode(bool)));
 	
 	QPixmap pxm(ui->colorLine->rect().size());
 	pxm.fill(painter.getColorLine());
 	ui->colorLine->setPixmap(pxm);
-	pxm.fill(painter.getColorCutter());
-	ui->colorCutter->setPixmap(pxm);
-	pxm.fill(painter.getColorCutted());
-	ui->colorCutted->setPixmap(pxm);
+	pxm.fill(painter.getColorClipper());
+	ui->colorClipper->setPixmap(pxm);
+	pxm.fill(painter.getColorClipped());
+	ui->colorClipped->setPixmap(pxm);
 }
 
 Window::~Window()
@@ -70,7 +70,7 @@ QString Window::coordText(Point &p)
 
 void Window::getStartPoint(Point p)
 {
-	if (drawCutter)
+	if (drawClipper)
 	{
 		ltClipper = p;
 		ui->ltxEdit->setValue(ltClipper.x());
@@ -93,7 +93,7 @@ void Window::resetStartPoint()
 
 void Window::getEndPoint(Point p)
 {
-	if (drawCutter)
+	if (drawClipper)
 	{
 		rbClipper = p;
 		
@@ -132,19 +132,19 @@ void Window::getCurCoord(Point coord)
 
 void Window::on_toLineRadio_clicked()
 {
-    drawCutter = false;
-	ui->toCutterRadio->setChecked(false);
-	emit isCutterToDraw(drawCutter);
+    drawClipper = false;
+	ui->toClipperRadio->setChecked(false);
+	emit isClipperToDraw(drawClipper);
 }
 
-void Window::on_toCutterRadio_clicked()
+void Window::on_toClipperRadio_clicked()
 {
-	drawCutter = true;
+	drawClipper = true;
 	ui->toLineRadio->setChecked(false);
-	emit isCutterToDraw(drawCutter);
+	emit isClipperToDraw(drawClipper);
 }
 
-void Window::on_cutButton_clicked()
+void Window::on_clipButton_clicked()
 {
 	ltClipper = Point(ui->ltxEdit->value(), ui->ltyEdit->value());
 	rbClipper = Point(ui->rbxEdit->value(), ui->rbyEdit->value());
@@ -193,28 +193,28 @@ void Window::on_palLineBtn_clicked()
 	}
 }
 
-void Window::on_palCutterBtn_clicked()
+void Window::on_palClipperBtn_clicked()
 {
-	QColor oldcolor = painter.getColorCutter();
+	QColor oldcolor = painter.getColorClipper();
 	QColor newcolor = QColorDialog::getColor(oldcolor, this);
 	if (newcolor.isValid())
 	{
-		QPixmap pxm(ui->colorCutter->rect().size());
+		QPixmap pxm(ui->colorClipper->rect().size());
 		pxm.fill(newcolor);
-		ui->colorCutter->setPixmap(pxm);
-		painter.setColorCutter(newcolor);
+		ui->colorClipper->setPixmap(pxm);
+		painter.setColorClipper(newcolor);
 	}
 }
 
-void Window::on_palCuttedBtn_clicked()
+void Window::on_palClippedBtn_clicked()
 {
-	QColor oldcolor = painter.getColorCutted();
+	QColor oldcolor = painter.getColorClipped();
 	QColor newcolor = QColorDialog::getColor(oldcolor, this);
 	if (newcolor.isValid())
 	{
-		QPixmap pxm(ui->colorCutted->rect().size());
+		QPixmap pxm(ui->colorClipped->rect().size());
 		pxm.fill(newcolor);
-		ui->colorCutted->setPixmap(pxm);
-		painter.setColorCutted(newcolor);
+		ui->colorClipped->setPixmap(pxm);
+		painter.setColorClipped(newcolor);
 	}
 }

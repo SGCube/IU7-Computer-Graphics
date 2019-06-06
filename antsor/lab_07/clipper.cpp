@@ -49,7 +49,7 @@ void Clipper::clipLineSeg(LineSeg& line, Painter& painter)
 			return;
 		if (vis == VISIBLE)
 		{
-			painter.drawCutted(p1.x(), p1.y(), p2.x(), p2.y());
+			painter.drawClipped(p1.x(), p1.y(), p2.x(), p2.y());
 			return;
 		}
 		
@@ -79,7 +79,7 @@ void Clipper::clipLineSeg(LineSeg& line, Painter& painter)
 		}
 	}
 	
-    painter.drawCutted(p1.x(), p1.y(), p2.x(), p2.y());
+    painter.drawClipped(p1.x(), p1.y(), p2.x(), p2.y());
 }
 
 unsigned Clipper::getCode(Point &p)

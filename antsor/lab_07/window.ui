@@ -127,7 +127,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="colorCutter">
+   <widget class="QLabel" name="colorClipper">
     <property name="geometry">
      <rect>
       <x>800</x>
@@ -146,7 +146,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="colorCutted">
+   <widget class="QLabel" name="colorClipped">
     <property name="geometry">
      <rect>
       <x>800</x>
@@ -183,7 +183,7 @@
      <string>Палитра</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="palCutterBtn">
+   <widget class="QPushButton" name="palClipperBtn">
     <property name="geometry">
      <rect>
       <x>840</x>
@@ -201,7 +201,7 @@
      <string>Палитра</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="palCuttedBtn">
+   <widget class="QPushButton" name="palClippedBtn">
     <property name="geometry">
      <rect>
       <x>840</x>
@@ -219,7 +219,7 @@
      <string>Палитра</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="cutButton">
+   <widget class="QPushButton" name="clipButton">
     <property name="geometry">
      <rect>
       <x>660</x>
@@ -457,7 +457,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QRadioButton" name="toCutterRadio">
+   <widget class="QRadioButton" name="toClipperRadio">
     <property name="geometry">
      <rect>
       <x>780</x>
@@ -511,7 +511,10 @@
      </font>
     </property>
     <property name="maximum">
-     <number>639</number>
+     <number>640</number>
+    </property>
+    <property name="value">
+     <number>640</number>
     </property>
    </widget>
    <widget class="QSpinBox" name="rbyEdit">
@@ -529,7 +532,10 @@
      </font>
     </property>
     <property name="maximum">
-     <number>639</number>
+     <number>640</number>
+    </property>
+    <property name="value">
+     <number>640</number>
     </property>
    </widget>
    <widget class="QLabel" name="label_8">

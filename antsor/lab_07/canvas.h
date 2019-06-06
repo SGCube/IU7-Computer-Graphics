@@ -30,7 +30,7 @@ private:
 	Point startPoint;
 	bool ortDraw;
 	bool isDrawing;
-	bool isCutterToDraw;
+	bool isClipperToDraw;
 	
 signals:
 	void startSegDraw(Point p);

@@ -9,7 +9,7 @@ Canvas::Canvas(QWidget *parent) :
 	startPoint(0, 0),
 	ortDraw(false),
 	isDrawing(false),
-	isCutterToDraw(false)
+	isClipperToDraw(false)
 {
 	setMouseTracking(true);
 }
@@ -73,8 +73,8 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 		}
 		
 		painter->begin(img);
-		if (isCutterToDraw)
-			painter->drawCutter(startPoint.x(), startPoint.y(), x, y);
+		if (isClipperToDraw)
+			painter->drawClipper(startPoint.x(), startPoint.y(), x, y);
 		else
 			painter->drawLineSeg(startPoint.x(), startPoint.y(), x, y);
 		painter->end();
@@ -122,8 +122,8 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
 	
 	QImage tmpImg(*img);
 	painter->begin(&tmpImg);
-	if (isCutterToDraw)
-		painter->drawCutter(startPoint.x(), startPoint.y(), x, y);
+	if (isClipperToDraw)
+		painter->drawClipper(startPoint.x(), startPoint.y(), x, y);
 	else
 		painter->drawLineSeg(startPoint.x(), startPoint.y(), x, y);
 	painter->end();
@@ -141,5 +141,5 @@ void Canvas::setOrtDraw(bool state)
 
 void Canvas::setDrawMode(bool isCutter)
 {
-	isCutterToDraw = isCutter;
+	isClipperToDraw = isCutter;
 }

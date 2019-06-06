@@ -4,8 +4,8 @@ Painter::Painter() :
 	QPainter(),
 	pen(QColor(0, 0, 0)),
 	colorLine(0, 0, 0),
-	colorCutter(0, 0, 255),
-	colorCutted(255, 0, 0)
+	colorClipper(0, 0, 255),
+	colorClipped(255, 0, 0)
 {
 	
 }
@@ -16,15 +16,15 @@ void Painter::drawLineSeg(int x1, int y1, int x2, int y2)
 	drawLine(x1, y1, x2, y2);
 }
 
-void Painter::drawCutter(int x1, int y1, int x2, int y2)
+void Painter::drawClipper(int x1, int y1, int x2, int y2)
 {
-	setCutter();
+	setClipper();
 	drawRect(x1, y1, x2 - x1, y2 - y1);
 }
 
-void Painter::drawCutted(int x1, int y1, int x2, int y2)
+void Painter::drawClipped(int x1, int y1, int x2, int y2)
 {
-	setCutted();
+	setClipped();
 	drawLine(x1, y1, x2, y2);
 }
 
@@ -35,16 +35,16 @@ void Painter::setLine()
 	setPen(pen);
 }
 
-void Painter::setCutter()
+void Painter::setClipper()
 {
-	pen.setColor(colorCutter);
+	pen.setColor(colorClipper);
 	pen.setWidth(1);
 	setPen(pen);
 }
 
-void Painter::setCutted()
+void Painter::setClipped()
 {
-	pen.setColor(colorCutted);
+	pen.setColor(colorClipped);
 	pen.setWidth(2);
 	setPen(pen);
 }

@@ -37,13 +37,13 @@ private:
 	Point ltClipper;
 	Point rbClipper;
 	
-	bool drawCutter;
+	bool drawClipper;
 	
 	QString coordText(Point& p);
 	
 signals:
 	void ortDrawMode(bool isOrt);
-	void isCutterToDraw(bool drawCutter);
+	void isClipperToDraw(bool drawClipper);
 	
 public slots:
 	void getStartPoint(Point p);
@@ -53,14 +53,14 @@ public slots:
 	
 private slots:
 	void on_toLineRadio_clicked();
-	void on_toCutterRadio_clicked();
+	void on_toClipperRadio_clicked();
 	
-	void on_cutButton_clicked();
+	void on_clipButton_clicked();
 	void on_clearButton_clicked();
 	
 	void on_palLineBtn_clicked();
-	void on_palCutterBtn_clicked();
-	void on_palCuttedBtn_clicked();
+	void on_palClipperBtn_clicked();
+	void on_palClippedBtn_clicked();
 };
 
 #endif // WINDOW_H
