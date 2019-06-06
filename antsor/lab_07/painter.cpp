@@ -31,17 +31,20 @@ void Painter::drawCutted(int x1, int y1, int x2, int y2)
 void Painter::setLine()
 {
 	pen.setColor(colorLine);
+	pen.setWidth(1);
 	setPen(pen);
 }
 
 void Painter::setCutter()
 {
 	pen.setColor(colorCutter);
+	pen.setWidth(1);
 	setPen(pen);
 }
 
 void Painter::setCutted()
 {
 	pen.setColor(colorCutted);
+	pen.setWidth(2);
 	setPen(pen);
 }
