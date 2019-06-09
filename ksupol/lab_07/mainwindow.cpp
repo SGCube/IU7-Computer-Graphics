@@ -7,6 +7,10 @@
 #include <math.h>
 #include <stdlib.h>
 
+#define OK 0
+#define END -1
+#define DRAW 1
+
 MainWindow::MainWindow(QImage *image, QVector<QLine> *segments, QVector<int> *cutter,
                        Paint *p, QWidget *parent) :
     QMainWindow(parent),
@@ -171,11 +175,19 @@ void MainWindow::on_clip_clicked()
 
 void MainWindow::clip_line()
 {
+    int rc = OK;
     unsigned char t1 = 0;
     unsigned char t2 = 0;
     QLine line = lines->value(i);
     QPoint p1 = line.p1();
     QPoint p2 = line.p2();
+    QPoint r1, r2;
+    unsigned char sum1, sum2, p;
+    int am = 1;
+    while (rc == OK)
+    {
+        pointCode();
+    }
 }
 
 /*
@@ -267,7 +279,7 @@ void MainWindow::put_line(QPoint r1, QPoint r2)
     paint->end();
 }
 
-void MainWindow::lineCode(QPoint a, unsigned char *t1)
+void MainWindow::pointCode(QPoint a, unsigned char *t)
 {
     if (a.x() < clipper->value(0))
         *t = *t1 | LEFT;

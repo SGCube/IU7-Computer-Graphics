@@ -45,7 +45,7 @@ private slots:
     void on_clipper_clicked();
     void on_line_clicked();
     void on_clip_clicked();
-    void lineCodes(QLine line, unsigned char *t1, unsigned char *t2);
+    void pointCode(QPoint a, unsigned char *t);
     void put_line(QPoint r1, QPoint r2);
     int check_visibility(unsigned char t1, unsigned char t2);
 
