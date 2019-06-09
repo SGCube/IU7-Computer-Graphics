@@ -10,6 +10,11 @@
 #include <QRadioButton>
 #include <QTextBrowser>
 
+#define LEFT 1
+#define RIGHT 2
+#define BOTTOM 4
+#define TOP 8
+
 namespace Ui {
 class MainWindow;
 }
@@ -40,9 +45,9 @@ private slots:
     void on_clipper_clicked();
     void on_line_clicked();
     void on_clip_clicked();
-    void lineCodes(QLine line, int *t1, int *t2);
+    void lineCodes(QLine line, unsigned char *t1, unsigned char *t2);
     void put_line(QPoint r1, QPoint r2);
-    int check_visibility(int *t1, int *t2);
+    int check_visibility(unsigned char t1, unsigned char t2);
 
     void on_resultColor_currentIndexChanged(int index);
 

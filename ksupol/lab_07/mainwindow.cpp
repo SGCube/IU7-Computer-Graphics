@@ -165,15 +165,42 @@ void MainWindow::on_clip_clicked()
         QMessageBox::critical(this, "Ошибка", "Введите отсекатель!");
         return;
     }
-    paint->set_pen();
+    for (int i = 0; i < lines->size(); i++)
+        clip_line();
+}
+
+void MainWindow::clip_line()
+{
+    unsigned char t1 = 0;
+    unsigned char t2 = 0;
+    QLine line = lines->value(i);
+    QPoint p1 = line.p1();
+    QPoint p2 = line.p2();
+}
+
+/*
+void MainWindow::on_clip_clicked()
+{
+    if (lines->size() == 0)
+    {
+        QMessageBox::critical(this, "Ошибка", "Введите отрезки!");
+        return;
+    }
+    if (clipper->size() == 0)
+    {
+        QMessageBox::critical(this, "Ошибка", "Введите отсекатель!");
+        return;
+    }
+    //paint->set_pen();
     for (int i = 0; i < lines->size(); i++)
     {
-        int *t1 = (int *)calloc(4, sizeof(int));
-        int *t2 = (int *)calloc(4, sizeof(int));
+        unsigned char t1 = 0;
+        unsigned char t2 = 0;
         QLine line = lines->value(i);
         QPoint p1 = line.p1();
         QPoint p2 = line.p2();
-        lineCodes(line, t1, t2);
+        lineCodes(line, &t1, &t2);
+        qDebug() << t1 << t2;
         int pr;
 
         int fl = 0;
@@ -186,56 +213,49 @@ void MainWindow::on_clip_clicked()
             if (m == 0)
                 fl = 1;
         }
+        unsigned char ms[] = {LEFT, RIGHT, BOTTOM, TOP};
         for (int j = 0; j < 4; j++)
         {
             pr = check_visibility(t1, t2);
-            qDebug() << pr;
-
+            //qDebug() << pr;
             if (pr == -1)
                 break;
             else if (pr == 1)
                 break;
-            if (t1[j] == t2[j])
+            unsigned char c1 = t1 & ms[i];
+            unsigned char c2 = t2 & ms[i];
+            if (c1 == c2)
                 continue;
-            if (t1[j] == 0)
+            if (c1 == 0)
             {
                 QPoint t = p1;
                 p1 = p2;
                 p2 = t;
-                int *temp = (int *)calloc(4, sizeof(int));
-                for (int k = 0; k < 4; k++)
-                {
-                    temp[k] = t1[k];
-                    t1[k] = t2[k];
-                    t2[k] = temp[k];
-                }
             }
-            if (fl != -1)
+            if (fl != -1 && j < 2)
             {
-                if (j < 2)
-                {
-                    int tmp_y = int(m * (clipper->value(j) - p1.x()) + p1.y());
+                    int tmp_y = round(m * (clipper->value(j) - p1.x()) + p1.y());
                     p1.setY(tmp_y);
 
                     int tmp_x = clipper->value(j);
                     p1.setX(tmp_x);
-                    continue;
-                }
-                else
+            }
+            else
+            {
+                if (fl != -1)
                 {
-                    int tmp_x = int((1/m) * (clipper->value(j) - p1.y()) + p1.x());
+                    int tmp_x = round((1/m) * (clipper->value(j) - p1.y())) + p1.x();
                     p1.setX(tmp_x);
                 }
+                int tmp_y = clipper->value(j);
+                p1.setY(tmp_y);
             }
-            int tmp_y = clipper->value(j);
-            p1.setY(tmp_y);
         }
         if (pr != -1)
             put_line(p1, p2);
-        free(t1);
-        free(t2);
     }
 }
+*/
 
 void MainWindow::put_line(QPoint r1, QPoint r2)
 {
@@ -247,41 +267,24 @@ void MainWindow::put_line(QPoint r1, QPoint r2)
     paint->end();
 }
 
-void MainWindow::lineCodes(QLine line, int *t1, int *t2)
+void MainWindow::lineCode(QPoint a, unsigned char *t1)
 {
-    if (line.x1() < clipper->value(0))
-        t1[0] = 1;
-    if (line.x1() > clipper->value(1))
-        t1[1] = 1;
-    if (line.y1() < clipper->value(2))
-        t1[2] = 1;
-    if (line.y1() > clipper->value(3))
-        t1[3] = 1;
-
-    if (line.x2() < clipper->value(0))
-        t2[0] = 1;
-    if (line.x2() > clipper->value(1))
-        t2[1] = 1;
-    if (line.y2() < clipper->value(2))
-        t2[2] = 1;
-    if (line.y2() > clipper->value(3))
-        t2[3] = 1;
+    if (a.x() < clipper->value(0))
+        *t = *t1 | LEFT;
+    if (a.x() > clipper->value(1))
+        *t = *t | RIGHT;
+    if (a.y() < clipper->value(2))
+        *t = *t | BOTTOM;
+    if (a.y() > clipper->value(3))
+        *t = *t |TOP;
 }
 
-int MainWindow::check_visibility(int *t1, int *t2)
+int MainWindow::check_visibility(unsigned char t1,
+                                 unsigned char t2)
 {
-    int s1 = 0;
-    int s2 = 0;
-    int p = 0;
-    for (int i = 0; i < 4; i++)
-    {
-        s1 += t1[i];
-        s2 += t2[i];
-        if (t1[i] == 1 && t2[i] == 1)
-            p++;
-    }
-    if (s1 == 0 && s2 == 0)
+    if (t1 == 0 && t2 == 0)
         return 1;
+    unsigned char p = t1 & t2;
     if (p != 0)
         return -1;
     return 0;
