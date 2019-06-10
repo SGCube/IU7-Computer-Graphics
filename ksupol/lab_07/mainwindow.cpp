@@ -7,8 +7,10 @@
 #include <math.h>
 #include <stdlib.h>
 
+#define EPS 0.0001
+
 #define OK 0
-#define END -1
+#define ENDD -1
 #define DRAW 1
 
 MainWindow::MainWindow(QImage *image, QVector<QLine> *segments, QVector<int> *cutter,
@@ -135,6 +137,7 @@ void MainWindow::on_clear_clicked()
     lines->clear();
     clipper->clear();
     set_clipper = false;
+    paint->set_pen();
 }
 
 void MainWindow::on_lineColor_currentIndexChanged(int index)
@@ -170,104 +173,274 @@ void MainWindow::on_clip_clicked()
         return;
     }
     for (int i = 0; i < lines->size(); i++)
-        clip_line();
+        clip_line(i);
 }
 
-void MainWindow::clip_line()
+void MainWindow::clip_line(int i)
 {
-    int rc = OK;
     unsigned char t1 = 0;
     unsigned char t2 = 0;
     QLine line = lines->value(i);
     QPoint p1 = line.p1();
     QPoint p2 = line.p2();
-    QPoint r1, r2;
-    unsigned char sum1, sum2, p;
-    int am = 1;
-    while (rc == OK)
+    QPoint res1, res2, p;
+    pointCode(p1, &t1);
+    pointCode(p2, &t2);
+
+    int left = clipper->value(0), right = clipper->value(1),
+            bottom = clipper->value(2), top = clipper->value(3);
+    float m = pow(10, 10);
+    int x, y;
+    int vis = check_visibility(t1, t2);
+    if (vis == 1)
     {
-        pointCode();
+        put_line(p1, p2);
+        return;
+    }
+    if (vis == -1)
+        return;
+    if (p1.x() != p2.x())
+        m = float(p2.y() - p1.y()) / (p2.x() - p1.x());
+    else
+        m = 0;
+    if (t1 == 0)
+    {
+        res1 = p1;
+        p = p2;
+        checkPointPosition(res1, res2, m, p);
+        return;
+    }
+    if (t2 == 0)
+    {
+        res1 = p2;
+        p = p1;
+        checkPointPosition(res1, res2, m, p);
+        return;
+    }
+    if (m == 0 && p1.x() >= left && p1.x() <= right)
+    {
+        res1.setX(p1.x());
+        res1.setY(bottom);
+        res2.setX(p1.x());
+        res2.setY(top);
+        put_line(res1, res2);
+        return;
+    }
+    y = int(m * (left - p1.x()) + p1.y());
+    if (y >= bottom && y <= top)
+    {
+        res1.setX(left);
+        res1.setY(y);
+        bool fl = find_bottom_crossing(res1, res2, p2, m);
+        if (!fl)
+            fl = find_right_crossing(res1, res2, p2, m);
+        if (!fl)
+            fl = find_top_crossing(res1, res2, p2, m);
+        return;
+    }
+    y = int(m * (right - p1.x()) + p1.y());
+    if (y >= bottom && y <= top)
+    {
+        res1.setX(right);
+        res1.setY(y);
+        bool fl = find_bottom_crossing(res1, res2, p2, m);
+        if (!fl)
+            fl = find_left_crossing(res1, res2, p2, m);
+        if (!fl)
+            fl = find_top_crossing(res1, res2, p2, m);
+        return;
+    }
+    x = int((bottom - p1.y())/m + p1.x());
+    if (x >= left && x <= right)
+    {
+        res1.setX(x);
+        res1.setY(bottom);
+        bool fl = find_right_crossing(res1, res2, p2, m);
+        if (!fl)
+            fl = find_left_crossing(res1, res2, p2, m);
+        if (!fl)
+            fl = find_top_crossing(res1, res2, p2, m);
+        return;
+    }
+    x = int((top - p1.y())/m + p1.x());
+    if (x >= left && x <= right)
+    {
+        res1.setX(x);
+        res1.setY(top);
+        bool fl = find_right_crossing(res1, res2, p2, m);
+        if (!fl)
+            fl = find_left_crossing(res1, res2, p2, m);
+        if (!fl)
+            fl = find_bottom_crossing(res1, res2, p2, m);
+        return;
     }
 }
 
-/*
-void MainWindow::on_clip_clicked()
+bool MainWindow::find_bottom_crossing(QPoint res1, QPoint res2, QPoint p2, float m)
 {
-    if (lines->size() == 0)
+    int left = clipper->value(0), right = clipper->value(1),
+            bottom = clipper->value(2), top = clipper->value(3);
+    int x = int((bottom - p2.y())/m + p2.x());
+    if (x >= left && x <= right)
     {
-        QMessageBox::critical(this, "Ошибка", "Введите отрезки!");
-        return;
+        res2.setX(x);
+        res2.setY(bottom);
+        put_line(res1, res2);
+        return true;
     }
-    if (clipper->size() == 0)
-    {
-        QMessageBox::critical(this, "Ошибка", "Введите отсекатель!");
-        return;
-    }
-    //paint->set_pen();
-    for (int i = 0; i < lines->size(); i++)
-    {
-        unsigned char t1 = 0;
-        unsigned char t2 = 0;
-        QLine line = lines->value(i);
-        QPoint p1 = line.p1();
-        QPoint p2 = line.p2();
-        lineCodes(line, &t1, &t2);
-        qDebug() << t1 << t2;
-        int pr;
+    return false;
+}
 
-        int fl = 0;
-        float m = 1;
-        if (p2.x() == p1.x())
-            fl = -1;
-        else
+bool MainWindow::find_top_crossing(QPoint res1, QPoint res2, QPoint p2, float m)
+{
+    int left = clipper->value(0), right = clipper->value(1),
+            bottom = clipper->value(2), top = clipper->value(3);
+    int x = int((top - p2.y())/m + p2.x());
+    if (x >= left && x <= right)
+    {
+        res2.setX(x);
+        res2.setY(top);
+        put_line(res1, res2);
+    }
+}
+
+bool MainWindow::find_right_crossing(QPoint res1, QPoint res2, QPoint p2, float m)
+{
+    int left = clipper->value(0), right = clipper->value(1),
+            bottom = clipper->value(2), top = clipper->value(3);
+    int y = int(m * (right - p2.x()) + p2.y());
+    if (y >= bottom && y <= top)
+    {
+        res2.setX(right);
+        res2.setY(y);
+        put_line(res1, res2);
+    }
+}
+
+bool MainWindow::find_left_crossing(QPoint res1, QPoint res2, QPoint p2, float m)
+{
+    int left = clipper->value(0), right = clipper->value(1),
+            bottom = clipper->value(2), top = clipper->value(3);
+    int y = int(m * (left - p2.x()) + p2.y());
+    if (y >= bottom && y <= top)
+    {
+        res2.setX(left);
+        res2.setY(y);
+        put_line(res1, res2);
+    }
+}
+
+void MainWindow::checkPointPosition(QPoint res1, QPoint res2, float m, QPoint p)
+{
+    int left = clipper->value(0), right = clipper->value(1),
+            bottom = clipper->value(2), top = clipper->value(3);
+    int x, y;
+    if (p.x() < left)
+    {
+        y = int(m * (left - p.x()) + p.y());
+        if (y >= bottom && y <= top)
         {
-            m = float(p2.y() - p1.y())/(p2.x() - p1.x());
-            if (m == 0)
-                fl = 1;
+            res2.setX(left);
+            res2.setY(y);
+            put_line(res1, res2);
+            return;
         }
-        unsigned char ms[] = {LEFT, RIGHT, BOTTOM, TOP};
-        for (int j = 0; j < 4; j++)
+        if (p.y() < bottom)
         {
-            pr = check_visibility(t1, t2);
-            //qDebug() << pr;
-            if (pr == -1)
-                break;
-            else if (pr == 1)
-                break;
-            unsigned char c1 = t1 & ms[i];
-            unsigned char c2 = t2 & ms[i];
-            if (c1 == c2)
-                continue;
-            if (c1 == 0)
+            x = int((bottom - p.y())/m + p.x());
+            if (x >= left && x <= right)
             {
-                QPoint t = p1;
-                p1 = p2;
-                p2 = t;
+                res2.setX(x);
+                res2.setY(bottom);
+                put_line(res1, res2);
+                return;
             }
-            if (fl != -1 && j < 2)
+        }
+        if (p.y() > top)
+        {
+            x = int((top - p.y())/m + p.x());
+            if (x >= left && x <= right)
             {
-                    int tmp_y = round(m * (clipper->value(j) - p1.x()) + p1.y());
-                    p1.setY(tmp_y);
-
-                    int tmp_x = clipper->value(j);
-                    p1.setX(tmp_x);
+                res2.setX(x);
+                res2.setY(top);
+                put_line(res1, res2);
+                return;
+            }
+        }
+    }
+    if (p.x() > right)
+    {
+        y = int(m * (right - p.x()) + p.y());
+        if (y >= bottom && y <= top)
+        {
+            res2.setX(right);
+            res2.setY(y);
+            put_line(res1, res2);
+            return;
+        }
+        if (p.y() < bottom)
+        {
+            x = int((bottom - p.y())/m + p.x());
+            if (x >= left && x <= right)
+            {
+                res2.setX(x);
+                res2.setY(bottom);
+                put_line(res1, res2);
+                return;
+            }
+        }
+        if (p.y() > top)
+        {
+            x = int((top - p.y())/m + p.x());
+            if (x >= left && x <= right)
+            {
+                res2.setX(x);
+                res2.setY(top);
+                put_line(res1, res2);
+                return;
+            }
+        }
+    }
+    if (p.x() >= left && p.x() <= right)
+    {
+        if (m == 0)
+        {
+            if (p.y() > top)
+            {
+                res2.setX(p.x());
+                res2.setY(top);
+                put_line(res1, res2);
+                return;
             }
             else
             {
-                if (fl != -1)
-                {
-                    int tmp_x = round((1/m) * (clipper->value(j) - p1.y())) + p1.x();
-                    p1.setX(tmp_x);
-                }
-                int tmp_y = clipper->value(j);
-                p1.setY(tmp_y);
+                res2.setX(p.x());
+                res2.setY(bottom);
+                put_line(res1, res2);
+                return;
             }
         }
-        if (pr != -1)
-            put_line(p1, p2);
+        else
+        {
+            if (p.y() > top)
+            {
+                x = int((top - p.y())/m + p.x());
+                res2.setX(x);
+                res2.setY(top);
+                put_line(res1, res2);
+                return;
+            }
+            else
+            {
+                x = int((bottom - p.y())/m + p.x());
+                res2.setX(x);
+                res2.setY(bottom);
+                put_line(res1, res2);
+                return;
+            }
+        }
     }
 }
-*/
 
 void MainWindow::put_line(QPoint r1, QPoint r2)
 {
@@ -282,7 +455,7 @@ void MainWindow::put_line(QPoint r1, QPoint r2)
 void MainWindow::pointCode(QPoint a, unsigned char *t)
 {
     if (a.x() < clipper->value(0))
-        *t = *t1 | LEFT;
+        *t = *t | LEFT;
     if (a.x() > clipper->value(1))
         *t = *t | RIGHT;
     if (a.y() < clipper->value(2))
