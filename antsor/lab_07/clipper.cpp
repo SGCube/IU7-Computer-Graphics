@@ -66,17 +66,21 @@ void Clipper::clipLineSeg(LineSeg& line, Painter& painter)
 			p2 = tmp;
 		}
 
-        if (pos != VERTICAL && i < 2)
+        if (pos != VERTICAL)
 		{
-			p1.setY(round(m * (clipCoords[i] - p1.x())) + p1.y());
-			p1.setX(clipCoords[i]);
+			if (i < 2)
+			{
+				p1.setY(round(m * (clipCoords[i] - p1.x())) + p1.y());
+				p1.setX(clipCoords[i]);
+			}
+			else if (pos != HORIZONTAL)
+			{
+				p1.setX(round((1 / m) * (clipCoords[i] - p1.y())) + p1.x());
+				p1.setY(clipCoords[i]);
+			}
 		}
 		else
-		{
-			if (pos != VERTICAL)
-				p1.setX(round((1 / m) * (clipCoords[i] - p1.y())) + p1.x());
 			p1.setY(clipCoords[i]);
-		}
 	}
 	
     painter.drawClipped(p1.x(), p1.y(), p2.x(), p2.y());
