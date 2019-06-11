@@ -10,6 +10,7 @@ public:
     Paint();
     void color(int b);
     void set_pen();
+    void set_double_pen();
     void put_line(int sX, int sY, int eX, int eY);
     void set_color(QColor *c, int col);
     void colorClipper(int b);

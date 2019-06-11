@@ -1,10 +1,14 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "check.h"
+#include "calc.h"
 #include <stdio.h>
 #include <QMessageBox>
 #include <QDebug>
 #include <qmath.h>
+
+#define WORK 0
+#define EXIT -1
 
 MainWindow::MainWindow(QImage *image, QVector<QLine> *segments, QVector<QPoint> *cutter,
                        Paint *p, QWidget *parent) :
@@ -218,4 +222,161 @@ void MainWindow::on_inputClipper_clicked()
     QGraphicsScene *scene = ui->graphics->scene();
     scene->addPixmap(QPixmap::fromImage(*img));
     paint->end();
+}
+
+void MainWindow::on_clip_clicked()
+{
+    if (lines->size() == 0)
+    {
+        QMessageBox::critical(this, "Ошибка", "Введите отрезок/отрезки!");
+        return;
+    }
+    if (clipper->size() == 0)
+    {
+        QMessageBox::critical(this, "Ошибка", "Введите отсекатель!");
+        return;
+    }
+    cutter = from_points_to_lines();
+    bool convex = is_convex();
+    if (!convex)
+    {
+        QMessageBox::critical(this, "Ошибка", "Отсекатель не выпуклый!");
+        return;
+    }
+    calculate_normals();
+    for (int i = 0; i < lines->size(); i++)
+        cut_line(i);
+    draw_result();
+}
+
+void MainWindow::cut_line(int i)
+{
+    QLine line = lines->value(i);
+    qDebug() << line;
+    int rc = WORK;
+    double t_bottom = 0;
+    double t_top = 1;
+    double t_cur;
+    QLine cur_edge;
+    vector D = vector(line);
+    vector W;
+    int D_scalar, W_scalar;
+    for (int i = 0; i < cutter.size() && rc == WORK; i++)
+    {
+        cur_edge = cutter.value(i);
+        W = vector(line.p1(), cur_edge.p1());
+        D_scalar = scalar_mult(normals[i], D);
+        W_scalar = scalar_mult(W, normals[i]);
+        if (D_scalar == 0)
+        {
+            if (W_scalar < 0)
+                rc = EXIT;
+        }
+        else
+        {
+            t_cur = -W_scalar / (double)D_scalar;
+            if (D_scalar > 0)
+            {
+                if (t_cur > 1)
+                    rc = EXIT;
+                else
+                {
+                    if (t_bottom > t_cur)
+                        t_bottom = t_bottom;
+                    else
+                        t_bottom = t_cur;
+                }
+            }
+            else
+            {
+                if (t_cur < 0)
+                    rc = EXIT;
+                else
+                {
+                    if (t_top < t_cur)
+                        t_top = t_top;
+                    else
+                        t_top = t_cur;
+                }
+            }
+        }
+    }
+    if (rc != EXIT)
+    {
+        if (t_bottom <= t_top)
+        {
+            QPoint p1 = calculate_P(line.p1(), line.p2(), t_bottom);
+            QPoint p2 = calculate_P(line.p1(), line.p2(), t_top);
+            QLine res = QLine(p1, p2);
+            result.push_back(res);
+        }
+    }
+}
+
+void MainWindow::draw_result()
+{
+    for (int i = 0; i < result.size(); i++)
+    {
+        QLine line = result.value(i);
+        paint->begin(img);
+        paint->set_double_pen();
+        paint->put_line(line.x1(), line.y1(), line.x2(), line.y2());
+        QGraphicsScene *scene = ui->graphics->scene();
+        scene->addPixmap(QPixmap::fromImage(*img));
+        paint->end();
+    }
+}
+
+QVector<QLine> MainWindow::from_points_to_lines()
+{
+    QVector<QLine> a;
+    int size = clipper->size();
+    for (int i = 0; i < size - 1; i++)
+    {
+        a.push_back(QLine(clipper->value(i).x(), clipper->value(i).y(),
+                    clipper->value(i+1).x(), clipper->value(i+1).y()));
+    }
+    a.push_back(QLine(clipper->value(size-1).x(), clipper->value(size-1).y(),
+                clipper->value(0).x(), clipper->value(0).y()));
+    return a;
+}
+
+bool MainWindow::is_convex()
+{
+    vector a = vector(cutter.value(0));
+    vector b, res;
+    int sign = 0;
+    for (int i = 1; i < cutter.size() - 1; i++)
+    {
+        b = vector(cutter.value(i));
+        multiply_vectors(a, b, res);
+        if (sign == 0)
+            sign = sign_func(res.z);
+        if (res.z && sign != sign_func(res.z))
+        {
+            direction = 0;
+            return false;
+        }
+        a = b;
+    }
+    direction = sign;
+    return true;
+}
+
+void MainWindow::calculate_normals()
+{
+    vector tmp;
+    for (int i = 0; i < cutter.size(); i++)
+    {
+        tmp = vector(cutter.value(i));
+        if (direction == 1)
+            normals.push_back(vector(-tmp.y, tmp.x));
+        else
+            normals.push_back(vector(tmp.y, -tmp.x));
+    }
+}
+
+void MainWindow::on_resultColor_currentIndexChanged(int index)
+{
+    paint->color(index);
 }

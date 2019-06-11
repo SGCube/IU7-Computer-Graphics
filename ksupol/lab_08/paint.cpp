@@ -19,6 +19,13 @@ void Paint::color(int b)
 
 void Paint::set_pen()
 {
+    pen.setWidth(1);
+    setPen(pen);
+}
+
+void Paint::set_double_pen()
+{
+    pen.setWidth(3);
     setPen(pen);
 }
 
