@@ -71,7 +71,7 @@ void Clipper::clipLineSeg(LineSeg& line, Painter& painter)
 			p1.setY(round(m * (clipCoords[i] - p1.x())) + p1.y());
 			p1.setX(clipCoords[i]);
 		}
-		else
+		else if (pos != HORIZONTAL)
 		{
 			if (pos != VERTICAL)
 				p1.setX(round((1 / m) * (clipCoords[i] - p1.y())) + p1.x());

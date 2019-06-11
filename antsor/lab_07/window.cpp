@@ -174,6 +174,11 @@ void Window::on_clearButton_clicked()
 	img.fill(QColor(255, 255, 255));
 	ui->canvas->repaint();
 	
+	ui->ltxEdit->setValue(0);
+	ui->ltyEdit->setValue(0);
+	ui->rbxEdit->setValue(640);
+	ui->rbyEdit->setValue(640);
+	
 	lineSegments.clear();
 	int len = ui->pointTable->rowCount();
 	for (int i = 0; i < len; i++)

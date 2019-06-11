@@ -20,7 +20,7 @@ void Clipper::clipLineSeg(LineSeg& line, Painter& painter)
 	bool toFinish = false;
 	
 	int tBottom = 0, tTop = 1;
-	Vector D(p1, p2);
+	Vector d(p1, p2);
 	
 	for (size_t i = 0; i < edges.size() && !toFinish; i++)
 	{
@@ -34,9 +34,9 @@ void Clipper::clipLineSeg(LineSeg& line, Painter& painter)
 			normal = Vector(tmp.y, -tmp.x);
 		
 		
-		Vector W(p1, edge.getP1());
-		double dScalar = Vector::scalarMultiply(normal, D);
-		double wScalar = Vector::scalarMultiply(W, normal);
+		Vector w(p1, edge.getP1());
+		double dScalar = Vector::scalarMultiply(normal, d);
+		double wScalar = Vector::scalarMultiply(w, normal);
 		
 		
 		if (dScalar == 0)

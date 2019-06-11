@@ -242,8 +242,8 @@
      <rect>
       <x>10</x>
       <y>660</y>
-      <width>331</width>
-      <height>21</height>
+      <width>631</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -252,7 +252,8 @@
      </font>
     </property>
     <property name="text">
-     <string>Рисование отрезков - ЛКМ. Отмена - ПКМ.</string>
+     <string>Рисование отрезков - ЛКМ. Отмена - ПКМ. Для рисования горизонтальных и
+вертикальных отрезков зажать Shift. Размер холста: 640x640</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -377,27 +378,6 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="hint_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>680</y>
-      <width>451</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Размер холста: 640x640    Система координат - экранная</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="Canvas" name="canvas" native="true">
