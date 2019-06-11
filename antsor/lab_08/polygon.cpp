@@ -37,15 +37,12 @@ Point Polygon::operator[](int i)
 	return vertexes[i];
 }
 
-vector<LineSeg> Polygon::set_to_edges(vector<Polygon> set)
+vector<LineSeg> Polygon::toEdges()
 {
 	vector<LineSeg> edges;
-	for (size_t i = 0; i < set.size(); i++)
-	{
-		int j = 1;
-		for (; j < set[i].number_of_vertexes(); j++)
-			edges.push_back(LineSeg(set[i][j - 1], set[i][j]));
-		edges.push_back(LineSeg(set[i][j - 1], set[i][0]));
-	}
+	size_t j = 1;
+	for (; j < vertexes.size(); j++)
+		edges.push_back(LineSeg(vertexes[j - 1], vertexes[j]));
+	edges.push_back(LineSeg(vertexes[j - 1], vertexes[0]));
 	return edges;
 }

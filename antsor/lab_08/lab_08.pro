@@ -40,6 +40,7 @@ HEADERS += \
         painter.h \
         point.h \
         polygon.h \
+        vector.hpp \
         window.h
 
 FORMS += \

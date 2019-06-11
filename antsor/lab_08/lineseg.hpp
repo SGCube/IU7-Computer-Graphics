@@ -1,32 +1,41 @@
 #ifndef LINESEG_H
 #define LINESEG_H
 
+#include <cmath>
+
 #include "point.h"
 
 class LineSeg
 {
 public:
-	LineSeg(int sx, int sy, int px, int py) : source(sx, sy), purpose(px, py) {}
-	LineSeg(Point s, Point p) : source(s), purpose(p) {}
+	LineSeg(int sx, int sy, int px, int py) : p1(sx, sy), p2(px, py) {}
+	LineSeg(Point s, Point p) : p1(s), p2(p) {}
 	
-	Point& getSource() { return source; }
-	Point& getPurpose() { return purpose; }
+	Point& getP1() { return p1; }
+	Point& getP2() { return p2; }
 	
-	void setSource(const Point &value) { source = value; }
-	void setPurpose(const Point &value) { purpose = value; }
+	void setP1(const Point &value) { p1 = value; }
+	void setP2(const Point &value) { p2 = value; }
 	
-	bool isHorizontal() { return source.y() == purpose.y(); }
-	bool isVertical() { return source.x() == purpose.x(); }
+	bool isHorizontal() { return p1.y() == p2.y(); }
+	bool isVertical() { return p1.x() == p2.x(); }
 	
 	void swapPoints()
 	{
-		Point tmp = source;
-		source = purpose;
-		purpose = tmp;
+		Point tmp = p1;
+		p1 = p2;
+		p2 = tmp;
+	}
+	
+	Point getParam(double t)
+	{
+		int x = p1.x() + round((p2.x() - p1.x()) * t);
+		int y = p1.y() + round((p2.y() - p1.y()) * t);
+		return Point(x, y);
 	}
 	
 private:
-	Point source, purpose;
+	Point p1, p2;
 };
 
 #endif // LINESEG_H

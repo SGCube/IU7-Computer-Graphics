@@ -38,14 +38,16 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 	if (event->button() == Qt::RightButton && isDrawing)
 	{
 		isDrawing = false;
-		repaint();
 		if (isClipperToDraw && clipper.number_of_vertexes() > 2)
 		{
+			painter->begin(img);
 			lockClipper();
+			painter->end();
 			emit endClipperDraw();
 		}
 		else
 			emit breakSegDraw();
+		repaint();
 		return;
 	}
 	if (event->button() != Qt::LeftButton)
@@ -157,27 +159,14 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
 
 void Canvas::addPointToClipper(Point p)
 {
-	painter->begin(img);
-	if (clipper.number_of_vertexes() > 0)
-	{
-		Point plast = clipper.last_point();
-		painter->drawClipper(plast.x(), plast.y(), p.x(), p.y());
-	}
 	clipper.add_point(p);
-	painter->end();
-	repaint();
 }
 
 void Canvas::lockClipper()
 {
-	painter->begin(img);
-	
 	Point pfirst = clipper.first_point();
 	Point plast = clipper.last_point();
 	painter->drawClipper(plast.x(), plast.y(), pfirst.x(), pfirst.y());
-	
-	painter->end();
-	repaint();
 }
 
 void Canvas::setOrtDraw(bool state)

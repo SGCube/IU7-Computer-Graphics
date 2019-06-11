@@ -18,7 +18,7 @@ public:
 	Point last_point();
 	Point operator[](int i);
 	
-	static std::vector<LineSeg> set_to_edges(std::vector<Polygon> set);
+	std::vector<LineSeg> toEdges();
 private:
 	std::vector<Point> vertexes;
 };

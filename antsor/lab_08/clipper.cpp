@@ -1,97 +1,100 @@
 #include <cmath>
 
 #include "clipper.h"
-
-Clipper::Clipper(Polygon p)
-{
-	polygon = p;
-}
+#include "vector.hpp"
 
 void Clipper::clip(std::vector<LineSeg>& lines, Painter& painter)
 {
-	/*for (size_t i = 0; i < lines.size(); i++)
-		clipLineSeg(lines[i], painter);*/
+	for (size_t i = 0; i < lines.size(); i++)
+		clipLineSeg(lines[i], painter);
 }
 
-/*void Clipper::clipLineSeg(LineSeg& line, Painter& painter)
+void Clipper::clipLineSeg(LineSeg& line, Painter& painter)
 {
-	/// Cohen-Sutherland
-	/// 
-	Point p1 = line.getSource();
-	Point p2 = line.getPurpose();
+	Point p1 = line.getP1();
+	Point p2 = line.getP2();
 	
+	if (!isConvex())
+		return;
 	
-	PosState pos = COMMON;			// 0
-    double m = 1;
-
-    if (line.isVertical())
-        pos = VERTICAL;				// -1
-	else if (line.isHorizontal())
+	bool toFinish = false;
+	
+	int tBottom = 0, tTop = 1;
+	Vector D(p1, p2);
+	
+	for (size_t i = 0; i < edges.size() && !toFinish; i++)
 	{
-		pos = HORIZONTAL;			// 1
-		m = 0;
-	}
-	else
-		m = double(p2.y() - p1.y()) / (p2.x() - p1.x());
-	
-	unsigned masks[] = { codeMasks.outOfLeft, codeMasks.outOfRight,
-					   codeMasks.outOfBottom, codeMasks.outOfTop };
-	
-	int clipCoords[] = { left, right, bottom, top };
-	
-    for (int i = 0; i < 4; i++)
-	{
-		Visibility vis = isVisible(p1, p2);
-		if (vis == INVISIBLE)
-			return;
-		if (vis == VISIBLE)
-		{
-			painter.drawClipped(p1.x(), p1.y(), p2.x(), p2.y());
-			return;
-		}
+		LineSeg edge = edges[i];
 		
-		unsigned code1 = getCode(p1) & masks[i];
-		unsigned code2 = getCode(p2) & masks[i];
-
-        if (code1 == code2)
-            continue;
-
-        if (code1 == 0)
+		Vector normal;
+		Vector tmp(edge.getP1(), edge.getP2());
+		if (direction == 1)
+			normal = Vector(-tmp.y, tmp.x);
+		else
+			normal = Vector(tmp.y, -tmp.x);
+		
+		
+		Vector W(p1, edge.getP1());
+		double dScalar = Vector::scalarMultiply(normal, D);
+		double wScalar = Vector::scalarMultiply(W, normal);
+		
+		
+		if (dScalar == 0)
 		{
-			Point tmp = p1;
-			p1 = p2;
-			p2 = tmp;
-		}
-
-        if (pos != VERTICAL && i < 2)
-		{
-			p1.setY(round(m * (clipCoords[i] - p1.x())) + p1.y());
-			p1.setX(clipCoords[i]);
+			if (wScalar < 0)
+				toFinish = true;
 		}
 		else
 		{
-			if (pos != VERTICAL)
-				p1.setX(round((1 / m) * (clipCoords[i] - p1.y())) + p1.x());
-			p1.setY(clipCoords[i]);
+			double t = -double(wScalar)/dScalar;
+			if (dScalar > 0)
+			{
+				if (t > 1)
+					toFinish = true;
+				else
+				{
+					if (t > tBottom)
+						tBottom = t;
+				}
+			}
+			else
+			{
+				if (t < 0)
+					toFinish = true;
+				else
+				{
+					if (t < tTop)
+						tTop = t;
+				}
+			}
 		}
 	}
 	
-    painter.drawClipped(p1.x(), p1.y(), p2.x(), p2.y());
-}*/
-
-/*Clipper::Visibility Clipper::isVisible(Point p1, Point p2)
-{
-	unsigned code1 = getCode(p1);
-	unsigned code2 = getCode(p2);
-
-    if (code1 == 0 && code2 == 0)
+	if (!toFinish && tBottom <= tTop)
 	{
-        return VISIBLE;
+		Point pp1 = line.getParam(tBottom);
+		Point pp2 = line.getParam(tTop);
+		painter.drawClipped(pp1.x(), pp1.y(), pp2.x(), pp2.y());
 	}
+}
 
-	unsigned lcode = code1 & code2;
-	if (lcode != 0)
-		return INVISIBLE;
-
-	return PART_VISIBLE;
-}*/
+bool Clipper::isConvex()
+{
+	Vector a(edges[0].getP1(), edges[0].getP2());
+	int sign = 0;
+	for (size_t i = 1; i < edges.size() - 1; i++)
+	{
+		Vector b(edges[i].getP1(), edges[i].getP2());
+		Vector n = Vector::vectorMultiply(a, b);
+		if (sign == 0)
+			sign = signFunc(n.z);
+		if (n.z != 0 && sign != signFunc(n.z))
+		{
+			direction = 0;
+			return false;
+		}
+		a = b;
+	}
+	direction = sign;
+	return true;
+}

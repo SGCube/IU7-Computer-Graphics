@@ -121,13 +121,15 @@ void Window::beginClipper(Point p)
 
 void Window::addToClipper(Point p)
 {
-	ui->pointTable->insertRow(ui->clipperTable->rowCount());
+	ui->clipperTable->insertRow(ui->clipperTable->rowCount());
 	int row = ui->clipperTable->rowCount() - 1;
 	QTableWidgetItem *xitem = nullptr, *yitem = nullptr;
 	xitem = new QTableWidgetItem(QString::number(p.x()));
 	yitem = new QTableWidgetItem(QString::number(p.y()));
 	ui->clipperTable->setItem(row, 0, xitem);
 	ui->clipperTable->setItem(row, 1, yitem);
+	
+	clipperPolygon.add_point(p);
 }
 
 void Window::lockClipper()
@@ -158,7 +160,7 @@ void Window::on_clipButton_clicked()
 		painter.begin(&img);
 		clipper.clip(lineSegments, painter);
 		painter.end();
-		repaint();
+		ui->canvas->repaint();
 	}
 }
 

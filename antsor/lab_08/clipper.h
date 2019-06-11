@@ -11,29 +11,25 @@
 class Clipper
 {
 public:
-	Clipper(Polygon p);
+	Clipper(Polygon p) : edges(p.toEdges()), direction(-1) {}
 	
 	void clip(std::vector<LineSeg>& lines, Painter& painter);
-	//void clipLineSeg(LineSeg& line, Painter& painter);
+	void clipLineSeg(LineSeg& line, Painter& painter);
 	
 private:
-	enum Visibility
+	std::vector<LineSeg> edges;
+	int direction;
+	
+	bool isConvex();
+	
+	static int signFunc(int x)
 	{
-		INVISIBLE = -1,
-		PART_VISIBLE = 0,
-		VISIBLE = 1
-	};
-	
-	enum PosState
-	{
-		VERTICAL = -1,
-		COMMON = 0,
-		HORIZONTAL = 1
-	};
-	
-	//Visibility isVisible(Point p1, Point p2);
-	
-	Polygon polygon;
+		if (x > 0)
+			return 1;
+		if (x < 0)
+			return -1;
+		return 0;
+	}
 };
 
 #endif // CLIPPER_H
