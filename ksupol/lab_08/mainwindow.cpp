@@ -281,9 +281,7 @@ void MainWindow::cut_line(int i)
                     rc = EXIT;
                 else
                 {
-                    if (t_bottom > t_cur)
-                        t_bottom = t_bottom;
-                    else
+                    if (t_bottom <= t_cur)
                         t_bottom = t_cur;
                 }
             }
@@ -293,9 +291,7 @@ void MainWindow::cut_line(int i)
                     rc = EXIT;
                 else
                 {
-                    if (t_top < t_cur)
-                        t_top = t_top;
-                    else
+                    if (t_top >= t_cur)
                         t_top = t_cur;
                 }
             }
