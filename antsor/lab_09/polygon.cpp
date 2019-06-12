@@ -16,7 +16,7 @@ void Polygon::clear()
 	vertexes.clear();
 }
 
-int Polygon::number_of_vertexes()
+size_t Polygon::size()
 {
 	return vertexes.size();
 }
@@ -33,14 +33,12 @@ Point Polygon::last_point()
 
 Point Polygon::operator[](int i)
 {
-	int j = 0;
-	while ()
 	return vertexes[i];
 }
 
-std::list<LineSeg> Polygon::toEdges()
+std::vector<LineSeg> Polygon::toEdges()
 {
-	std::list<LineSeg> edges;
+	std::vector<LineSeg> edges;
 	size_t j = 1;
 	for (; j < vertexes.size(); j++)
 		edges.push_back(LineSeg(vertexes[j - 1], vertexes[j]));

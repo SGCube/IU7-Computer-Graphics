@@ -1,7 +1,7 @@
 #ifndef POLYGON_H
 #define POLYGON_H
 
-#include <list>
+#include <vector>
 
 #include "point.h"
 #include "lineseg.hpp"
@@ -13,14 +13,14 @@ public:
 	~Polygon();
 	void add_point(Point);
 	void clear();
-	int number_of_vertexes();
+	size_t size();
 	Point first_point();
 	Point last_point();
 	Point operator[](int i);
 	
-	std::list<LineSeg> toEdges();
+	std::vector<LineSeg> toEdges();
 private:
-	std::list<Point> vertexes;
+	std::vector<Point> vertexes;
 };
 
 #endif // POLYGON_H
