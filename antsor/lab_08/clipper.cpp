@@ -17,63 +17,57 @@ void Clipper::clipLineSeg(LineSeg& line, Painter& painter)
 	if (!isConvex())
 		return;
 	
-	bool toFinish = false;
-	
-	int tBottom = 0, tTop = 1;
+	double t1 = 0, t2 = 1;
 	Vector d(p1, p2);
 	
-	for (size_t i = 0; i < edges.size() && !toFinish; i++)
+	for (size_t i = 0; i < edges.size(); i++)
 	{
 		LineSeg edge = edges[i];
+		Vector edgeVector(edge.getP1(), edge.getP2());
 		
-		Vector normal;
-		Vector tmp(edge.getP1(), edge.getP2());
+		Vector n;
 		if (direction == 1)
-			normal = Vector(-tmp.y, tmp.x);
+			n = Vector(-edgeVector.y, edgeVector.x);
 		else
-			normal = Vector(tmp.y, -tmp.x);
+			n = Vector(edgeVector.y, -edgeVector.x);
 		
 		
-		Vector w(p1, edge.getP1());
-		double dScalar = Vector::scalarMultiply(normal, d);
-		double wScalar = Vector::scalarMultiply(w, normal);
+		Vector w(edge.getP1(), p1);
+		double dScalar = Vector::scalarMultiply(n, d);
+		double wScalar = Vector::scalarMultiply(w, n);
 		
 		
 		if (dScalar == 0)
 		{
 			if (wScalar < 0)
-				toFinish = true;
+				return;
 		}
 		else
 		{
-			double t = -double(wScalar)/dScalar;
+			double t = -double(wScalar)/double(dScalar);
 			if (dScalar > 0)
 			{
 				if (t > 1)
-					toFinish = true;
-				else
-				{
-					if (t > tBottom)
-						tBottom = t;
-				}
+					return;
+				
+				if (t > t1)
+					t1 = t;
 			}
 			else
 			{
 				if (t < 0)
-					toFinish = true;
-				else
-				{
-					if (t < tTop)
-						tTop = t;
-				}
+					return;
+				
+				if (t < t2)
+					t2 = t;
 			}
 		}
 	}
 	
-	if (!toFinish && tBottom <= tTop)
+	if (t1 <= t2)
 	{
-		Point pp1 = line.getParam(tBottom);
-		Point pp2 = line.getParam(tTop);
+		Point pp1 = line.getParam(t1);
+		Point pp2 = line.getParam(t2);
 		painter.drawClipped(pp1.x(), pp1.y(), pp2.x(), pp2.y());
 	}
 }
