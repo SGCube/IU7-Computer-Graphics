@@ -30,6 +30,7 @@ SOURCES += \
         main.cpp \
         painter.cpp \
         point.cpp \
+        pointdata.cpp \
         polygon.cpp \
         window.cpp
 
@@ -39,6 +40,7 @@ HEADERS += \
         lineseg.hpp \
         painter.h \
         point.h \
+        pointdata.h \
         polygon.h \
         vector.hpp \
         window.h
