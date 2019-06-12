@@ -37,7 +37,7 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::RightButton && isDrawing)
 	{
-		if (curPolygon.number_of_vertexes() > 2)
+		if (curPolygon.size() > 2)
 		{
 			isDrawing = false;
 			painter->begin(img);
