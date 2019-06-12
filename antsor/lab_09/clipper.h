@@ -11,13 +11,12 @@
 class Clipper
 {
 public:
-	Clipper(std::vector<Polygon> p) : polygons(p), direction(-1) {}
+	Clipper(std::vector<Polygon> p) : clippers(p), direction(-1) {}
 	
 	void clip(std::vector<Polygon>& polygons, Painter& painter);
-	void clipPolygon(Polygon& polygon, Painter& painter);
 	
 private:
-	std::vector<Polygon> polygons;
+	std::vector<Polygon> clippers;
 	int direction;
 	
 	static int signFunc(int x)
