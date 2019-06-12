@@ -1,5 +1,4 @@
 #include "polygon.h"
-using std::vector;
 
 Polygon::~Polygon()
 {
@@ -34,12 +33,14 @@ Point Polygon::last_point()
 
 Point Polygon::operator[](int i)
 {
+	int j = 0;
+	while ()
 	return vertexes[i];
 }
 
-vector<LineSeg> Polygon::toEdges()
+std::list<LineSeg> Polygon::toEdges()
 {
-	vector<LineSeg> edges;
+	std::list<LineSeg> edges;
 	size_t j = 1;
 	for (; j < vertexes.size(); j++)
 		edges.push_back(LineSeg(vertexes[j - 1], vertexes[j]));
