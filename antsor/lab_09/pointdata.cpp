@@ -1,5 +1,21 @@
 #include "pointdata.h"
 
+PointDataList::~PointDataList()
+{
+	head();
+	tail_->next() = nullptr;
+	head_->prev() = nullptr;
+	
+	PointData* tmp = nullptr;
+	
+	while (cur_->next() != nullptr)
+	{
+		tmp = cur_;
+		next();
+		delete tmp;
+	}
+}
+
 void PointDataList::insert(PointData* p, PointData* after)
 {
 	if (after == nullptr)

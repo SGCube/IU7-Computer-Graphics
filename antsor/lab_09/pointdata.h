@@ -36,6 +36,7 @@ class PointDataList
 {
 public:
 	PointDataList(): head_(nullptr), tail_(nullptr), cur_(nullptr) {}
+	~PointDataList();
 	
 	void insert(PointData* p, PointData* after);
 	void push_back(PointData* p);
