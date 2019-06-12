@@ -20,7 +20,7 @@ Window::Window(QWidget *parent) :
 	connect(ui->canvas, SIGNAL(curCoord(Point)),
 			this, SLOT(getCurCoord(Point)));
 	
-	connect(ui->canvas, SIGNAL(startPolygon(Point)),
+	connect(ui->canvas, SIGNAL(startPolygonDraw(Point)),
 			this, SLOT(beginPolygon(Point)));
 	connect(ui->canvas, SIGNAL(drawingPolygon(Point)),
 			this, SLOT(addToPolygon(Point)));
