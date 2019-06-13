@@ -36,6 +36,13 @@ struct Vector
 					  a.z * b.x - a.x * b.z,
 					  a.x * b.y - a.y * b.x);
 	}
+	
+	static Vector normal(Vector &v, int dir)
+	{
+		if (dir == 1)
+			return Vector(-v.y, v.x);
+		return Vector(v.y, -v.x);
+	}
 };
 
 #endif // VECTOR_H

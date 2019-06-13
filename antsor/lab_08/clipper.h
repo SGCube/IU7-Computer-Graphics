@@ -7,13 +7,14 @@
 #include "lineseg.hpp"
 #include "polygon.h"
 #include "painter.h"
+#include "vector.hpp"
 
 class Clipper
 {
 public:
 	Clipper(Polygon p) : edges(p.toEdges()), direction(-1) {}
 	
-	void clip(std::vector<LineSeg>& lines, Painter& painter);
+	bool clip(std::vector<LineSeg>& lines, Painter& painter);
 	void clipLineSeg(LineSeg& line, Painter& painter);
 	
 private:

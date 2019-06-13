@@ -83,10 +83,10 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 		painter->begin(img);
 		if (isClipperToDraw)
 		{
-			Point plast = clipper.last_point();
-			painter->drawClipper(plast.x(), plast.y(), x, y);
+			painter->drawClipper(startPoint.x(), startPoint.y(), x, y);
 			addPointToClipper(Point(x, y));
 			emit clipperDraw(Point(x, y));
+			startPoint = Point(x, y);
 		}
 		else
 		{
@@ -103,6 +103,7 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 		isDrawing = true;
 		if (isClipperToDraw)
 		{
+			clipper.clear();
 			addPointToClipper(startPoint);
 			emit startClipperDraw(startPoint);
 		}
@@ -167,6 +168,7 @@ void Canvas::lockClipper()
 	Point pfirst = clipper.first_point();
 	Point plast = clipper.last_point();
 	painter->drawClipper(plast.x(), plast.y(), pfirst.x(), pfirst.y());
+	isDrawing = false;
 }
 
 void Canvas::setOrtDraw(bool state)

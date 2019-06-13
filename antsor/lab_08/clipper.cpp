@@ -3,19 +3,20 @@
 #include "clipper.h"
 #include "vector.hpp"
 
-void Clipper::clip(std::vector<LineSeg>& lines, Painter& painter)
+bool Clipper::clip(std::vector<LineSeg>& lines, Painter& painter)
 {
+	if (!isConvex())
+		return false;
+	
 	for (size_t i = 0; i < lines.size(); i++)
 		clipLineSeg(lines[i], painter);
+	return true;
 }
 
 void Clipper::clipLineSeg(LineSeg& line, Painter& painter)
 {
 	Point p1 = line.getP1();
 	Point p2 = line.getP2();
-	
-	if (!isConvex())
-		return;
 	
 	double t1 = 0, t2 = 1;
 	Vector d(p1, p2);
@@ -25,17 +26,11 @@ void Clipper::clipLineSeg(LineSeg& line, Painter& painter)
 		LineSeg edge = edges[i];
 		Vector edgeVector(edge.getP1(), edge.getP2());
 		
-		Vector n;
-		if (direction == 1)
-			n = Vector(-edgeVector.y, edgeVector.x);
-		else
-			n = Vector(edgeVector.y, -edgeVector.x);
-		
-		
+		Vector n = Vector::normal(edgeVector, direction);
 		Vector w(edge.getP1(), p1);
-		double dScalar = Vector::scalarMultiply(n, d);
-		double wScalar = Vector::scalarMultiply(w, n);
 		
+		double dScalar = Vector::scalarMultiply(n, d);
+		double wScalar = Vector::scalarMultiply(n, w);
 		
 		if (dScalar == 0)
 		{

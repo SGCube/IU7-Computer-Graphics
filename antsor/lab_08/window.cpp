@@ -1,4 +1,5 @@
 #include <QColorDialog>
+#include <QMessageBox>
 
 #include "window.h"
 #include "ui_window.h"
@@ -101,7 +102,7 @@ void Window::getEndPoint(Point p)
 
 void Window::getCurCoord(Point coord)
 {
-	QString str = "Текущие\nкоординаты:\n(";
+	QString str = "Текущие координаты: (";
 	str.append(QString::number(coord.x()));
 	str.append(", ");
 	str.append(QString::number(coord.y()));
@@ -158,7 +159,8 @@ void Window::on_clipButton_clicked()
 		Clipper clipper(clipperPolygon);
 		
 		painter.begin(&img);
-		clipper.clip(lineSegments, painter);
+		if (!clipper.clip(lineSegments, painter))
+			QMessageBox::warning(this, "Ошибка", "Отсекатель не выпуклый!");
 		painter.end();
 		ui->canvas->repaint();
 	}
