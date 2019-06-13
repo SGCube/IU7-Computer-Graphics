@@ -29,12 +29,12 @@ public:
 	
 	Point getParam(double t)
 	{
-		int x = p1.x() + round((p2.x() - p1.x()) * t);
-		int y = p1.y() + round((p2.y() - p1.y()) * t);
+		int x = p1.x() + (p2.x() - p1.x()) * t;
+		int y = p1.y() + (p2.y() - p1.y()) * t;
 		return Point(x, y);
 	}
 	
-	static Point intersect(LineSeg p, LineSeg q)
+	static bool intersect(LineSeg p, LineSeg q, Point& pi)
 	{
 		Point& p1 = p.getP1(), p2 = p.getP2();
 		Point& q1 = q.getP1(), q2 = q.getP2();
@@ -42,10 +42,19 @@ public:
 		double dxp = p2.x() - p1.x();
 		double dyp = p2.y() - p1.y();
 		double dxq = q2.x() - q1.x();
-		double dyq = q2.y() - q2.y();
-		double mq = dxq / dyq;
-		double t = (q1.x() - p1.x() + mq * (p1.y() - q1.y())) / (dxp - mq * dyp);
-		return p.getParam(t);
+		double dyq = q2.y() - q1.y();
+		double mq = dyq / dxq;
+		
+		double t = (q1.y() - p1.y() + mq * (p1.x() - q1.x())) / (dyp - mq * dxp);
+		// double s = (p1.y() - q1.y() + dyp * t) / dyq;
+		
+		pi = p.getParam(t);
+		
+		bool tCheck = 0 <= t && t <= 1;
+		// bool sCheck = 0 <= s && s <= 1;
+		
+		// return tCheck && sCheck;
+		return tCheck;
 	}
 	
 private:

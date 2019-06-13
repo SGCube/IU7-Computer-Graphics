@@ -34,7 +34,7 @@ private:
 	Painter painter;
 	
 	std::vector<Polygon> polygons;
-	std::vector<Polygon> clipperPolygons;
+	Polygon clipperPolygon;
 	Polygon drawingPolygon;
 	bool drawClipper;
 	

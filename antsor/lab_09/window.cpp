@@ -77,7 +77,7 @@ void Window::clearPolygons()
 
 void Window::clearClipper()
 {
-	clipperPolygons.clear();
+	clipperPolygon.clear();
 	int len = ui->clipperTable->rowCount();
 	for (int i = 0; i < len; i++)
 		ui->clipperTable->removeRow(0);
@@ -97,8 +97,6 @@ void Window::beginPolygon(Point p)
 {
 	if (drawClipper)
 		clearClipper();
-	else
-		clearPolygons();
 	addToPolygon(p);
 }
 
@@ -121,22 +119,20 @@ void Window::addToPolygon(Point p)
 
 void Window::lockPolygon()
 {
-	QTableWidget* table = ui->polygonTable;
 	if (drawClipper)
-		table = ui->clipperTable;
-	
-	table->insertRow(table->rowCount());
-	int row = table->rowCount() - 1;
-	QTableWidgetItem *xitem = nullptr, *yitem = nullptr;
-	xitem = new QTableWidgetItem("===");
-	yitem = new QTableWidgetItem("===");
-	table->setItem(row, 0, xitem);
-	table->setItem(row, 1, yitem);
-	
-	if (drawClipper)
-		clipperPolygons.push_back(drawingPolygon);
-	else 
+		clipperPolygon = drawingPolygon;
+	else
+	{
+		ui->polygonTable->insertRow(ui->polygonTable->rowCount());
+		int row = ui->polygonTable->rowCount() - 1;
+		QTableWidgetItem *xitem = nullptr, *yitem = nullptr;
+		xitem = new QTableWidgetItem("===");
+		yitem = new QTableWidgetItem("===");
+		ui->polygonTable->setItem(row, 0, xitem);
+		ui->polygonTable->setItem(row, 1, yitem);
+		
 		polygons.push_back(drawingPolygon);
+	}
 	drawingPolygon.clear();
 }
 
@@ -156,9 +152,9 @@ void Window::on_toClipperRadio_clicked()
 
 void Window::on_clipButton_clicked()
 {
-	if (clipperPolygons.size() > 0)
+	if (clipperPolygon.size() > 0)
 	{
-		Clipper clipper(clipperPolygons);
+		Clipper clipper(clipperPolygon);
 		
 		painter.begin(&img);
 		clipper.clip(polygons, painter);

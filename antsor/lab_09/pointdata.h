@@ -19,10 +19,10 @@ private:
 	PointData* next_;
 };
 
-class IntersectData : PointData
+class IntersectData : public PointData
 {
 public:
-	IntersectData(Point p, PointData* link, PointData* prevPoint=nullptr,
+	IntersectData(Point p, PointData* link=nullptr, PointData* prevPoint=nullptr,
 				  PointData* nextPoint=nullptr) :
 		PointData(p, prevPoint, nextPoint), link_(link) {}
 	
@@ -45,11 +45,14 @@ public:
 	Point pop_front();
 	Point pop_back();
 	
-	PointData* head();
-	PointData* tail();
+	PointData* toHead();
+	PointData* toTail();
 	PointData* cur();
 	PointData* prev();
 	PointData* next();
+	
+	bool isAtHead();
+	bool isAtTail();
 	
 private:
 	PointData* head_;

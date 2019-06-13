@@ -1,10 +1,43 @@
 #include "polygon.h"
 
+Polygon::Polygon(const Polygon &p)
+{
+	if (this != &p)
+        this->vertexes = p.vertexes;
+}
+
+Polygon::Polygon(Polygon &&p)
+{
+	if (this != &p)
+    {
+        this->vertexes.clear();
+        this->vertexes = p.vertexes;
+		p.vertexes.clear();
+    }
+}
+
 Polygon::~Polygon()
 {
 	vertexes.clear();
 }
 
+Polygon& Polygon::operator=(const Polygon& p)
+{
+    if (this != &p)
+        this->vertexes = p.vertexes;
+    return *this;
+}
+
+Polygon& Polygon::operator=(Polygon&& p)
+{
+    if (this != &p)
+    {
+        this->vertexes.clear();
+        this->vertexes = p.vertexes;
+		p.vertexes.clear();
+    }
+    return *this;
+}
 
 void Polygon::add_point(Point p)
 {

@@ -2,7 +2,7 @@
 
 PointDataList::~PointDataList()
 {
-	head();
+	toHead();
 	tail_->next() = nullptr;
 	head_->prev() = nullptr;
 	
@@ -78,7 +78,7 @@ Point PointDataList::pop_front()
 	PointData* tmp = head_;
 	head_ = head_->next();
 	if (cur_ == tmp)
-		head();
+		toHead();
 	delete tmp;
 	return data;
 }
@@ -91,18 +91,18 @@ Point PointDataList::pop_back()
 	PointData* tmp = tail_;
 	tail_ = tail_->prev();
 	if (cur_ == tmp)
-		tail();
+		toTail();
 	delete tmp;
 	return data;
 }
 
-PointData *PointDataList::head()
+PointData *PointDataList::toHead()
 {
 	cur_ = head_;
 	return head_;
 }
 
-PointData *PointDataList::tail()
+PointData *PointDataList::toTail()
 {
 	cur_ = tail_;
 	return tail_;
@@ -123,4 +123,14 @@ PointData *PointDataList::next()
 {
 	cur_ = cur_->next();
 	return cur_;
+}
+
+bool PointDataList::isAtHead()
+{
+	return cur_ == head_;
+}
+
+bool PointDataList::isAtTail()
+{
+	return cur_ == tail_;
 }

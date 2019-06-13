@@ -2,6 +2,12 @@
 
 #include <math.h>
 
+Point::Point()
+{
+	xcoord = 0;
+	ycoord = 0;
+}
+
 Point::Point(int x, int y)
 {
 	xcoord = x;
