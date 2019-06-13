@@ -6,6 +6,9 @@
 
 void Clipper::clip(std::vector<Polygon> &polygons, Painter &painter)
 {
+	if (!isConvex())
+		return;
+		
 	for (size_t i = 0; i < polygons.size(); i++)
 		clipPolygon(polygons[i], painter);
 }
@@ -66,5 +69,27 @@ bool Clipper::isVisible(Point &p, LineSeg &edge)
 	Vector dir(edge.getP1(), edge.getP2());
 	
 	Vector res = Vector::vectorMultiply(ps, dir);
-	return res.z >= 0;
+	return res.z * direction >= 0;
 }
+
+bool Clipper::isConvex()
+{
+	Vector a(clipper[0].getP1(), clipper[0].getP2());
+	int sign = 0;
+	for (size_t i = 1; i < clipper.size() - 1; i++)
+	{
+		Vector b(clipper[i].getP1(), clipper[i].getP2());
+		Vector n = Vector::vectorMultiply(a, b);
+		if (sign == 0)
+			sign = signFunc(n.z);
+		if (n.z != 0 && sign != signFunc(n.z))
+		{
+			direction = 0;
+			return false;
+		}
+		a = b;
+	}
+	direction = sign;
+	return true;
+}
+
