@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Лабораторная работа №8</string>
+   <string>Лабораторная работа №9</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QLabel" name="label">
@@ -38,7 +38,7 @@
     </property>
     <property name="text">
      <string>Отсечение многоугольников
-произвольным отсекателем</string>
+выпуклым отсекателем</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

@@ -90,11 +90,13 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 		
 		painter->end();
 		repaint();
+		startPoint = Point(x, y);
 	}
 	else
 	{
 		startPoint = Point(x, y);
 		isDrawing = true;
+		curPolygon.clear();
 		addPointToPolygon(startPoint);
 		emit startPolygonDraw(startPoint);
 	}
@@ -158,6 +160,7 @@ void Canvas::lockPolygon()
 	else
 		painter->drawLineSeg(plast.x(), plast.y(), pfirst.x(), pfirst.y());
 	curPolygon.clear();
+	isDrawing = false;
 }
 
 void Canvas::setOrtDraw(bool state)

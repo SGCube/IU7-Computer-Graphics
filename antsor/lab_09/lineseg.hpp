@@ -34,6 +34,20 @@ public:
 		return Point(x, y);
 	}
 	
+	bool operator==(const LineSeg &e)
+	{
+		bool check1 = (p1 == e.p1) && (p2 == e.p2);
+		bool check2 = (p1 == e.p2) && (p2 == e.p1);
+		return check1 || check2;
+	}
+	
+	bool operator!=(const LineSeg &e)
+	{
+		bool check1 = (p1 == e.p1) && (p2 == e.p2);
+		bool check2 = (p1 == e.p2) && (p2 == e.p1);
+		return !(check1 || check2);
+	}
+	
 	static bool intersect(LineSeg p, LineSeg q, Point& pi)
 	{
 		Point& p1 = p.getP1(), p2 = p.getP2();
@@ -43,17 +57,18 @@ public:
 		double dyp = p2.y() - p1.y();
 		double dxq = q2.x() - q1.x();
 		double dyq = q2.y() - q1.y();
-		double mq = dyq / dxq;
+		double t = 0;
 		
-		double t = (q1.y() - p1.y() + mq * (p1.x() - q1.x())) / (dyp - mq * dxp);
-		// double s = (p1.y() - q1.y() + dyp * t) / dyq;
+		if (dxq != 0)
+		{
+			double mq = dyq / dxq;
+			t = (q1.y() - p1.y() + mq * (p1.x() - q1.x())) / (dyp - mq * dxp);
+		}
+		else
+			t = double(q1.x() - p1.x()) / dxp;
 		
 		pi = p.getParam(t);
-		
 		bool tCheck = 0 <= t && t <= 1;
-		// bool sCheck = 0 <= s && s <= 1;
-		
-		// return tCheck && sCheck;
 		return tCheck;
 	}
 	

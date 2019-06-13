@@ -4,13 +4,14 @@
 #include "lineseg.hpp"
 #include "vector.hpp"
 
-void Clipper::clip(std::vector<Polygon> &polygons, Painter &painter)
+bool Clipper::clip(std::vector<Polygon> &polygons, Painter &painter)
 {
 	if (!isConvex())
-		return;
+		return false;
 		
 	for (size_t i = 0; i < polygons.size(); i++)
 		clipPolygon(polygons[i], painter);
+	return true;
 }
 
 void Clipper::clipPolygon(Polygon &polygon, Painter &painter)
@@ -26,7 +27,8 @@ void Clipper::clipPolygon(Polygon &polygon, Painter &painter)
 			painter.drawClipped(clipped[i].x(), clipped[i].y(),
 								clipped[i + 1].x(), clipped[i + 1].y());
 		painter.drawClipped(clipped[clipped.size() - 1].x(),
-				clipped[clipped.size() - 1].y(), clipped[0].x(), clipped[0].y());
+				clipped[clipped.size() - 1].y(),
+				clipped[0].x(), clipped[0].y());
 	}
 }
 
@@ -43,8 +45,11 @@ bool Clipper::clipByEdge(Polygon &polygon, LineSeg &clipEdge)
 		else
 		{
 			LineSeg sEdge(S, polygon[j]);
-			if (LineSeg::intersect(sEdge, clipEdge, I))
+			if (isIntersect(S, polygon[j], clipEdge))
+			{
+				LineSeg::intersect(sEdge, clipEdge, I);
 				result.add_point(I);
+			}
 		}
 		
 		S = polygon[j];
@@ -56,8 +61,11 @@ bool Clipper::clipByEdge(Polygon &polygon, LineSeg &clipEdge)
 		return false;
 	
 	LineSeg lastEdge(S, F);
-	if (LineSeg::intersect(lastEdge, clipEdge, I))
+	if (isIntersect(S, F, clipEdge))
+	{
+		LineSeg::intersect(lastEdge, clipEdge, I);
 		result.add_point(I);
+	}
 	
 	polygon = result;
 	return true;
@@ -70,6 +78,13 @@ bool Clipper::isVisible(Point &p, LineSeg &edge)
 	
 	Vector res = Vector::vectorMultiply(ps, dir);
 	return res.z * direction >= 0;
+}
+
+bool Clipper::isIntersect(Point p1, Point p2, LineSeg &edge)
+{
+	bool vis1 = isVisible(p1, edge);
+	bool vis2 = isVisible(p2, edge);
+	return vis1 != vis2;
 }
 
 bool Clipper::isConvex()
@@ -92,4 +107,3 @@ bool Clipper::isConvex()
 	direction = sign;
 	return true;
 }
-

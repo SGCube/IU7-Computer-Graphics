@@ -12,7 +12,7 @@ class Clipper
 public:
 	Clipper(Polygon p) : clipper(p.toEdges()) {};
 	
-	void clip(std::vector<Polygon>& polygons, Painter& painter);
+	bool clip(std::vector<Polygon>& polygons, Painter& painter);
 	void clipPolygon(Polygon& polygon, Painter& painter);
 	bool clipByEdge(Polygon& polygon, LineSeg& edge);
 	
@@ -21,6 +21,7 @@ private:
 	int direction;
 	
 	bool isVisible(Point& p, LineSeg& edge);
+	bool isIntersect(Point p1, Point p2, LineSeg& edge);
 	bool isConvex();
 	
 	static int signFunc(int x)

@@ -13,6 +13,7 @@ public:
 	void setY(int y);
 	
 	bool operator==(const Point &p);
+	bool operator!=(const Point &p);
 	
 private:
 	int xcoord;

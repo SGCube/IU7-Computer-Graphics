@@ -1,4 +1,5 @@
 #include <QColorDialog>
+#include <QMessageBox>
 
 #include "window.h"
 #include "ui_window.h"
@@ -157,7 +158,8 @@ void Window::on_clipButton_clicked()
 		Clipper clipper(clipperPolygon);
 		
 		painter.begin(&img);
-		clipper.clip(polygons, painter);
+		if (!clipper.clip(polygons, painter))
+			QMessageBox::warning(this, "Ошибка", "Отсекатель не выпуклый!");
 		painter.end();
 		ui->canvas->repaint();
 	}

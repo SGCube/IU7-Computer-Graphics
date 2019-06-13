@@ -39,6 +39,11 @@ bool Point::operator==(const Point &p)
 	return ((xcoord == p.xcoord) && (ycoord == p.ycoord));
 }
 
+bool Point::operator!=(const Point &p)
+{
+	return !((xcoord == p.xcoord) && (ycoord == p.ycoord));
+}
+
 double dist(Point p1, Point p2)
 {
 	int dx = p2.x() - p1.x();
