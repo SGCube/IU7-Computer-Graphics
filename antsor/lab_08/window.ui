@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Лабораторная работа №7</string>
+   <string>Лабораторная работа №8</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QLabel" name="label">
@@ -38,8 +38,7 @@
     </property>
     <property name="text">
      <string>Отсечение отрезков
-алгоритмом
-Сазерленда-Коэна</string>
+выпуклым отсекателем</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -242,8 +241,8 @@
      <rect>
       <x>10</x>
       <y>660</y>
-      <width>631</width>
-      <height>51</height>
+      <width>581</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
@@ -252,8 +251,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Рисование отрезков - ЛКМ. Отмена - ПКМ. Для рисования горизонтальных и
-вертикальных отрезков зажать Shift. Размер холста: 640x640</string>
+     <string>Рисование - ЛКМ. Отмена рисования отрезка/замыкание отсекателя - ПКМ.</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -264,8 +262,8 @@
      <rect>
       <x>660</x>
       <y>190</y>
-      <width>160</width>
-      <height>321</height>
+      <width>150</width>
+      <height>291</height>
      </rect>
     </property>
     <property name="font">
@@ -283,10 +281,10 @@
      <enum>QAbstractItemView::NoSelection</enum>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>80</number>
+     <number>75</number>
     </attribute>
     <attribute name="horizontalHeaderMinimumSectionSize">
-     <number>80</number>
+     <number>75</number>
     </attribute>
     <attribute name="verticalHeaderVisible">
      <bool>false</bool>
@@ -335,7 +333,7 @@
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
-      <x>820</x>
+      <x>830</x>
       <y>163</y>
       <width>121</width>
       <height>21</height>
@@ -358,10 +356,10 @@
    <widget class="QLabel" name="coord">
     <property name="geometry">
      <rect>
-      <x>830</x>
-      <y>440</y>
-      <width>121</width>
-      <height>71</height>
+      <x>660</x>
+      <y>490</y>
+      <width>291</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
@@ -372,12 +370,31 @@
      </font>
     </property>
     <property name="text">
-     <string>Текущие
-координаты
-(0, 0)</string>
+     <string>Текущие координаты: (0, 0)</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="hint_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>680</y>
+      <width>451</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Размер холста: 640x640    Система координат - экранная</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="Canvas" name="canvas" native="true">
@@ -455,112 +472,6 @@
      <string>Ввести отсекатель</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_7">
-    <property name="geometry">
-     <rect>
-      <x>847</x>
-      <y>415</y>
-      <width>16</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Y</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="rbxEdit">
-    <property name="geometry">
-     <rect>
-      <x>877</x>
-      <y>380</y>
-      <width>61</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="maximum">
-     <number>640</number>
-    </property>
-    <property name="value">
-     <number>640</number>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="rbyEdit">
-    <property name="geometry">
-     <rect>
-      <x>877</x>
-      <y>410</y>
-      <width>61</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="maximum">
-     <number>640</number>
-    </property>
-    <property name="value">
-     <number>640</number>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_8">
-    <property name="geometry">
-     <rect>
-      <x>847</x>
-      <y>384</y>
-      <width>16</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>X</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_10">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>330</y>
-      <width>121</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Правый нижний
-угол</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_11">
     <property name="geometry">
      <rect>
@@ -584,105 +495,60 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QSpinBox" name="ltyEdit">
-    <property name="geometry">
-     <rect>
-      <x>877</x>
-      <y>280</y>
-      <width>61</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="maximum">
-     <number>639</number>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="ltxEdit">
-    <property name="geometry">
-     <rect>
-      <x>877</x>
-      <y>250</y>
-      <width>61</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="maximum">
-     <number>639</number>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_9">
-    <property name="geometry">
-     <rect>
-      <x>847</x>
-      <y>285</y>
-      <width>16</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Y</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_12">
-    <property name="geometry">
-     <rect>
-      <x>847</x>
-      <y>254</y>
-      <width>16</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>X</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_13">
+   <widget class="QTableWidget" name="clipperTable">
     <property name="geometry">
      <rect>
       <x>830</x>
-      <y>200</y>
-      <width>121</width>
-      <height>41</height>
+      <y>190</y>
+      <width>120</width>
+      <height>291</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>12</pointsize>
+      <pointsize>10</pointsize>
      </font>
     </property>
-    <property name="text">
-     <string>Левый верхний
-угол</string>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
     </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::NoSelection</enum>
+    </property>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>60</number>
+    </attribute>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>60</number>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>28</number>
+    </attribute>
+    <attribute name="verticalHeaderMinimumSectionSize">
+     <number>24</number>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>X</string>
+     </property>
+     <property name="textAlignment">
+      <set>AlignCenter</set>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Y</string>
+     </property>
+     <property name="textAlignment">
+      <set>AlignCenter</set>
+     </property>
+    </column>
    </widget>
   </widget>
  </widget>

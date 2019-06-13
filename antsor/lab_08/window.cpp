@@ -1,4 +1,5 @@
 #include <QColorDialog>
+#include <QMessageBox>
 
 #include "window.h"
 #include "ui_window.h"
@@ -12,13 +13,14 @@ Window::Window(QWidget *parent) :
 	imgNoClipper(img),
 	painter(),
 	startPoint(0, 0),
-	ltClipper(0, 0),
-	rbClipper(640, 640),
 	drawClipper(false)
 {
 	ui->setupUi(this);
 	ui->canvas->setCanvas(&img, &painter);
 	img.fill(QColor(255, 255, 255));
+	
+	connect(ui->canvas, SIGNAL(curCoord(Point)),
+			this, SLOT(getCurCoord(Point)));
 	
 	connect(ui->canvas, SIGNAL(startSegDraw(Point)),
 			this, SLOT(getStartPoint(Point)));
@@ -26,8 +28,14 @@ Window::Window(QWidget *parent) :
 			this, SLOT(resetStartPoint()));
 	connect(ui->canvas, SIGNAL(endSegDraw(Point)),
 			this, SLOT(getEndPoint(Point)));
-	connect(ui->canvas, SIGNAL(curCoord(Point)),
-			this, SLOT(getCurCoord(Point)));
+	
+	connect(ui->canvas, SIGNAL(startClipperDraw(Point)),
+			this, SLOT(beginClipper(Point)));
+	connect(ui->canvas, SIGNAL(clipperDraw(Point)),
+			this, SLOT(addToClipper(Point)));
+	connect(ui->canvas, SIGNAL(endClipperDraw()),
+			this, SLOT(lockClipper()));
+	
 	
 	connect(this, SIGNAL(ortDrawMode(bool)), ui->canvas, SLOT(setOrtDraw(bool)));
 	connect(this, SIGNAL(isClipperToDraw(bool)), ui->canvas, SLOT(setDrawMode(bool)));
@@ -70,20 +78,11 @@ QString Window::coordText(Point &p)
 
 void Window::getStartPoint(Point p)
 {
-	if (drawClipper)
-	{
-		ltClipper = p;
-		ui->ltxEdit->setValue(ltClipper.x());
-		ui->ltyEdit->setValue(ltClipper.y());
-	}
-	else
-	{
-		startPoint = p;
-		int row = ui->pointTable->rowCount();
-		ui->pointTable->insertRow(row);
-		QTableWidgetItem *item = new QTableWidgetItem(coordText(p));
-		ui->pointTable->setItem(row, 0, item);
-	}
+	startPoint = p;
+	int row = ui->pointTable->rowCount();
+	ui->pointTable->insertRow(row);
+	QTableWidgetItem *item = new QTableWidgetItem(coordText(p));
+	ui->pointTable->setItem(row, 0, item);
 }
 
 void Window::resetStartPoint()
@@ -93,41 +92,50 @@ void Window::resetStartPoint()
 
 void Window::getEndPoint(Point p)
 {
-	if (drawClipper)
-	{
-		rbClipper = p;
-		
-		if (ltClipper.x() > rbClipper.x())
-		{
-			Point tmp = ltClipper;
-			ltClipper = rbClipper;
-			rbClipper = tmp;
-		}
-		
-		ui->ltxEdit->setValue(ltClipper.x());
-		ui->ltyEdit->setValue(ltClipper.y());
-		ui->rbxEdit->setValue(rbClipper.x());
-		ui->rbyEdit->setValue(rbClipper.y());
-	}
-	else
-	{
-		Point endPoint = p;
-		lineSegments.push_back(LineSeg(startPoint, endPoint));
-		
-		int row = ui->pointTable->rowCount() - 1;
-		QTableWidgetItem *item = new QTableWidgetItem(coordText(p));
-		ui->pointTable->setItem(row, 1, item);
-	}
+	Point endPoint = p;
+	lineSegments.push_back(LineSeg(startPoint, endPoint));
+	
+	int row = ui->pointTable->rowCount() - 1;
+	QTableWidgetItem *item = new QTableWidgetItem(coordText(p));
+	ui->pointTable->setItem(row, 1, item);
 }
 
 void Window::getCurCoord(Point coord)
 {
-	QString str = "Текущие\nкоординаты:\n(";
+	QString str = "Текущие координаты: (";
 	str.append(QString::number(coord.x()));
 	str.append(", ");
 	str.append(QString::number(coord.y()));
 	str.append(")");
 	ui->coord->setText(str);
+}
+
+void Window::beginClipper(Point p)
+{
+	clipperPolygon.clear();
+	int len = ui->clipperTable->rowCount();
+	for (int i = 0; i < len; i++)
+		ui->clipperTable->removeRow(0);
+	
+	addToClipper(p);
+}
+
+void Window::addToClipper(Point p)
+{
+	ui->clipperTable->insertRow(ui->clipperTable->rowCount());
+	int row = ui->clipperTable->rowCount() - 1;
+	QTableWidgetItem *xitem = nullptr, *yitem = nullptr;
+	xitem = new QTableWidgetItem(QString::number(p.x()));
+	yitem = new QTableWidgetItem(QString::number(p.y()));
+	ui->clipperTable->setItem(row, 0, xitem);
+	ui->clipperTable->setItem(row, 1, yitem);
+	
+	clipperPolygon.add_point(p);
+}
+
+void Window::lockClipper()
+{
+	
 }
 
 void Window::on_toLineRadio_clicked()
@@ -146,27 +154,16 @@ void Window::on_toClipperRadio_clicked()
 
 void Window::on_clipButton_clicked()
 {
-	ltClipper = Point(ui->ltxEdit->value(), ui->ltyEdit->value());
-	rbClipper = Point(ui->rbxEdit->value(), ui->rbyEdit->value());
-	
-	if (ltClipper.x() > rbClipper.x())
+	if (clipperPolygon.number_of_vertexes() > 2)
 	{
-		Point tmp = ltClipper;
-		ltClipper = rbClipper;
-		rbClipper = tmp;
+		Clipper clipper(clipperPolygon);
+		
+		painter.begin(&img);
+		if (!clipper.clip(lineSegments, painter))
+			QMessageBox::warning(this, "Ошибка", "Отсекатель не выпуклый!");
+		painter.end();
+		ui->canvas->repaint();
 	}
-	
-	ui->ltxEdit->setValue(ltClipper.x());
-	ui->ltyEdit->setValue(ltClipper.y());
-	ui->rbxEdit->setValue(rbClipper.x());
-	ui->rbyEdit->setValue(rbClipper.y());
-	
-	Clipper clipper(ltClipper.x(), ltClipper.y(), rbClipper.x(), rbClipper.y());
-	
-	painter.begin(&img);
-	clipper.clip(lineSegments, painter);
-	painter.end();
-	repaint();
 }
 
 void Window::on_clearButton_clicked()
@@ -174,15 +171,15 @@ void Window::on_clearButton_clicked()
 	img.fill(QColor(255, 255, 255));
 	ui->canvas->repaint();
 	
-	ui->ltxEdit->setValue(0);
-	ui->ltyEdit->setValue(0);
-	ui->rbxEdit->setValue(640);
-	ui->rbyEdit->setValue(640);
-	
 	lineSegments.clear();
 	int len = ui->pointTable->rowCount();
 	for (int i = 0; i < len; i++)
 		ui->pointTable->removeRow(0);
+	
+	clipperPolygon.clear();
+	len = ui->clipperTable->rowCount();
+	for (int i = 0; i < len; i++)
+		ui->clipperTable->removeRow(0);
 }
 
 void Window::on_palLineBtn_clicked()

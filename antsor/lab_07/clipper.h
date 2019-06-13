@@ -20,8 +20,9 @@ private:
 	{
 		unsigned outOfLeft = 1;
 		unsigned outOfRight = 2;
-		unsigned outOfTop = 4;
-		unsigned outOfBottom = 8;
+		unsigned outOfBottom = 4;
+		unsigned outOfTop = 8;
+		
 		
 		unsigned outOfNone = 0;
 		unsigned outOfEverything = 15;
